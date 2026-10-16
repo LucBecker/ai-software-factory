@@ -9,16 +9,17 @@ datasource db {
 }
 
 model Project {
-  id           String           @id @default(cuid())
-  name         String
-  description  String           @default("")
-  stage        String           @default("Brainstorming")
-  status       String           @default("ACTIVE")
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  prompts      PromptTemplate[]
-  workflowRuns WorkflowRun[]
-  requirements Requirement[]
+  id                    String                 @id @default(cuid())
+  name                  String
+  description           String                 @default("")
+  stage                 String                 @default("Brainstorming")
+  status                String                 @default("ACTIVE")
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  prompts               PromptTemplate[]
+  workflowRuns          WorkflowRun[]
+  requirements          Requirement[]
+  architectureDecisions ArchitectureDecision[]
 
   @@index([status])
   @@index([updatedAt])
@@ -75,6 +76,19 @@ model Requirement {
   description String   @default("")
   priority    String   @default("MEDIUM")
   status      String   @default("TODO")
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId, createdAt])
+}
+
+model ArchitectureDecision {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  category    String   @default("GENERAL")
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())

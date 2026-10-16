@@ -176,6 +176,16 @@ exports.Prisma.RequirementScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ArchitectureDecisionScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  projectId: 'projectId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -192,7 +202,8 @@ exports.Prisma.ModelName = {
   PromptTemplate: 'PromptTemplate',
   Agent: 'Agent',
   WorkflowRun: 'WorkflowRun',
-  Requirement: 'Requirement'
+  Requirement: 'Requirement',
+  ArchitectureDecision: 'ArchitectureDecision'
 };
 
 /**

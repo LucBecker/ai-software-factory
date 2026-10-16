@@ -38,6 +38,11 @@ export type WorkflowRun = $Result.DefaultSelection<Prisma.$WorkflowRunPayload>
  * 
  */
 export type Requirement = $Result.DefaultSelection<Prisma.$RequirementPayload>
+/**
+ * Model ArchitectureDecision
+ * 
+ */
+export type ArchitectureDecision = $Result.DefaultSelection<Prisma.$ArchitectureDecisionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -206,6 +211,16 @@ export class PrismaClient<
     * ```
     */
   get requirement(): Prisma.RequirementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.architectureDecision`: Exposes CRUD operations for the **ArchitectureDecision** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ArchitectureDecisions
+    * const architectureDecisions = await prisma.architectureDecision.findMany()
+    * ```
+    */
+  get architectureDecision(): Prisma.ArchitectureDecisionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -651,7 +666,8 @@ export namespace Prisma {
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
     WorkflowRun: 'WorkflowRun',
-    Requirement: 'Requirement'
+    Requirement: 'Requirement',
+    ArchitectureDecision: 'ArchitectureDecision'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -670,7 +686,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement"
+      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1044,6 +1060,80 @@ export namespace Prisma {
           }
         }
       }
+      ArchitectureDecision: {
+        payload: Prisma.$ArchitectureDecisionPayload<ExtArgs>
+        fields: Prisma.ArchitectureDecisionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArchitectureDecisionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArchitectureDecisionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          findFirst: {
+            args: Prisma.ArchitectureDecisionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArchitectureDecisionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          findMany: {
+            args: Prisma.ArchitectureDecisionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>[]
+          }
+          create: {
+            args: Prisma.ArchitectureDecisionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          createMany: {
+            args: Prisma.ArchitectureDecisionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArchitectureDecisionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>[]
+          }
+          delete: {
+            args: Prisma.ArchitectureDecisionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          update: {
+            args: Prisma.ArchitectureDecisionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArchitectureDecisionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArchitectureDecisionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArchitectureDecisionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArchitectureDecisionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchitectureDecisionPayload>
+          }
+          aggregate: {
+            args: Prisma.ArchitectureDecisionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArchitectureDecision>
+          }
+          groupBy: {
+            args: Prisma.ArchitectureDecisionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArchitectureDecisionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArchitectureDecisionCountArgs<ExtArgs>
+            result: $Utils.Optional<ArchitectureDecisionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1145,6 +1235,7 @@ export namespace Prisma {
     agent?: AgentOmit
     workflowRun?: WorkflowRunOmit
     requirement?: RequirementOmit
+    architectureDecision?: ArchitectureDecisionOmit
   }
 
   /* Types for Logging */
@@ -1228,12 +1319,14 @@ export namespace Prisma {
     prompts: number
     workflowRuns: number
     requirements: number
+    architectureDecisions: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prompts?: boolean | ProjectCountOutputTypeCountPromptsArgs
     workflowRuns?: boolean | ProjectCountOutputTypeCountWorkflowRunsArgs
     requirements?: boolean | ProjectCountOutputTypeCountRequirementsArgs
+    architectureDecisions?: boolean | ProjectCountOutputTypeCountArchitectureDecisionsArgs
   }
 
   // Custom InputTypes
@@ -1266,6 +1359,13 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountRequirementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RequirementWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountArchitectureDecisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArchitectureDecisionWhereInput
   }
 
 
@@ -1456,6 +1556,7 @@ export namespace Prisma {
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
+    architectureDecisions?: boolean | Project$architectureDecisionsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -1494,6 +1595,7 @@ export namespace Prisma {
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
+    architectureDecisions?: boolean | Project$architectureDecisionsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1505,6 +1607,7 @@ export namespace Prisma {
       prompts: Prisma.$PromptTemplatePayload<ExtArgs>[]
       workflowRuns: Prisma.$WorkflowRunPayload<ExtArgs>[]
       requirements: Prisma.$RequirementPayload<ExtArgs>[]
+      architectureDecisions: Prisma.$ArchitectureDecisionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1911,6 +2014,7 @@ export namespace Prisma {
     prompts<T extends Project$promptsArgs<ExtArgs> = {}>(args?: Subset<T, Project$promptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workflowRuns<T extends Project$workflowRunsArgs<ExtArgs> = {}>(args?: Subset<T, Project$workflowRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkflowRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     requirements<T extends Project$requirementsArgs<ExtArgs> = {}>(args?: Subset<T, Project$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    architectureDecisions<T extends Project$architectureDecisionsArgs<ExtArgs> = {}>(args?: Subset<T, Project$architectureDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2402,6 +2506,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RequirementScalarFieldEnum | RequirementScalarFieldEnum[]
+  }
+
+  /**
+   * Project.architectureDecisions
+   */
+  export type Project$architectureDecisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    where?: ArchitectureDecisionWhereInput
+    orderBy?: ArchitectureDecisionOrderByWithRelationInput | ArchitectureDecisionOrderByWithRelationInput[]
+    cursor?: ArchitectureDecisionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArchitectureDecisionScalarFieldEnum | ArchitectureDecisionScalarFieldEnum[]
   }
 
   /**
@@ -6846,6 +6974,1088 @@ export namespace Prisma {
 
 
   /**
+   * Model ArchitectureDecision
+   */
+
+  export type AggregateArchitectureDecision = {
+    _count: ArchitectureDecisionCountAggregateOutputType | null
+    _min: ArchitectureDecisionMinAggregateOutputType | null
+    _max: ArchitectureDecisionMaxAggregateOutputType | null
+  }
+
+  export type ArchitectureDecisionMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    category: string | null
+    projectId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ArchitectureDecisionMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    category: string | null
+    projectId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ArchitectureDecisionCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    category: number
+    projectId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ArchitectureDecisionMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ArchitectureDecisionMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ArchitectureDecisionCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    category?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ArchitectureDecisionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArchitectureDecision to aggregate.
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArchitectureDecisions to fetch.
+     */
+    orderBy?: ArchitectureDecisionOrderByWithRelationInput | ArchitectureDecisionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArchitectureDecisionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArchitectureDecisions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArchitectureDecisions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ArchitectureDecisions
+    **/
+    _count?: true | ArchitectureDecisionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArchitectureDecisionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArchitectureDecisionMaxAggregateInputType
+  }
+
+  export type GetArchitectureDecisionAggregateType<T extends ArchitectureDecisionAggregateArgs> = {
+        [P in keyof T & keyof AggregateArchitectureDecision]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArchitectureDecision[P]>
+      : GetScalarType<T[P], AggregateArchitectureDecision[P]>
+  }
+
+
+
+
+  export type ArchitectureDecisionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArchitectureDecisionWhereInput
+    orderBy?: ArchitectureDecisionOrderByWithAggregationInput | ArchitectureDecisionOrderByWithAggregationInput[]
+    by: ArchitectureDecisionScalarFieldEnum[] | ArchitectureDecisionScalarFieldEnum
+    having?: ArchitectureDecisionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArchitectureDecisionCountAggregateInputType | true
+    _min?: ArchitectureDecisionMinAggregateInputType
+    _max?: ArchitectureDecisionMaxAggregateInputType
+  }
+
+  export type ArchitectureDecisionGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    category: string
+    projectId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ArchitectureDecisionCountAggregateOutputType | null
+    _min: ArchitectureDecisionMinAggregateOutputType | null
+    _max: ArchitectureDecisionMaxAggregateOutputType | null
+  }
+
+  type GetArchitectureDecisionGroupByPayload<T extends ArchitectureDecisionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArchitectureDecisionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArchitectureDecisionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArchitectureDecisionGroupByOutputType[P]>
+            : GetScalarType<T[P], ArchitectureDecisionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArchitectureDecisionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["architectureDecision"]>
+
+  export type ArchitectureDecisionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["architectureDecision"]>
+
+  export type ArchitectureDecisionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["architectureDecision"]>
+
+  export type ArchitectureDecisionSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ArchitectureDecisionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "category" | "projectId" | "createdAt" | "updatedAt", ExtArgs["result"]["architectureDecision"]>
+  export type ArchitectureDecisionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ArchitectureDecisionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ArchitectureDecisionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $ArchitectureDecisionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ArchitectureDecision"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      category: string
+      projectId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["architectureDecision"]>
+    composites: {}
+  }
+
+  type ArchitectureDecisionGetPayload<S extends boolean | null | undefined | ArchitectureDecisionDefaultArgs> = $Result.GetResult<Prisma.$ArchitectureDecisionPayload, S>
+
+  type ArchitectureDecisionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArchitectureDecisionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArchitectureDecisionCountAggregateInputType | true
+    }
+
+  export interface ArchitectureDecisionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArchitectureDecision'], meta: { name: 'ArchitectureDecision' } }
+    /**
+     * Find zero or one ArchitectureDecision that matches the filter.
+     * @param {ArchitectureDecisionFindUniqueArgs} args - Arguments to find a ArchitectureDecision
+     * @example
+     * // Get one ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArchitectureDecisionFindUniqueArgs>(args: SelectSubset<T, ArchitectureDecisionFindUniqueArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ArchitectureDecision that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArchitectureDecisionFindUniqueOrThrowArgs} args - Arguments to find a ArchitectureDecision
+     * @example
+     * // Get one ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArchitectureDecisionFindUniqueOrThrowArgs>(args: SelectSubset<T, ArchitectureDecisionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArchitectureDecision that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionFindFirstArgs} args - Arguments to find a ArchitectureDecision
+     * @example
+     * // Get one ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArchitectureDecisionFindFirstArgs>(args?: SelectSubset<T, ArchitectureDecisionFindFirstArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArchitectureDecision that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionFindFirstOrThrowArgs} args - Arguments to find a ArchitectureDecision
+     * @example
+     * // Get one ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArchitectureDecisionFindFirstOrThrowArgs>(args?: SelectSubset<T, ArchitectureDecisionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ArchitectureDecisions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ArchitectureDecisions
+     * const architectureDecisions = await prisma.architectureDecision.findMany()
+     * 
+     * // Get first 10 ArchitectureDecisions
+     * const architectureDecisions = await prisma.architectureDecision.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const architectureDecisionWithIdOnly = await prisma.architectureDecision.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArchitectureDecisionFindManyArgs>(args?: SelectSubset<T, ArchitectureDecisionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ArchitectureDecision.
+     * @param {ArchitectureDecisionCreateArgs} args - Arguments to create a ArchitectureDecision.
+     * @example
+     * // Create one ArchitectureDecision
+     * const ArchitectureDecision = await prisma.architectureDecision.create({
+     *   data: {
+     *     // ... data to create a ArchitectureDecision
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArchitectureDecisionCreateArgs>(args: SelectSubset<T, ArchitectureDecisionCreateArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ArchitectureDecisions.
+     * @param {ArchitectureDecisionCreateManyArgs} args - Arguments to create many ArchitectureDecisions.
+     * @example
+     * // Create many ArchitectureDecisions
+     * const architectureDecision = await prisma.architectureDecision.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArchitectureDecisionCreateManyArgs>(args?: SelectSubset<T, ArchitectureDecisionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ArchitectureDecisions and returns the data saved in the database.
+     * @param {ArchitectureDecisionCreateManyAndReturnArgs} args - Arguments to create many ArchitectureDecisions.
+     * @example
+     * // Create many ArchitectureDecisions
+     * const architectureDecision = await prisma.architectureDecision.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ArchitectureDecisions and only return the `id`
+     * const architectureDecisionWithIdOnly = await prisma.architectureDecision.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArchitectureDecisionCreateManyAndReturnArgs>(args?: SelectSubset<T, ArchitectureDecisionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ArchitectureDecision.
+     * @param {ArchitectureDecisionDeleteArgs} args - Arguments to delete one ArchitectureDecision.
+     * @example
+     * // Delete one ArchitectureDecision
+     * const ArchitectureDecision = await prisma.architectureDecision.delete({
+     *   where: {
+     *     // ... filter to delete one ArchitectureDecision
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArchitectureDecisionDeleteArgs>(args: SelectSubset<T, ArchitectureDecisionDeleteArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ArchitectureDecision.
+     * @param {ArchitectureDecisionUpdateArgs} args - Arguments to update one ArchitectureDecision.
+     * @example
+     * // Update one ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArchitectureDecisionUpdateArgs>(args: SelectSubset<T, ArchitectureDecisionUpdateArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ArchitectureDecisions.
+     * @param {ArchitectureDecisionDeleteManyArgs} args - Arguments to filter ArchitectureDecisions to delete.
+     * @example
+     * // Delete a few ArchitectureDecisions
+     * const { count } = await prisma.architectureDecision.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArchitectureDecisionDeleteManyArgs>(args?: SelectSubset<T, ArchitectureDecisionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArchitectureDecisions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ArchitectureDecisions
+     * const architectureDecision = await prisma.architectureDecision.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArchitectureDecisionUpdateManyArgs>(args: SelectSubset<T, ArchitectureDecisionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArchitectureDecisions and returns the data updated in the database.
+     * @param {ArchitectureDecisionUpdateManyAndReturnArgs} args - Arguments to update many ArchitectureDecisions.
+     * @example
+     * // Update many ArchitectureDecisions
+     * const architectureDecision = await prisma.architectureDecision.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ArchitectureDecisions and only return the `id`
+     * const architectureDecisionWithIdOnly = await prisma.architectureDecision.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArchitectureDecisionUpdateManyAndReturnArgs>(args: SelectSubset<T, ArchitectureDecisionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ArchitectureDecision.
+     * @param {ArchitectureDecisionUpsertArgs} args - Arguments to update or create a ArchitectureDecision.
+     * @example
+     * // Update or create a ArchitectureDecision
+     * const architectureDecision = await prisma.architectureDecision.upsert({
+     *   create: {
+     *     // ... data to create a ArchitectureDecision
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ArchitectureDecision we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArchitectureDecisionUpsertArgs>(args: SelectSubset<T, ArchitectureDecisionUpsertArgs<ExtArgs>>): Prisma__ArchitectureDecisionClient<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ArchitectureDecisions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionCountArgs} args - Arguments to filter ArchitectureDecisions to count.
+     * @example
+     * // Count the number of ArchitectureDecisions
+     * const count = await prisma.architectureDecision.count({
+     *   where: {
+     *     // ... the filter for the ArchitectureDecisions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArchitectureDecisionCountArgs>(
+      args?: Subset<T, ArchitectureDecisionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArchitectureDecisionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ArchitectureDecision.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArchitectureDecisionAggregateArgs>(args: Subset<T, ArchitectureDecisionAggregateArgs>): Prisma.PrismaPromise<GetArchitectureDecisionAggregateType<T>>
+
+    /**
+     * Group by ArchitectureDecision.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchitectureDecisionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArchitectureDecisionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArchitectureDecisionGroupByArgs['orderBy'] }
+        : { orderBy?: ArchitectureDecisionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArchitectureDecisionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArchitectureDecisionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ArchitectureDecision model
+   */
+  readonly fields: ArchitectureDecisionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ArchitectureDecision.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArchitectureDecisionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ArchitectureDecision model
+   */
+  interface ArchitectureDecisionFieldRefs {
+    readonly id: FieldRef<"ArchitectureDecision", 'String'>
+    readonly title: FieldRef<"ArchitectureDecision", 'String'>
+    readonly description: FieldRef<"ArchitectureDecision", 'String'>
+    readonly category: FieldRef<"ArchitectureDecision", 'String'>
+    readonly projectId: FieldRef<"ArchitectureDecision", 'String'>
+    readonly createdAt: FieldRef<"ArchitectureDecision", 'DateTime'>
+    readonly updatedAt: FieldRef<"ArchitectureDecision", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ArchitectureDecision findUnique
+   */
+  export type ArchitectureDecisionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArchitectureDecision to fetch.
+     */
+    where: ArchitectureDecisionWhereUniqueInput
+  }
+
+  /**
+   * ArchitectureDecision findUniqueOrThrow
+   */
+  export type ArchitectureDecisionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArchitectureDecision to fetch.
+     */
+    where: ArchitectureDecisionWhereUniqueInput
+  }
+
+  /**
+   * ArchitectureDecision findFirst
+   */
+  export type ArchitectureDecisionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArchitectureDecision to fetch.
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArchitectureDecisions to fetch.
+     */
+    orderBy?: ArchitectureDecisionOrderByWithRelationInput | ArchitectureDecisionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArchitectureDecisions.
+     */
+    cursor?: ArchitectureDecisionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArchitectureDecisions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArchitectureDecisions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArchitectureDecisions.
+     */
+    distinct?: ArchitectureDecisionScalarFieldEnum | ArchitectureDecisionScalarFieldEnum[]
+  }
+
+  /**
+   * ArchitectureDecision findFirstOrThrow
+   */
+  export type ArchitectureDecisionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArchitectureDecision to fetch.
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArchitectureDecisions to fetch.
+     */
+    orderBy?: ArchitectureDecisionOrderByWithRelationInput | ArchitectureDecisionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArchitectureDecisions.
+     */
+    cursor?: ArchitectureDecisionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArchitectureDecisions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArchitectureDecisions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArchitectureDecisions.
+     */
+    distinct?: ArchitectureDecisionScalarFieldEnum | ArchitectureDecisionScalarFieldEnum[]
+  }
+
+  /**
+   * ArchitectureDecision findMany
+   */
+  export type ArchitectureDecisionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArchitectureDecisions to fetch.
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArchitectureDecisions to fetch.
+     */
+    orderBy?: ArchitectureDecisionOrderByWithRelationInput | ArchitectureDecisionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ArchitectureDecisions.
+     */
+    cursor?: ArchitectureDecisionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArchitectureDecisions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArchitectureDecisions.
+     */
+    skip?: number
+    distinct?: ArchitectureDecisionScalarFieldEnum | ArchitectureDecisionScalarFieldEnum[]
+  }
+
+  /**
+   * ArchitectureDecision create
+   */
+  export type ArchitectureDecisionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ArchitectureDecision.
+     */
+    data: XOR<ArchitectureDecisionCreateInput, ArchitectureDecisionUncheckedCreateInput>
+  }
+
+  /**
+   * ArchitectureDecision createMany
+   */
+  export type ArchitectureDecisionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ArchitectureDecisions.
+     */
+    data: ArchitectureDecisionCreateManyInput | ArchitectureDecisionCreateManyInput[]
+  }
+
+  /**
+   * ArchitectureDecision createManyAndReturn
+   */
+  export type ArchitectureDecisionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ArchitectureDecisions.
+     */
+    data: ArchitectureDecisionCreateManyInput | ArchitectureDecisionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArchitectureDecision update
+   */
+  export type ArchitectureDecisionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ArchitectureDecision.
+     */
+    data: XOR<ArchitectureDecisionUpdateInput, ArchitectureDecisionUncheckedUpdateInput>
+    /**
+     * Choose, which ArchitectureDecision to update.
+     */
+    where: ArchitectureDecisionWhereUniqueInput
+  }
+
+  /**
+   * ArchitectureDecision updateMany
+   */
+  export type ArchitectureDecisionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ArchitectureDecisions.
+     */
+    data: XOR<ArchitectureDecisionUpdateManyMutationInput, ArchitectureDecisionUncheckedUpdateManyInput>
+    /**
+     * Filter which ArchitectureDecisions to update
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * Limit how many ArchitectureDecisions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArchitectureDecision updateManyAndReturn
+   */
+  export type ArchitectureDecisionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * The data used to update ArchitectureDecisions.
+     */
+    data: XOR<ArchitectureDecisionUpdateManyMutationInput, ArchitectureDecisionUncheckedUpdateManyInput>
+    /**
+     * Filter which ArchitectureDecisions to update
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * Limit how many ArchitectureDecisions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArchitectureDecision upsert
+   */
+  export type ArchitectureDecisionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ArchitectureDecision to update in case it exists.
+     */
+    where: ArchitectureDecisionWhereUniqueInput
+    /**
+     * In case the ArchitectureDecision found by the `where` argument doesn't exist, create a new ArchitectureDecision with this data.
+     */
+    create: XOR<ArchitectureDecisionCreateInput, ArchitectureDecisionUncheckedCreateInput>
+    /**
+     * In case the ArchitectureDecision was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArchitectureDecisionUpdateInput, ArchitectureDecisionUncheckedUpdateInput>
+  }
+
+  /**
+   * ArchitectureDecision delete
+   */
+  export type ArchitectureDecisionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+    /**
+     * Filter which ArchitectureDecision to delete.
+     */
+    where: ArchitectureDecisionWhereUniqueInput
+  }
+
+  /**
+   * ArchitectureDecision deleteMany
+   */
+  export type ArchitectureDecisionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArchitectureDecisions to delete
+     */
+    where?: ArchitectureDecisionWhereInput
+    /**
+     * Limit how many ArchitectureDecisions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArchitectureDecision without action
+   */
+  export type ArchitectureDecisionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArchitectureDecision
+     */
+    select?: ArchitectureDecisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArchitectureDecision
+     */
+    omit?: ArchitectureDecisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchitectureDecisionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6929,6 +8139,19 @@ export namespace Prisma {
   export type RequirementScalarFieldEnum = (typeof RequirementScalarFieldEnum)[keyof typeof RequirementScalarFieldEnum]
 
 
+  export const ArchitectureDecisionScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    category: 'category',
+    projectId: 'projectId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ArchitectureDecisionScalarFieldEnum = (typeof ArchitectureDecisionScalarFieldEnum)[keyof typeof ArchitectureDecisionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -7002,6 +8225,7 @@ export namespace Prisma {
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
+    architectureDecisions?: ArchitectureDecisionListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -7015,6 +8239,7 @@ export namespace Prisma {
     prompts?: PromptTemplateOrderByRelationAggregateInput
     workflowRuns?: WorkflowRunOrderByRelationAggregateInput
     requirements?: RequirementOrderByRelationAggregateInput
+    architectureDecisions?: ArchitectureDecisionOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -7031,6 +8256,7 @@ export namespace Prisma {
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
+    architectureDecisions?: ArchitectureDecisionListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -7358,6 +8584,71 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Requirement"> | Date | string
   }
 
+  export type ArchitectureDecisionWhereInput = {
+    AND?: ArchitectureDecisionWhereInput | ArchitectureDecisionWhereInput[]
+    OR?: ArchitectureDecisionWhereInput[]
+    NOT?: ArchitectureDecisionWhereInput | ArchitectureDecisionWhereInput[]
+    id?: StringFilter<"ArchitectureDecision"> | string
+    title?: StringFilter<"ArchitectureDecision"> | string
+    description?: StringFilter<"ArchitectureDecision"> | string
+    category?: StringFilter<"ArchitectureDecision"> | string
+    projectId?: StringFilter<"ArchitectureDecision"> | string
+    createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+    updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type ArchitectureDecisionOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type ArchitectureDecisionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ArchitectureDecisionWhereInput | ArchitectureDecisionWhereInput[]
+    OR?: ArchitectureDecisionWhereInput[]
+    NOT?: ArchitectureDecisionWhereInput | ArchitectureDecisionWhereInput[]
+    title?: StringFilter<"ArchitectureDecision"> | string
+    description?: StringFilter<"ArchitectureDecision"> | string
+    category?: StringFilter<"ArchitectureDecision"> | string
+    projectId?: StringFilter<"ArchitectureDecision"> | string
+    createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+    updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id">
+
+  export type ArchitectureDecisionOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ArchitectureDecisionCountOrderByAggregateInput
+    _max?: ArchitectureDecisionMaxOrderByAggregateInput
+    _min?: ArchitectureDecisionMinOrderByAggregateInput
+  }
+
+  export type ArchitectureDecisionScalarWhereWithAggregatesInput = {
+    AND?: ArchitectureDecisionScalarWhereWithAggregatesInput | ArchitectureDecisionScalarWhereWithAggregatesInput[]
+    OR?: ArchitectureDecisionScalarWhereWithAggregatesInput[]
+    NOT?: ArchitectureDecisionScalarWhereWithAggregatesInput | ArchitectureDecisionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    title?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    description?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    category?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    projectId?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ArchitectureDecision"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ArchitectureDecision"> | Date | string
+  }
+
   export type ProjectCreateInput = {
     id?: string
     name: string
@@ -7369,6 +8660,7 @@ export namespace Prisma {
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -7382,6 +8674,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -7395,6 +8688,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -7408,6 +8702,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -7773,6 +9068,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ArchitectureDecisionCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutArchitectureDecisionsInput
+  }
+
+  export type ArchitectureDecisionUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArchitectureDecisionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutArchitectureDecisionsNestedInput
+  }
+
+  export type ArchitectureDecisionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArchitectureDecisionCreateManyInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArchitectureDecisionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArchitectureDecisionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -7816,6 +9180,12 @@ export namespace Prisma {
     none?: RequirementWhereInput
   }
 
+  export type ArchitectureDecisionListRelationFilter = {
+    every?: ArchitectureDecisionWhereInput
+    some?: ArchitectureDecisionWhereInput
+    none?: ArchitectureDecisionWhereInput
+  }
+
   export type PromptTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -7825,6 +9195,10 @@ export namespace Prisma {
   }
 
   export type RequirementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArchitectureDecisionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8152,6 +9526,36 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type ArchitectureDecisionCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ArchitectureDecisionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ArchitectureDecisionMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type PromptTemplateCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -8173,6 +9577,13 @@ export namespace Prisma {
     connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
   }
 
+  export type ArchitectureDecisionCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput> | ArchitectureDecisionCreateWithoutProjectInput[] | ArchitectureDecisionUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ArchitectureDecisionCreateOrConnectWithoutProjectInput | ArchitectureDecisionCreateOrConnectWithoutProjectInput[]
+    createMany?: ArchitectureDecisionCreateManyProjectInputEnvelope
+    connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+  }
+
   export type PromptTemplateUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -8192,6 +9603,13 @@ export namespace Prisma {
     connectOrCreate?: RequirementCreateOrConnectWithoutProjectInput | RequirementCreateOrConnectWithoutProjectInput[]
     createMany?: RequirementCreateManyProjectInputEnvelope
     connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+  }
+
+  export type ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput> | ArchitectureDecisionCreateWithoutProjectInput[] | ArchitectureDecisionUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ArchitectureDecisionCreateOrConnectWithoutProjectInput | ArchitectureDecisionCreateOrConnectWithoutProjectInput[]
+    createMany?: ArchitectureDecisionCreateManyProjectInputEnvelope
+    connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8244,6 +9662,20 @@ export namespace Prisma {
     deleteMany?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
   }
 
+  export type ArchitectureDecisionUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput> | ArchitectureDecisionCreateWithoutProjectInput[] | ArchitectureDecisionUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ArchitectureDecisionCreateOrConnectWithoutProjectInput | ArchitectureDecisionCreateOrConnectWithoutProjectInput[]
+    upsert?: ArchitectureDecisionUpsertWithWhereUniqueWithoutProjectInput | ArchitectureDecisionUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ArchitectureDecisionCreateManyProjectInputEnvelope
+    set?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    disconnect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    delete?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    update?: ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput | ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput | ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
+  }
+
   export type PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -8284,6 +9716,20 @@ export namespace Prisma {
     update?: RequirementUpdateWithWhereUniqueWithoutProjectInput | RequirementUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: RequirementUpdateManyWithWhereWithoutProjectInput | RequirementUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
+  }
+
+  export type ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput> | ArchitectureDecisionCreateWithoutProjectInput[] | ArchitectureDecisionUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ArchitectureDecisionCreateOrConnectWithoutProjectInput | ArchitectureDecisionCreateOrConnectWithoutProjectInput[]
+    upsert?: ArchitectureDecisionUpsertWithWhereUniqueWithoutProjectInput | ArchitectureDecisionUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ArchitectureDecisionCreateManyProjectInputEnvelope
+    set?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    disconnect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    delete?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+    update?: ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput | ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput | ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutPromptsInput = {
@@ -8348,6 +9794,20 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutRequirementsInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutRequirementsInput, ProjectUpdateWithoutRequirementsInput>, ProjectUncheckedUpdateWithoutRequirementsInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutArchitectureDecisionsInput = {
+    create?: XOR<ProjectCreateWithoutArchitectureDecisionsInput, ProjectUncheckedCreateWithoutArchitectureDecisionsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutArchitectureDecisionsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutArchitectureDecisionsNestedInput = {
+    create?: XOR<ProjectCreateWithoutArchitectureDecisionsInput, ProjectUncheckedCreateWithoutArchitectureDecisionsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutArchitectureDecisionsInput
+    upsert?: ProjectUpsertWithoutArchitectureDecisionsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutArchitectureDecisionsInput, ProjectUpdateWithoutArchitectureDecisionsInput>, ProjectUncheckedUpdateWithoutArchitectureDecisionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8619,6 +10079,33 @@ export namespace Prisma {
     data: RequirementCreateManyProjectInput | RequirementCreateManyProjectInput[]
   }
 
+  export type ArchitectureDecisionCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArchitectureDecisionUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArchitectureDecisionCreateOrConnectWithoutProjectInput = {
+    where: ArchitectureDecisionWhereUniqueInput
+    create: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ArchitectureDecisionCreateManyProjectInputEnvelope = {
+    data: ArchitectureDecisionCreateManyProjectInput | ArchitectureDecisionCreateManyProjectInput[]
+  }
+
   export type PromptTemplateUpsertWithWhereUniqueWithoutProjectInput = {
     where: PromptTemplateWhereUniqueInput
     update: XOR<PromptTemplateUpdateWithoutProjectInput, PromptTemplateUncheckedUpdateWithoutProjectInput>
@@ -8713,6 +10200,35 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Requirement"> | Date | string
   }
 
+  export type ArchitectureDecisionUpsertWithWhereUniqueWithoutProjectInput = {
+    where: ArchitectureDecisionWhereUniqueInput
+    update: XOR<ArchitectureDecisionUpdateWithoutProjectInput, ArchitectureDecisionUncheckedUpdateWithoutProjectInput>
+    create: XOR<ArchitectureDecisionCreateWithoutProjectInput, ArchitectureDecisionUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput = {
+    where: ArchitectureDecisionWhereUniqueInput
+    data: XOR<ArchitectureDecisionUpdateWithoutProjectInput, ArchitectureDecisionUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput = {
+    where: ArchitectureDecisionScalarWhereInput
+    data: XOR<ArchitectureDecisionUpdateManyMutationInput, ArchitectureDecisionUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type ArchitectureDecisionScalarWhereInput = {
+    AND?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
+    OR?: ArchitectureDecisionScalarWhereInput[]
+    NOT?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
+    id?: StringFilter<"ArchitectureDecision"> | string
+    title?: StringFilter<"ArchitectureDecision"> | string
+    description?: StringFilter<"ArchitectureDecision"> | string
+    category?: StringFilter<"ArchitectureDecision"> | string
+    projectId?: StringFilter<"ArchitectureDecision"> | string
+    createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+    updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
+  }
+
   export type ProjectCreateWithoutPromptsInput = {
     id?: string
     name: string
@@ -8723,6 +10239,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPromptsInput = {
@@ -8735,6 +10252,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPromptsInput = {
@@ -8763,6 +10281,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutPromptsInput = {
@@ -8775,6 +10294,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutWorkflowRunsInput = {
@@ -8787,6 +10307,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkflowRunsInput = {
@@ -8799,6 +10320,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkflowRunsInput = {
@@ -8827,6 +10349,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkflowRunsInput = {
@@ -8839,6 +10362,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutRequirementsInput = {
@@ -8851,6 +10375,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutRequirementsInput = {
@@ -8863,6 +10388,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutRequirementsInput = {
@@ -8891,6 +10417,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutRequirementsInput = {
@@ -8903,6 +10430,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateWithoutArchitectureDecisionsInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutArchitectureDecisionsInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutArchitectureDecisionsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutArchitectureDecisionsInput, ProjectUncheckedCreateWithoutArchitectureDecisionsInput>
+  }
+
+  export type ProjectUpsertWithoutArchitectureDecisionsInput = {
+    update: XOR<ProjectUpdateWithoutArchitectureDecisionsInput, ProjectUncheckedUpdateWithoutArchitectureDecisionsInput>
+    create: XOR<ProjectCreateWithoutArchitectureDecisionsInput, ProjectUncheckedCreateWithoutArchitectureDecisionsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutArchitectureDecisionsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutArchitectureDecisionsInput, ProjectUncheckedUpdateWithoutArchitectureDecisionsInput>
+  }
+
+  export type ProjectUpdateWithoutArchitectureDecisionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutArchitectureDecisionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type PromptTemplateCreateManyProjectInput = {
@@ -8935,6 +10531,15 @@ export namespace Prisma {
     description?: string
     priority?: string
     status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArchitectureDecisionCreateManyProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    category?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9037,6 +10642,33 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArchitectureDecisionUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArchitectureDecisionUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArchitectureDecisionUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
