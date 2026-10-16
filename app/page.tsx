@@ -451,6 +451,74 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
             </>
           )}
 
+          {page === "Detalhes do projeto" && selectedProject && (
+            <div className="space-y-6">
+              <button
+                type="button"
+                onClick={() => setPage("Projetos")}
+                className="text-sm text-indigo-300 transition hover:text-indigo-200"
+              >
+                ← Voltar para projetos
+              </button>
+
+              <SectionTitle
+                title={selectedProject.name}
+                description={
+                  selectedProject.description || "Nenhuma descrição cadastrada."
+                }
+              />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h3 className="font-semibold">Requisitos</h3>
+              <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+                Em preparação
+              </span>
+            </div>
+
+            <p className="text-sm leading-6 text-slate-400">
+              Organize as necessidades do produto, as funcionalidades esperadas
+              e as regras de negócio.
+            </p>
+
+            <div className="mt-5 rounded-xl border border-dashed border-white/10 p-4">
+              <p className="text-sm text-slate-400">
+                Nenhum requisito cadastrado ainda.
+              </p>
+            </div>
+          </div>
+
+              <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <h3 className="font-semibold">Arquitetura</h3>
+                  <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+                    Em preparação
+                  </span>
+                </div>
+
+                <p className="text-sm leading-6 text-slate-400">
+                  Registre as decisões técnicas, as tecnologias, os componentes
+                  e as integrações da aplicação.
+                </p>
+
+                <div className="mt-5 rounded-xl border border-dashed border-white/10 p-4">
+                  <p className="text-sm text-slate-400">
+                    Nenhuma decisão de arquitetura registrada ainda.
+                  </p>
+                </div>
+              </div>
+      </div>
+
+    <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
+      <h3 className="font-semibold">Etapa atual do projeto</h3>
+      <p className="mt-2 text-sm text-slate-400">
+        O projeto está na etapa de {selectedProject.stage}.
+      </p>
+    </div>
+  </div>
+)}
+
           {page === "Biblioteca de prompts" && (
             <>
               <SectionTitle
