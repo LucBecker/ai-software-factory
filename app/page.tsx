@@ -168,6 +168,10 @@ export default function Home() {
   const [selectedStage, setSelectedStage] = useState("Brainstorming");
   const [copiedPrompt, setCopiedPrompt] = useState("");
 
+  const currentAnalysisReview = reviewHistory.find(
+  (review) => review.sourceRunId === analysisRunId,
+  );
+
   const filteredPrompts = useMemo(
     () =>
       prompts.filter(
@@ -1133,14 +1137,19 @@ async function saveArchitectureEdit(
                       <button
                         key={stage.key}
                         onClick={() => {
+                          if (
+                            stage.key === "Plan" &&
+                            currentAnalysisReview?.status !== "APPROVED"
+                          ) {
+                            window.alert(
+                              "Planejamento bloqueado: abra uma análise e aprove a especificação antes de avançar.",
+                            );
+                            return;
+                          }
+
                           setSelectedStage(stage.key);
                           setPage("Fluxos de trabalho");
                         }}
-                        className={`flex w-full items-center gap-4 rounded-xl border p-4 text-left transition hover:border-indigo-400/40 ${
-                          selectedStage === stage.key
-                            ? "border-indigo-400/40 bg-indigo-400/[.06]"
-                            : "border-white/[.07] bg-white/[.02]"
-                        }`}
                       >
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-sm text-indigo-300">
                           {stage.number}
@@ -1875,6 +1884,31 @@ async function saveArchitectureEdit(
   )}
 {analysisOutput && analysisRunId && (
   <div className="mt-5 border-t border-white/10 pt-5">
+    <div className="mb-4 flex flex-wrap items-center gap-2">
+  <p className="text-sm text-slate-400">
+    Status da especificação:
+  </p>
+
+  <span
+    className={`rounded-full px-3 py-1 text-xs font-medium ${
+      !currentAnalysisReview
+        ? "bg-sky-400/10 text-sky-300"
+        : currentAnalysisReview.status === "APPROVED"
+          ? "bg-emerald-400/10 text-emerald-300"
+          : currentAnalysisReview.status === "CHANGES_REQUESTED"
+            ? "bg-amber-400/10 text-amber-300"
+            : "bg-slate-400/10 text-slate-300"
+    }`}
+  >
+    {!currentAnalysisReview
+      ? "Aguardando revisão"
+      : currentAnalysisReview.status === "APPROVED"
+        ? "Aprovada"
+        : currentAnalysisReview.status === "CHANGES_REQUESTED"
+          ? "Ajustes solicitados"
+          : currentAnalysisReview.status}
+  </span>
+</div>
     <h4 className="font-semibold">Revisão da especificação</h4>
 
     <p className="mt-2 text-sm leading-6 text-slate-400">
@@ -2129,7 +2163,19 @@ async function saveArchitectureEdit(
                 {stages.map((stage) => (
                   <button
                     key={stage.key}
-                    onClick={() => setSelectedStage(stage.key)}
+                    onClick={() => {
+                      if (
+                        stage.key === "Plan" &&
+                        currentAnalysisReview?.status !== "APPROVED"
+                      ) {
+                        window.alert(
+                          "Planejamento bloqueado: abra uma análise e aprove a especificação antes de avançar.",
+                        );
+                        return;
+                      }
+
+                      setSelectedStage(stage.key);
+                    }}
                     className={`rounded-2xl border p-4 text-left ${
                       selectedStage === stage.key
                         ? "border-indigo-400/50 bg-indigo-400/10"
