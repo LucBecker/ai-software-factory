@@ -125,6 +125,10 @@ export default function Home() {
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisRun[]>([]);
   const [analysisHistoryLoading, setAnalysisHistoryLoading] = useState(false);
   const [analysisHistoryError, setAnalysisHistoryError] = useState("");
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState("");
+  const [reviewError, setReviewError] = useState("");
   const [editingArchitectureDecisionId, setEditingArchitectureDecisionId] = useState<string | null>(null);
   const [editArchitectureTitle, setEditArchitectureTitle] = useState("");
   const [editArchitectureDescription, setEditArchitectureDescription] = useState("");
@@ -356,6 +360,65 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+async function submitRequirementsReview(
+  decision: "APPROVED" | "CHANGES_REQUESTED",
+) {
+  if (!selectedProject || !analysisRunId) {
+    setReviewError("Selecione uma análise antes de revisar.");
+    return;
+  }
+
+  if (decision === "CHANGES_REQUESTED" && !reviewComment.trim()) {
+    setReviewError(
+      "Descreva os ajustes necessários antes de solicitar alterações.",
+    );
+    return;
+  }
+
+  setReviewLoading(true);
+  setReviewError("");
+  setReviewMessage("");
+
+  try {
+    const response = await fetch("/api/requirements-analysis/review", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        runId: analysisRunId,
+        decision,
+        comment: reviewComment.trim(),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível registrar a revisão.",
+      );
+    }
+
+    setReviewMessage(
+      decision === "APPROVED"
+        ? "Especificação aprovada. A revisão foi registrada."
+        : "Ajustes solicitados. A revisão foi registrada.",
+    );
+
+    setReviewComment("");
+  } catch (error) {
+    setReviewError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao registrar a revisão.",
+    );
+  } finally {
+    setReviewLoading(false);
+  }
+}
 
 async function runRequirementsAnalysis() {
   if (!selectedProject) return;
@@ -1725,6 +1788,67 @@ async function saveArchitectureEdit(
       </pre>
     </div>
   )}
+{analysisOutput && analysisRunId && (
+  <div className="mt-5 border-t border-white/10 pt-5">
+    <h4 className="font-semibold">Revisão da especificação</h4>
+
+    <p className="mt-2 text-sm leading-6 text-slate-400">
+      Revise a especificação gerada antes de avançar para a etapa de arquitetura.
+      Você pode aprová-la ou registrar os ajustes necessários.
+    </p>
+
+    <div className="mt-4">
+      <label
+        htmlFor="review-comment"
+        className="mb-1 block text-sm font-medium"
+      >
+        Comentários da revisão
+      </label>
+
+      <textarea
+        id="review-comment"
+        value={reviewComment}
+        onChange={(event) => setReviewComment(event.target.value)}
+        maxLength={2000}
+        rows={3}
+        placeholder="Registre observações ou ajustes necessários..."
+        className="w-full min-w-0 resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    {reviewError && (
+      <p role="alert" className="mt-3 text-sm text-red-400">
+        {reviewError}
+      </p>
+    )}
+
+    {reviewMessage && (
+      <p role="status" className="mt-3 text-sm text-emerald-400">
+        {reviewMessage}
+      </p>
+    )}
+
+    <div className="mt-4 flex flex-wrap gap-3">
+      <button
+        type="button"
+        onClick={() => submitRequirementsReview("APPROVED")}
+        disabled={reviewLoading}
+        className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {reviewLoading ? "Registrando..." : "Aprovar especificação"}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => submitRequirementsReview("CHANGES_REQUESTED")}
+        disabled={reviewLoading || !reviewComment.trim()}
+        className="rounded-xl border border-amber-400/30 px-4 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/10 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Solicitar ajustes
+      </button>
+    </div>
+  </div>
+)}  
 </div>  
 
     <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
