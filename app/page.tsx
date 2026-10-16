@@ -20,6 +20,14 @@ type Requirement = {
   projectId: string;
 };
 
+type ArchitectureDecision = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  projectId: string;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -94,6 +102,13 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [requirementTitle, setRequirementTitle] = useState("");
+  const [architectureDecisions, setArchitectureDecisions] = useState<ArchitectureDecision[]>([]);
+  const [architectureTitle, setArchitectureTitle] = useState("");
+  const [architectureDescription, setArchitectureDescription] = useState("");
+  const [architectureCategory, setArchitectureCategory] = useState("GENERAL");
+  const [architectureLoading, setArchitectureLoading] = useState(false);
+  const [architectureError, setArchitectureError] = useState("");
+  const [architectureSuccess, setArchitectureSuccess] = useState("");
   const [requirementDescription, setRequirementDescription] = useState("");
   const [requirementPriority, setRequirementPriority] = useState("MEDIUM");
   const [requirementsLoading, setRequirementsLoading] = useState(false);
@@ -211,7 +226,58 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
-   
+
+useEffect(() => {
+  if (!selectedProject) {
+    setArchitectureDecisions([]);
+    return;
+  }
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadArchitectureDecisions() {
+    setArchitectureLoading(true);
+    setArchitectureError("");
+
+    try {
+      const response = await fetch(
+        `/api/architecture-decisions?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Erro ao carregar decisões de arquitetura.",
+        );
+      }
+
+      if (!cancelled) {
+        setArchitectureDecisions(data as ArchitectureDecision[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setArchitectureError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar a arquitetura.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setArchitectureLoading(false);
+      }
+    }
+  }
+
+  loadArchitectureDecisions();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
+
 async function createProject(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
 
