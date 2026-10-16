@@ -374,7 +374,57 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
     );
   }
 }
+  async function createArchitectureDecision(
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
 
+  if (!selectedProject || !architectureTitle.trim()) {
+    return;
+  }
+
+  setArchitectureError("");
+  setArchitectureSuccess("");
+
+  try {
+    const response = await fetch("/api/architecture-decisions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        title: architectureTitle.trim(),
+        description: architectureDescription.trim(),
+        category: architectureCategory,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível salvar a decisão de arquitetura.",
+      );
+    }
+
+    setArchitectureDecisions((current) => [
+      data as ArchitectureDecision,
+      ...current,
+    ]);
+
+    setArchitectureTitle("");
+    setArchitectureDescription("");
+    setArchitectureCategory("GENERAL");
+    setArchitectureSuccess("Decisão de arquitetura cadastrada com sucesso.");
+  } catch (error) {
+    setArchitectureError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao salvar a decisão de arquitetura.",
+    );
+  }
+}
   async function copyPrompt(prompt: Prompt) {
     const text = `Atue como especialista em ${prompt.title}.\n\nObjetivo: ${prompt.description}\n\nProjeto: [DESCREVA SEU PROJETO]\n\nTrabalhe com requisitos explícitos, registre dúvidas, produza entregáveis verificáveis e aguarde aprovação antes de avançar para etapas críticas.`;
 
@@ -807,11 +857,143 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
                   e as integrações da aplicação.
                 </p>
 
-                <div className="mt-5 rounded-xl border border-dashed border-white/10 p-4">
-                  <p className="text-sm text-slate-400">
-                    Nenhuma decisão de arquitetura registrada ainda.
-                  </p>
-                </div>
+                <div className="mt-5 space-y-4">
+  <form
+    onSubmit={createArchitectureDecision}
+    className="space-y-3 rounded-xl border border-white/10 p-4"
+  >
+    <div>
+      <label
+        htmlFor="architecture-title"
+        className="mb-1 block text-sm font-medium"
+      >
+        Título da decisão
+      </label>
+
+      <input
+        id="architecture-title"
+        value={architectureTitle}
+        onChange={(event) => setArchitectureTitle(event.target.value)}
+        placeholder="Ex.: Utilizar PostgreSQL como banco principal"
+        maxLength={120}
+        required
+        className="w-full min-w-0 rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    <div>
+      <label
+        htmlFor="architecture-description"
+        className="mb-1 block text-sm font-medium"
+      >
+        Justificativa e detalhes técnicos
+      </label>
+
+      <textarea
+        id="architecture-description"
+        value={architectureDescription}
+        onChange={(event) =>
+          setArchitectureDescription(event.target.value)
+        }
+        placeholder="Descreva a decisão, os motivos e os impactos esperados..."
+        maxLength={2000}
+        rows={3}
+        className="w-full min-w-0 resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+      <div className="min-w-0 flex-1">
+        <label
+          htmlFor="architecture-category"
+          className="mb-1 block text-sm font-medium"
+        >
+          Categoria
+        </label>
+
+        <select
+          id="architecture-category"
+          value={architectureCategory}
+          onChange={(event) =>
+            setArchitectureCategory(event.target.value)
+          }
+          className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
+          <option value="GENERAL">Geral</option>
+          <option value="TECHNOLOGY">Tecnologia</option>
+          <option value="DATABASE">Banco de dados</option>
+          <option value="SECURITY">Segurança</option>
+          <option value="INTEGRATION">Integrações</option>
+          <option value="INFRASTRUCTURE">Infraestrutura</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        disabled={!architectureTitle.trim()}
+        className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Salvar decisão
+      </button>
+    </div>
+
+    {architectureError && (
+      <p role="alert" className="text-sm text-red-400">
+        {architectureError}
+      </p>
+    )}
+
+    {architectureSuccess && (
+      <p role="status" className="text-sm text-emerald-400">
+        {architectureSuccess}
+      </p>
+    )}
+  </form>
+
+  {architectureLoading ? (
+    <p className="text-sm text-slate-400">
+      Carregando decisões de arquitetura...
+    </p>
+  ) : architectureDecisions.length === 0 ? (
+    <div className="rounded-xl border border-dashed border-white/10 p-4">
+      <p className="text-sm text-slate-400">
+        Nenhuma decisão de arquitetura registrada ainda.
+      </p>
+    </div>
+  ) : (
+    <div className="space-y-3">
+      {architectureDecisions.map((decision) => (
+        <div
+          key={decision.id}
+          className="rounded-xl border border-white/10 p-4"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <h4 className="text-sm font-medium">
+              {decision.title}
+            </h4>
+
+            <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+              {{
+                GENERAL: "Geral",
+                TECHNOLOGY: "Tecnologia",
+                DATABASE: "Banco de dados",
+                SECURITY: "Segurança",
+                INTEGRATION: "Integrações",
+                INFRASTRUCTURE: "Infraestrutura",
+              }[decision.category] || decision.category}
+            </span>
+          </div>
+
+          {decision.description && (
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
+              {decision.description}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
               </div>
       </div>
 
