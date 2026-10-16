@@ -1,10 +1,10 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Project = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   stage: string;
@@ -17,29 +17,7 @@ type Prompt = {
   description: string;
 };
 
-const initialProjects: Project[] = [
-  {
-    id: 1,
-    name: "AI Software Factory",
-    description: "Plataforma reutilizável de desenvolvimento com IA",
-    stage: "Planejamento",
-    progress: 15,
-  },
-  {
-    id: 2,
-    name: "CRM Inteligente",
-    description: "Gestão de clientes e automação comercial",
-    stage: "Descoberta",
-    progress: 5,
-  },
-  {
-    id: 3,
-    name: "Assistente de Atendimento",
-    description: "Agente de IA para atendimento e suporte",
-    stage: "Ideias",
-    progress: 0,
-  },
-];
+const initialProjects: Project[] = []
 
 const prompts: Prompt[] = [
   {
@@ -103,7 +81,9 @@ const stages = [
 
 export default function Home() {
   const [page, setPage] = useState("Visão geral");
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [projectError, setProjectError] = useState("");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todas");
   const [showForm, setShowForm] = useState(false);
@@ -124,27 +104,96 @@ export default function Home() {
     [search, category],
   );
 
-  function createProject(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  useEffect(() => {
+  async function loadProjects() {
+    try {
+      setProjectError("");
 
-    if (!projectName.trim()) return;
+      const response = await fetch("/api/projects");
 
-    setProjects((current) => [
-      {
-        id: Date.now(),
-        name: projectName.trim(),
-        description: projectDescription.trim() || "Novo projeto de software",
-        stage: "Descoberta",
+      if (!response.ok) {
+        throw new Error("Não foi possível carregar os projetos.");
+      }
+
+      const data: {
+        id: string;
+        name: string;
+        description: string | null;
+        stage: string;
+      }[] = await response.json();
+
+      const loadedProjects: Project[] = data.map((project) => ({
+        id: project.id,
+        name: project.name,
+        description: project.description ?? "",
+        stage: project.stage,
         progress: 0,
-      },
-      ...current,
-    ]);
+      }));
 
+      setProjects(loadedProjects);
+    } catch (error) {
+      console.error("Erro ao carregar projetos:", error);
+
+      setProjectError(
+        error instanceof Error
+          ? error.message
+          : "Erro inesperado ao carregar projetos.",
+      );
+    } finally {
+      setLoadingProjects(false);
+    }
+  }
+
+  loadProjects();
+}, []);
+
+   
+async function createProject(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  if (!projectName.trim()) return;
+
+  try {
+    setProjectError("");
+    console.log("Enviando requisição para API");
+    const response = await fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: projectName.trim(),
+        description: projectDescription.trim(),
+      }),
+    });
+    console.log("Resposta da API:", response.status);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Não foi possível criar o projeto.");
+    }
+
+    const newProject: Project = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      stage: data.stage,
+      progress: 0,
+    };
+
+    setProjects((current) => [newProject, ...current]);
     setProjectName("");
     setProjectDescription("");
     setShowForm(false);
     setPage("Projetos");
+  } catch (error) {
+    setProjectError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao criar projeto.",
+    );
   }
+}
 
   async function copyPrompt(prompt: Prompt) {
     const text = `Atue como especialista em ${prompt.title}.\n\nObjetivo: ${prompt.description}\n\nProjeto: [DESCREVA SEU PROJETO]\n\nTrabalhe com requisitos explícitos, registre dúvidas, produza entregáveis verificáveis e aguarde aprovação antes de avançar para etapas críticas.`;
