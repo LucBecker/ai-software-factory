@@ -154,3 +154,79 @@ export async function DELETE(request: Request) {
     );
   }
 }
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+      typeof body.id !== "string" ||
+      !body.id.trim() ||
+      typeof body.projectId !== "string" ||
+      !body.projectId.trim() ||
+      typeof body.title !== "string" ||
+      !body.title.trim()
+    ) {
+      return NextResponse.json(
+        { error: "Informe o projeto e o título do requisito." },
+        { status: 400 },
+      );
+    }
+
+    if (
+      body.title.trim().length > 120 ||
+      
+      (typeof body.description === "string" &&
+        body.description.length > 2000)
+    ) {
+      return NextResponse.json(
+        { error: "O título ou a descrição ultrapassa o limite permitido." },
+        { status: 400 },
+      );
+    }
+
+    const allowedPriorities = ["LOW", "MEDIUM", "HIGH"];
+
+    if (!allowedPriorities.includes(body.priority)) {
+      return NextResponse.json(
+        { error: "Selecione uma prioridade válida." },
+        { status: 400 },
+      );
+    }
+
+    const existing = await prisma.requirement.findFirst({
+      where: {
+        id: body.id,
+        projectId: body.projectId,
+      },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { error: "Requisito não encontrado neste projeto." },
+        { status: 404 },
+      );
+    }
+
+    const requirement = await prisma.requirement.update({
+      where: { id: existing.id },
+      data: {
+        title: body.title.trim(),
+        description:
+          typeof body.description === "string"
+            ? body.description.trim()
+            : "",
+        priority: body.priority,
+      },
+    });
+
+    return NextResponse.json(requirement);
+  } catch (error) {
+    console.error("Erro ao atualizar requisito:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível atualizar o requisito." },
+      { status: 500 },
+    );
+  }
+}

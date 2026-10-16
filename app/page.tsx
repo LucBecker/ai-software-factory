@@ -109,8 +109,20 @@ export default function Home() {
   const [architectureLoading, setArchitectureLoading] = useState(false);
   const [architectureError, setArchitectureError] = useState("");
   const [architectureSuccess, setArchitectureSuccess] = useState("");
+  const [editingArchitectureDecisionId, setEditingArchitectureDecisionId] = useState<string | null>(null);
+  const [editArchitectureTitle, setEditArchitectureTitle] = useState("");
+  const [editArchitectureDescription, setEditArchitectureDescription] = useState("");
+  const [editArchitectureCategory, setEditArchitectureCategory] = useState("GENERAL");
+  const [editingArchitectureError, setEditingArchitectureError] = useState("");
+  const [savingArchitectureEdit, setSavingArchitectureEdit] = useState(false);
   const [requirementDescription, setRequirementDescription] = useState("");
   const [requirementPriority, setRequirementPriority] = useState("MEDIUM");
+  const [editingRequirementId, setEditingRequirementId] = useState<string | null>(null);
+  const [editRequirementTitle, setEditRequirementTitle] = useState("");
+  const [editRequirementDescription, setEditRequirementDescription] = useState("");
+  const [editRequirementPriority, setEditRequirementPriority] = useState("MEDIUM");
+  const [editingRequirementError, setEditingRequirementError] = useState("");
+  const [savingRequirementEdit, setSavingRequirementEdit] = useState(false);
   const [requirementsLoading, setRequirementsLoading] = useState(false);
   const [requirementError, setRequirementError] = useState("");
   const [requirementSuccess, setRequirementSuccess] = useState("");
@@ -375,6 +387,76 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
   }
 }
 
+function startEditingRequirement(requirement: Requirement) {
+  setEditingRequirementId(requirement.id);
+  setEditRequirementTitle(requirement.title);
+  setEditRequirementDescription(requirement.description);
+  setEditRequirementPriority(requirement.priority);
+  setEditingRequirementError("");
+  setRequirementError("");
+  setRequirementSuccess("");
+}
+
+async function saveRequirementEdit(
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+
+  if (!selectedProject || !editingRequirementId) return;
+
+  if (!editRequirementTitle.trim()) {
+    setEditingRequirementError("Informe o título do requisito.");
+    return;
+  }
+
+  setEditingRequirementError("");
+  setSavingRequirementEdit(true);
+
+  try {
+    const response = await fetch("/api/requirements", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: editingRequirementId,
+        projectId: selectedProject.id,
+        title: editRequirementTitle.trim(),
+        description: editRequirementDescription.trim(),
+        priority: editRequirementPriority,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível atualizar o requisito.",
+      );
+    }
+
+    setRequirements((current) =>
+      current.map((item) =>
+        item.id === data.id ? (data as Requirement) : item,
+      ),
+    );
+
+    setEditingRequirementId(null);
+    setEditRequirementTitle("");
+    setEditRequirementDescription("");
+    setEditRequirementPriority("MEDIUM");
+    setRequirementSuccess("Requisito atualizado com sucesso.");
+  } catch (error) {
+    setEditingRequirementError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao atualizar o requisito.",
+    );
+  } finally {
+    setSavingRequirementEdit(false);
+  }
+}
+
 async function deleteRequirement(requirement: Requirement) {
   if (!selectedProject) return;
 
@@ -466,6 +548,82 @@ async function deleteRequirement(requirement: Requirement) {
         ? error.message
         : "Erro inesperado ao excluir a decisão.",
     );
+  }
+}
+
+  function startEditingArchitectureDecision(
+  decision: ArchitectureDecision,
+) {
+  setEditingArchitectureDecisionId(decision.id);
+  setEditArchitectureTitle(decision.title);
+  setEditArchitectureDescription(decision.description);
+  setEditArchitectureCategory(decision.category);
+  setEditingArchitectureError("");
+  setArchitectureError("");
+  setArchitectureSuccess("");
+}
+
+async function saveArchitectureEdit(
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+
+  if (!selectedProject || !editingArchitectureDecisionId) {
+    return;
+  }
+
+  if (!editArchitectureTitle.trim()) {
+    setEditingArchitectureError("Informe o título da decisão.");
+    return;
+  }
+
+  setEditingArchitectureError("");
+  setSavingArchitectureEdit(true);
+
+  try {
+    const response = await fetch("/api/architecture-decisions", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: editingArchitectureDecisionId,
+        projectId: selectedProject.id,
+        title: editArchitectureTitle.trim(),
+        description: editArchitectureDescription.trim(),
+        category: editArchitectureCategory,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível atualizar a decisão.",
+      );
+    }
+
+    setArchitectureDecisions((current) =>
+      current.map((item) =>
+        item.id === data.id
+          ? (data as ArchitectureDecision)
+          : item,
+      ),
+    );
+
+    setEditingArchitectureDecisionId(null);
+    setEditArchitectureTitle("");
+    setEditArchitectureDescription("");
+    setEditArchitectureCategory("GENERAL");
+    setArchitectureSuccess("Decisão de arquitetura atualizada com sucesso.");
+  } catch (error) {
+    setEditingArchitectureError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao atualizar a decisão.",
+    );
+  } finally {
+    setSavingArchitectureEdit(false);
   }
 }
 
@@ -909,40 +1067,141 @@ async function deleteRequirement(requirement: Requirement) {
   ) : (
     <div className="space-y-3">
       {requirements.map((requirement) => (
-        <div
-          key={requirement.id}
-          className="rounded-xl border border-white/10 p-4"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <h4 className="text-sm font-medium">
-              {requirement.title}
-            </h4>
-
-            <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
-              {requirement.priority === "HIGH"
-                ? "Prioridade alta"
-                : requirement.priority === "LOW"
-                  ? "Prioridade baixa"
-                  : "Prioridade média"}
-            </span>
-          </div>
-
-          {requirement.description && (
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
-              {requirement.description}
-            </p>
-          )}
-          <div className="mt-3 flex justify-end">
-            <button
-              type="button"
-              onClick={() => deleteRequirement(requirement)}
-              className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
-            >
-              Excluir requisito
-            </button>
-          </div>
+  <div
+    key={requirement.id}
+    className="rounded-xl border border-white/10 p-4"
+  >
+    {editingRequirementId === requirement.id ? (
+      <form onSubmit={saveRequirementEdit} className="space-y-3">
+        <div>
+          <label
+            htmlFor="edit-requirement-title"
+            className="mb-1 block text-sm font-medium"
+          >
+            Título
+          </label>
+          <input
+            id="edit-requirement-title"
+            value={editRequirementTitle}
+            onChange={(event) =>
+              setEditRequirementTitle(event.target.value)
+            }
+            maxLength={120}
+            required
+            className="w-full min-w-0 rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          />
         </div>
-      ))}
+
+        <div>
+          <label
+            htmlFor="edit-requirement-description"
+            className="mb-1 block text-sm font-medium"
+          >
+            Descrição
+          </label>
+          <textarea
+            id="edit-requirement-description"
+            value={editRequirementDescription}
+            onChange={(event) =>
+              setEditRequirementDescription(event.target.value)
+            }
+            maxLength={2000}
+            rows={3}
+            className="w-full min-w-0 resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="edit-requirement-priority"
+            className="mb-1 block text-sm font-medium"
+          >
+            Prioridade
+          </label>
+          <select
+            id="edit-requirement-priority"
+            value={editRequirementPriority}
+            onChange={(event) =>
+              setEditRequirementPriority(event.target.value)
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          >
+            <option value="LOW">Baixa</option>
+            <option value="MEDIUM">Média</option>
+            <option value="HIGH">Alta</option>
+          </select>
+        </div>
+
+        {editingRequirementError && (
+          <p role="alert" className="text-sm text-red-400">
+            {editingRequirementError}
+          </p>
+        )}
+
+        <div className="flex flex-wrap justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setEditingRequirementId(null);
+              setEditingRequirementError("");
+            }}
+            className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            disabled={savingRequirementEdit || !editRequirementTitle.trim()}
+            className="rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          >
+            {savingRequirementEdit ? "Salvando..." : "Salvar alterações"}
+          </button>
+        </div>
+      </form>
+    ) : (
+      <>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <h4 className="text-sm font-medium">
+            {requirement.title}
+          </h4>
+
+          <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+            {requirement.priority === "HIGH"
+              ? "Prioridade alta"
+              : requirement.priority === "LOW"
+                ? "Prioridade baixa"
+                : "Prioridade média"}
+          </span>
+        </div>
+
+        {requirement.description && (
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
+            {requirement.description}
+          </p>
+        )}
+
+        <div className="mt-3 flex flex-wrap justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => startEditingRequirement(requirement)}
+            className="rounded-lg border border-indigo-400/20 px-3 py-1.5 text-xs text-indigo-300 transition hover:bg-indigo-400/10"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            onClick={() => deleteRequirement(requirement)}
+            className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
+          >
+            Excluir requisito
+          </button>
+        </div>
+      </>
+    )}
+  </div>
+))}
     </div>
   )}
 </div>
@@ -1067,43 +1326,156 @@ async function deleteRequirement(requirement: Requirement) {
   ) : (
     <div className="space-y-3">
       {architectureDecisions.map((decision) => (
-        <div
-          key={decision.id}
-          className="rounded-xl border border-white/10 p-4"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <h4 className="text-sm font-medium">
-              {decision.title}
-            </h4>
+  <div
+    key={decision.id}
+    className="rounded-xl border border-white/10 p-4"
+  >
+    {editingArchitectureDecisionId === decision.id ? (
+      <form onSubmit={saveArchitectureEdit} className="space-y-3">
+        <div>
+          <label
+            htmlFor="edit-architecture-title"
+            className="mb-1 block text-sm font-medium"
+          >
+            Título da decisão
+          </label>
 
-            <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
-              {{
-                GENERAL: "Geral",
-                TECHNOLOGY: "Tecnologia",
-                DATABASE: "Banco de dados",
-                SECURITY: "Segurança",
-                INTEGRATION: "Integrações",
-                INFRASTRUCTURE: "Infraestrutura",
-              }[decision.category] || decision.category}
-            </span>
-          </div>
-
-          {decision.description && (
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
-              {decision.description}
-            </p>
-          )}
-          <div className="mt-3 flex justify-end">
-            <button
-              type="button"
-              onClick={() => deleteArchitectureDecision(decision)}
-              className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
-            >
-              Excluir decisão
-            </button>
-          </div>
+          <input
+            id="edit-architecture-title"
+            value={editArchitectureTitle}
+            onChange={(event) =>
+              setEditArchitectureTitle(event.target.value)
+            }
+            maxLength={120}
+            required
+            className="w-full min-w-0 rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          />
         </div>
-      ))}
+
+        <div>
+          <label
+            htmlFor="edit-architecture-description"
+            className="mb-1 block text-sm font-medium"
+          >
+            Justificativa e detalhes técnicos
+          </label>
+
+          <textarea
+            id="edit-architecture-description"
+            value={editArchitectureDescription}
+            onChange={(event) =>
+              setEditArchitectureDescription(event.target.value)
+            }
+            maxLength={2000}
+            rows={3}
+            className="w-full min-w-0 resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="edit-architecture-category"
+            className="mb-1 block text-sm font-medium"
+          >
+            Categoria
+          </label>
+
+          <select
+            id="edit-architecture-category"
+            value={editArchitectureCategory}
+            onChange={(event) =>
+              setEditArchitectureCategory(event.target.value)
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100"
+          >
+            <option value="GENERAL">Geral</option>
+            <option value="TECHNOLOGY">Tecnologia</option>
+            <option value="DATABASE">Banco de dados</option>
+            <option value="SECURITY">Segurança</option>
+            <option value="INTEGRATION">Integrações</option>
+            <option value="INFRASTRUCTURE">Infraestrutura</option>
+          </select>
+        </div>
+
+        {editingArchitectureError && (
+          <p role="alert" className="text-sm text-red-400">
+            {editingArchitectureError}
+          </p>
+        )}
+
+        <div className="flex flex-wrap justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setEditingArchitectureDecisionId(null);
+              setEditingArchitectureError("");
+            }}
+            className="rounded-lg border border-white/10 px-3 py-2 text-sm text-slate-300"
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            disabled={
+              savingArchitectureEdit || !editArchitectureTitle.trim()
+            }
+            className="rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+          >
+            {savingArchitectureEdit
+              ? "Salvando..."
+              : "Salvar alterações"}
+          </button>
+        </div>
+      </form>
+    ) : (
+      <>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <h4 className="text-sm font-medium">
+            {decision.title}
+          </h4>
+
+          <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+            {{
+              GENERAL: "Geral",
+              TECHNOLOGY: "Tecnologia",
+              DATABASE: "Banco de dados",
+              SECURITY: "Segurança",
+              INTEGRATION: "Integrações",
+              INFRASTRUCTURE: "Infraestrutura",
+            }[decision.category] || decision.category}
+          </span>
+        </div>
+
+        {decision.description && (
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
+            {decision.description}
+          </p>
+        )}
+
+        <div className="mt-3 flex flex-wrap justify-end gap-2">
+          <button
+            type="button"
+            onClick={() =>
+              startEditingArchitectureDecision(decision)
+            }
+            className="rounded-lg border border-indigo-400/20 px-3 py-1.5 text-xs text-indigo-300 transition hover:bg-indigo-400/10"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            onClick={() => deleteArchitectureDecision(decision)}
+            className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
+          >
+            Excluir decisão
+          </button>
+        </div>
+      </>
+    )}
+  </div>
+))}
     </div>
   )}
 </div>

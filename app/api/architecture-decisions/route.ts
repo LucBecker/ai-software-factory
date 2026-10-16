@@ -161,3 +161,85 @@ export async function DELETE(request: Request) {
     );
   }
 }
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+      typeof body.id !== "string" ||
+      !body.id.trim() ||
+      typeof body.projectId !== "string" ||
+      !body.projectId.trim() ||
+      typeof body.title !== "string" ||
+      !body.title.trim()
+    ) {
+      return NextResponse.json(
+        { error: "Informe o projeto e o título da decisão." },
+        { status: 400 },
+      );
+    }
+
+    if (
+      body.title.trim().length > 120 ||
+      (typeof body.description === "string" &&
+        body.description.length > 2000)
+    ) {
+      return NextResponse.json(
+        { error: "O título ou a descrição ultrapassa o limite permitido." },
+        { status: 400 },
+      );
+    }
+
+    const allowedCategories = [
+      "GENERAL",
+      "TECHNOLOGY",
+      "DATABASE",
+      "SECURITY",
+      "INTEGRATION",
+      "INFRASTRUCTURE",
+    ];
+
+    if (!allowedCategories.includes(body.category)) {
+      return NextResponse.json(
+        { error: "Selecione uma categoria válida." },
+        { status: 400 },
+      );
+    }
+
+    const existing = await prisma.architectureDecision.findFirst({
+      where: {
+        id: body.id,
+        projectId: body.projectId,
+      },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { error: "Decisão não encontrada neste projeto." },
+        { status: 404 },
+      );
+    }
+
+    const decision = await prisma.architectureDecision.update({
+      where: { id: existing.id },
+      data: {
+        title: body.title.trim(),
+        description:
+          typeof body.description === "string"
+            ? body.description.trim()
+            : "",
+        category: body.category,
+      },
+    });
+
+    return NextResponse.json(decision);
+  } catch (error) {
+    console.error("Erro ao atualizar decisão de arquitetura:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível atualizar a decisão de arquitetura." },
+      { status: 500 },
+    );
+  }
+}
