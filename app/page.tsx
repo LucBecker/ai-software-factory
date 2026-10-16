@@ -11,6 +11,15 @@ type Project = {
   progress: number;
 };
 
+type Requirement = {
+  id: string;
+  title: string;
+  description: string;
+  priority: string;
+  status: string;
+  projectId: string;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -83,6 +92,13 @@ export default function Home() {
   const [page, setPage] = useState("Visão geral");
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [requirements, setRequirements] = useState<Requirement[]>([]);
+  const [requirementTitle, setRequirementTitle] = useState("");
+  const [requirementDescription, setRequirementDescription] = useState("");
+  const [requirementPriority, setRequirementPriority] = useState("MEDIUM");
+  const [requirementsLoading, setRequirementsLoading] = useState(false);
+  const [requirementError, setRequirementError] = useState("");
+  const [requirementSuccess, setRequirementSuccess] = useState("");
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [projectError, setProjectError] = useState("");
   const [search, setSearch] = useState("");
@@ -148,6 +164,53 @@ export default function Home() {
   loadProjects();
 }, []);
 
+useEffect(() => {
+  if (!selectedProject) {
+    setRequirements([]);
+    return;
+  }
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadRequirements() {
+    setRequirementsLoading(true);
+    setRequirementError("");
+
+    try {
+      const response = await fetch(
+        `/api/requirements?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao carregar requisitos.");
+      }
+
+      if (!cancelled) {
+        setRequirements(data as Requirement[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setRequirementError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar requisitos.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setRequirementsLoading(false);
+      }
+    }
+  }
+
+  loadRequirements();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
    
 async function createProject(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
@@ -192,6 +255,56 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
       error instanceof Error
         ? error.message
         : "Erro inesperado ao criar projeto.",
+    );
+  }
+}
+
+  async function createRequirement(
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+
+  if (!selectedProject || !requirementTitle.trim()) {
+    return;
+  }
+
+  setRequirementError("");
+  setRequirementSuccess("");
+
+  try {
+    const response = await fetch("/api/requirements", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        title: requirementTitle.trim(),
+        description: requirementDescription.trim(),
+        priority: requirementPriority,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Não foi possível salvar o requisito.");
+    }
+
+    setRequirements((current) => [
+      data as Requirement,
+      ...current,
+    ]);
+
+    setRequirementTitle("");
+    setRequirementDescription("");
+    setRequirementPriority("MEDIUM");
+    setRequirementSuccess("Requisito cadastrado com sucesso.");
+  } catch (error) {
+    setRequirementError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao salvar o requisito.",
     );
   }
 }
