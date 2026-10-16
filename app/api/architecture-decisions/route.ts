@@ -115,3 +115,49 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+      typeof body.id !== "string" ||
+      !body.id.trim() ||
+      typeof body.projectId !== "string" ||
+      !body.projectId.trim()
+    ) {
+      return NextResponse.json(
+        { error: "Informe a decisão e o projeto." },
+        { status: 400 },
+      );
+    }
+
+    const decision = await prisma.architectureDecision.findFirst({
+      where: {
+        id: body.id,
+        projectId: body.projectId,
+      },
+      select: { id: true },
+    });
+
+    if (!decision) {
+      return NextResponse.json(
+        { error: "Decisão não encontrada neste projeto." },
+        { status: 404 },
+      );
+    }
+
+    await prisma.architectureDecision.delete({
+      where: { id: decision.id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Erro ao excluir decisão de arquitetura:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível excluir a decisão de arquitetura." },
+      { status: 500 },
+    );
+  }
+}

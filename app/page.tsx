@@ -374,6 +374,101 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
     );
   }
 }
+
+async function deleteRequirement(requirement: Requirement) {
+  if (!selectedProject) return;
+
+  const confirmed = window.confirm(
+    `Deseja realmente excluir o requisito "${requirement.title}"?`,
+  );
+
+  if (!confirmed) return;
+
+  setRequirementError("");
+  setRequirementSuccess("");
+
+  try {
+    const response = await fetch("/api/requirements", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: requirement.id,
+        projectId: selectedProject.id,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível excluir o requisito.",
+      );
+    }
+
+    setRequirements((current) =>
+      current.filter((item) => item.id !== requirement.id),
+    );
+
+    setRequirementSuccess("Requisito excluído com sucesso.");
+  } catch (error) {
+    setRequirementError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao excluir o requisito.",
+    );
+  }
+}
+
+  async function deleteArchitectureDecision(
+  decision: ArchitectureDecision,
+) {
+  if (!selectedProject) return;
+
+  const confirmed = window.confirm(
+    `Deseja realmente excluir a decisão "${decision.title}"?`,
+  );
+
+  if (!confirmed) return;
+
+  setArchitectureError("");
+  setArchitectureSuccess("");
+
+  try {
+    const response = await fetch("/api/architecture-decisions", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: decision.id,
+        projectId: selectedProject.id,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível excluir a decisão.",
+      );
+    }
+
+    setArchitectureDecisions((current) =>
+      current.filter((item) => item.id !== decision.id),
+    );
+
+    setArchitectureSuccess("Decisão de arquitetura excluída com sucesso.");
+  } catch (error) {
+    setArchitectureError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao excluir a decisão.",
+    );
+  }
+}
+
   async function createArchitectureDecision(
   event: React.FormEvent<HTMLFormElement>,
 ) {
@@ -837,6 +932,15 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
               {requirement.description}
             </p>
           )}
+          <div className="mt-3 flex justify-end">
+            <button
+              type="button"
+              onClick={() => deleteRequirement(requirement)}
+              className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
+            >
+              Excluir requisito
+            </button>
+          </div>
         </div>
       ))}
     </div>
@@ -989,6 +1093,15 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
               {decision.description}
             </p>
           )}
+          <div className="mt-3 flex justify-end">
+            <button
+              type="button"
+              onClick={() => deleteArchitectureDecision(decision)}
+              className="rounded-lg border border-red-400/20 px-3 py-1.5 text-xs text-red-300 transition hover:bg-red-400/10"
+            >
+              Excluir decisão
+            </button>
+          </div>
         </div>
       ))}
     </div>

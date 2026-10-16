@@ -109,3 +109,48 @@ export async function POST(request: Request) {
     );
   }
 }
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+      typeof body.id !== "string" ||
+      !body.id.trim() ||
+      typeof body.projectId !== "string" ||
+      !body.projectId.trim()
+    ) {
+      return NextResponse.json(
+        { error: "Informe o requisito e o projeto." },
+        { status: 400 },
+      );
+    }
+
+    const requirement = await prisma.requirement.findFirst({
+      where: {
+        id: body.id,
+        projectId: body.projectId,
+      },
+      select: { id: true },
+    });
+
+    if (!requirement) {
+      return NextResponse.json(
+        { error: "Requisito não encontrado neste projeto." },
+        { status: 404 },
+      );
+    }
+
+    await prisma.requirement.delete({
+      where: { id: requirement.id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Erro ao excluir requisito:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível excluir o requisito." },
+      { status: 500 },
+    );
+  }
+}
