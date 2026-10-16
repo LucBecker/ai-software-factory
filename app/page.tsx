@@ -109,6 +109,10 @@ export default function Home() {
   const [architectureLoading, setArchitectureLoading] = useState(false);
   const [architectureError, setArchitectureError] = useState("");
   const [architectureSuccess, setArchitectureSuccess] = useState("");
+  const [analysisOutput, setAnalysisOutput] = useState("");
+  const [analysisRunId, setAnalysisRunId] = useState<string | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisError, setAnalysisError] = useState("");
   const [editingArchitectureDecisionId, setEditingArchitectureDecisionId] = useState<string | null>(null);
   const [editArchitectureTitle, setEditArchitectureTitle] = useState("");
   const [editArchitectureDescription, setEditArchitectureDescription] = useState("");
@@ -289,6 +293,48 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+async function runRequirementsAnalysis() {
+  if (!selectedProject) return;
+
+  const projectId = selectedProject.id;
+
+  setAnalysisLoading(true);
+  setAnalysisError("");
+  setAnalysisOutput("");
+  setAnalysisRunId(null);
+
+  try {
+    const response = await fetch("/api/requirements-analysis", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível executar a análise.",
+      );
+    }
+
+    setAnalysisOutput(data.output || "");
+    setAnalysisRunId(data.runId || null);
+  } catch (error) {
+    setAnalysisError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao executar a análise.",
+    );
+  } finally {
+    setAnalysisLoading(false);
+  }
+}
 
 async function createProject(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
@@ -1481,6 +1527,57 @@ async function saveArchitectureEdit(
 </div>
               </div>
       </div>
+
+    <div className="mb-6 rounded-2xl border border-white/10 bg-[#11182b] p-5">
+  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h3 className="font-semibold">Analista de Requisitos</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-400">
+        Gere uma especificação funcional a partir dos requisitos cadastrados.
+      </p>
+      <p className="mt-1 text-xs text-amber-300">
+        Modo demonstrativo — sem chamada a um modelo de IA.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      onClick={runRequirementsAnalysis}
+      disabled={analysisLoading || requirements.length === 0}
+      className="shrink-0 rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {analysisLoading ? "Analisando..." : "Executar análise"}
+    </button>
+  </div>
+
+  {requirements.length === 0 && (
+    <p className="mt-3 text-sm text-slate-400">
+      Cadastre pelo menos um requisito para executar a análise.
+    </p>
+  )}
+
+  {analysisError && (
+    <p role="alert" className="mt-4 text-sm text-red-400">
+      {analysisError}
+    </p>
+  )}
+
+  {analysisRunId && (
+    <p className="mt-4 text-xs text-slate-400">
+      Execução registrada: {analysisRunId}
+    </p>
+  )}
+
+  {analysisOutput && (
+    <div className="mt-5 border-t border-white/10 pt-5">
+      <h4 className="mb-3 font-semibold">Especificação funcional gerada</h4>
+
+      <pre className="max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-white/10 bg-[#0b1020] p-4 text-sm leading-6 text-slate-300">
+        {analysisOutput}
+      </pre>
+    </div>
+  )}
+</div>  
 
     <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
       <h3 className="font-semibold">Etapa atual do projeto</h3>
