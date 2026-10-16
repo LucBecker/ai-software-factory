@@ -3,6 +3,77 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "../../../src/lib/prisma";
 
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const projectId = searchParams.get("projectId")?.trim();
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: "Informe o ID do projeto." },
+        { status: 400 },
+      );
+    }
+
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { id: true },
+    });
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Projeto não encontrado." },
+        { status: 404 },
+      );
+    }
+
+    const runs = await prisma.workflowRun.findMany({
+      where: {
+        projectId: project.id,
+        stage: "TECHNICAL_PLANNING",
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        status: true,
+        input: true,
+        output: true,
+        createdAt: true,
+      },
+    });
+
+    const plans = runs.map((run) => {
+      let sourceRunId: string | null = null;
+
+      try {
+        const input = JSON.parse(run.input ?? "{}");
+        sourceRunId = input.sourceRunId ?? null;
+      } catch {
+        // Mantém o plano acessível mesmo se uma entrada antiga for inválida.
+      }
+
+      return {
+        id: run.id,
+        status: run.status,
+        sourceRunId,
+        output: run.output,
+        createdAt: run.createdAt,
+      };
+    });
+
+    return NextResponse.json(plans);
+  } catch (error) {
+    console.error("Erro ao consultar histórico de planos:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível consultar o histórico de planos." },
+      { status: 500 },
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();

@@ -46,6 +46,14 @@ type ReviewRun = {
   createdAt: string;
 };
 
+type TechnicalPlanRun = {
+  id: string;
+  status: string;
+  sourceRunId: string | null;
+  output: string | null;
+  createdAt: string;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -134,6 +142,13 @@ export default function Home() {
   const [analysisHistory, setAnalysisHistory] = useState<AnalysisRun[]>([]);
   const [analysisHistoryLoading, setAnalysisHistoryLoading] = useState(false);
   const [analysisHistoryError, setAnalysisHistoryError] = useState("");
+  const [technicalPlanOutput, setTechnicalPlanOutput] = useState("");
+  const [technicalPlanRunId, setTechnicalPlanRunId] = useState<string | null>(null);
+  const [technicalPlanLoading, setTechnicalPlanLoading] = useState(false);
+  const [technicalPlanError, setTechnicalPlanError] = useState("");
+  const [technicalPlanHistory, setTechnicalPlanHistory] =   useState<TechnicalPlanRun[]>([]);
+  const [technicalPlanHistoryLoading, setTechnicalPlanHistoryLoading] =   useState(false);
+  const [technicalPlanHistoryError, setTechnicalPlanHistoryError] =   useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
@@ -508,6 +523,110 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+
+useEffect(() => {
+  if (!selectedProject) {
+    setTechnicalPlanHistory([]);
+    return;
+  }
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadTechnicalPlanHistory() {
+    setTechnicalPlanHistoryLoading(true);
+    setTechnicalPlanHistoryError("");
+
+    try {
+      const response = await fetch(
+        `/api/technical-planning?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o histórico de planos.",
+        );
+      }
+
+      if (!cancelled) {
+        setTechnicalPlanHistory(data as TechnicalPlanRun[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setTechnicalPlanHistoryError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar o histórico de planos.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setTechnicalPlanHistoryLoading(false);
+      }
+    }
+  }
+
+  loadTechnicalPlanHistory();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
+
+async function runTechnicalPlanning() {
+  if (!selectedProject || !analysisRunId) {
+    setTechnicalPlanError(
+      "Abra uma análise de requisitos antes de gerar o plano.",
+    );
+    return;
+  }
+
+  if (currentAnalysisReview?.status !== "APPROVED") {
+    setTechnicalPlanError(
+      "Planejamento bloqueado: a análise selecionada precisa estar aprovada.",
+    );
+    return;
+  }
+
+  setTechnicalPlanLoading(true);
+  setTechnicalPlanError("");
+  setTechnicalPlanOutput("");
+  setTechnicalPlanRunId(null);
+
+  try {
+    const response = await fetch("/api/technical-planning", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        analysisRunId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível gerar o plano técnico.",
+      );
+    }
+
+    setTechnicalPlanOutput(data.output || "");
+    setTechnicalPlanRunId(data.runId || null);
+  } catch (error) {
+    setTechnicalPlanError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao gerar o plano técnico.",
+    );
+  } finally {
+    setTechnicalPlanLoading(false);
+  }
+}
 
 async function runRequirementsAnalysis() {
   if (!selectedProject) return;
@@ -2206,6 +2325,153 @@ async function saveArchitectureEdit(
                   Aprovação humana: necessária antes de avançar para a próxima
                   etapa.
                 </div>
+                {selectedStage === "Plan" && (
+                <div className="mt-5 border-t border-white/10 pt-5">
+                  <h4 className="font-semibold">Planejador Técnico</h4>
+
+                  <p className="mt-2 text-sm text-slate-400">
+                    Gere um plano de desenvolvimento a partir de uma especificação aprovada.
+                  </p>
+
+                  <p className="mt-2 text-xs text-amber-300">
+                    Modo demonstrativo — sem chamada a um modelo de IA.
+                  </p>
+
+                  {!analysisRunId && (
+                    <p className="mt-3 text-sm text-amber-300">
+                      Abra primeiro uma análise no cartão Analista de Requisitos.
+                    </p>
+                  )}
+
+                  {analysisRunId && currentAnalysisReview?.status !== "APPROVED" && (
+                    <p className="mt-3 text-sm text-amber-300">
+                      A análise selecionada ainda não está aprovada. Aprove a especificação
+                      antes de gerar o plano.
+                    </p>
+                  )}
+
+                  {technicalPlanError && (
+                    <p role="alert" className="mt-3 text-sm text-red-400">
+                      {technicalPlanError}
+                    </p>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={runTechnicalPlanning}
+                    disabled={
+                      technicalPlanLoading ||
+                      !analysisRunId ||
+                      currentAnalysisReview?.status !== "APPROVED"
+                    }
+                    className="mt-4 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {technicalPlanLoading ? "Gerando plano..." : "Gerar plano técnico"}
+                  </button>
+
+              {technicalPlanRunId && (
+                <p className="mt-3 break-all text-xs text-slate-400">
+                  Execução registrada: {technicalPlanRunId}
+                </p>
+              )}
+
+                {technicalPlanOutput && (
+                  <div
+                    id="technical-plan-result"
+                    className="mt-5 border-t border-white/10 pt-5"
+                  >
+                    <h4 className="mb-3 font-semibold">Plano técnico gerado</h4>
+
+                    <pre className="max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-white/10 bg-[#0b1020] p-4 text-sm leading-6 text-slate-200">
+                      {technicalPlanOutput}
+                    </pre>
+                  </div>
+                )}
+                <div className="mt-6 border-t border-white/10 pt-5">
+  <h4 className="mb-3 font-semibold">Histórico de planos técnicos</h4>
+
+  {technicalPlanHistoryError && (
+    <p role="alert" className="mb-3 text-sm text-red-400">
+      {technicalPlanHistoryError}
+    </p>
+  )}
+
+  {technicalPlanHistoryLoading ? (
+    <p className="text-sm text-slate-400">
+      Carregando histórico de planos...
+    </p>
+  ) : technicalPlanHistory.length === 0 ? (
+    <p className="text-sm text-slate-400">
+      Nenhum plano técnico registrado ainda.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {technicalPlanHistory.map((plan) => (
+        <div
+          key={plan.id}
+          className="rounded-xl border border-white/10 p-4"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h5 className="text-sm font-medium">
+                Plano técnico
+              </h5>
+
+              <p className="mt-1 text-xs text-slate-400">
+                {new Date(plan.createdAt).toLocaleString("pt-BR")}
+              </p>
+
+              <p className="mt-1 break-all text-xs text-slate-500">
+                Execução: {plan.id}
+              </p>
+
+              {plan.sourceRunId && (
+                <p className="mt-1 break-all text-xs text-slate-500">
+                  Análise de origem: {plan.sourceRunId}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span
+                className={`rounded-full px-3 py-1 text-xs ${
+                  plan.status === "COMPLETED"
+                    ? "bg-emerald-400/10 text-emerald-300"
+                    : "bg-amber-400/10 text-amber-300"
+                }`}
+              >
+                {plan.status === "COMPLETED"
+                  ? "Concluído"
+                  : plan.status}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setTechnicalPlanOutput(plan.output ?? "");
+                  setTechnicalPlanRunId(plan.id);
+                  setTechnicalPlanError("");
+
+                  document
+                  .getElementById("technical-plan-result")
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                      });
+                }}
+                className="rounded-lg border border-indigo-400/20 px-3 py-2 text-xs text-indigo-300 transition hover:bg-indigo-400/10"
+              >
+                Abrir plano
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+              </div>
+)}
               </div>
             </>
           )}
