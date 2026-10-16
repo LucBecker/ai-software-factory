@@ -284,7 +284,7 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
           </div>
         </header>
 
-        <div className="mx-auto max-w-[1440px] p-5 md:p-9">
+        <div className="mx-auto w-full min-w-0 max-w-[1440px] p-5 md:p-9">
           {page === "Visão geral" && (
             <>
               <div className="mb-8">
