@@ -141,3 +141,55 @@ export async function POST(request: Request) {
     );
   }
 }
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const projectId = searchParams.get("projectId");
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: "Informe o ID do projeto." },
+        { status: 400 },
+      );
+    }
+
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { id: true },
+    });
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Projeto não encontrado." },
+        { status: 404 },
+      );
+    }
+
+    const runs = await prisma.workflowRun.findMany({
+      where: {
+        projectId,
+        stage: "REQUIREMENTS_ANALYSIS",
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        status: true,
+        output: true,
+        createdAt: true,
+        startedAt: true,
+        finishedAt: true,
+      },
+    });
+
+    return NextResponse.json(runs);
+  } catch (error) {
+    console.error("Erro ao consultar histórico de análises:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível consultar o histórico de análises." },
+      { status: 500 },
+    );
+  }
+}

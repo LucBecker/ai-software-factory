@@ -28,6 +28,15 @@ type ArchitectureDecision = {
   projectId: string;
 };
 
+type AnalysisRun = {
+  id: string;
+  status: string;
+  output: string | null;
+  createdAt: string;
+  startedAt: string | null;
+  finishedAt: string | null;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -113,6 +122,9 @@ export default function Home() {
   const [analysisRunId, setAnalysisRunId] = useState<string | null>(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [analysisError, setAnalysisError] = useState("");
+  const [analysisHistory, setAnalysisHistory] = useState<AnalysisRun[]>([]);
+  const [analysisHistoryLoading, setAnalysisHistoryLoading] = useState(false);
+  const [analysisHistoryError, setAnalysisHistoryError] = useState("");
   const [editingArchitectureDecisionId, setEditingArchitectureDecisionId] = useState<string | null>(null);
   const [editArchitectureTitle, setEditArchitectureTitle] = useState("");
   const [editArchitectureDescription, setEditArchitectureDescription] = useState("");
@@ -294,6 +306,57 @@ useEffect(() => {
   };
 }, [selectedProject]);
 
+useEffect(() => {
+  if (!selectedProject) {
+    setAnalysisHistory([]);
+    return;
+  }
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadAnalysisHistory() {
+    setAnalysisHistoryLoading(true);
+    setAnalysisHistoryError("");
+
+    try {
+      const response = await fetch(
+        `/api/requirements-analysis?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o histórico.",
+        );
+      }
+
+      if (!cancelled) {
+        setAnalysisHistory(data as AnalysisRun[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setAnalysisHistoryError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar o histórico.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setAnalysisHistoryLoading(false);
+      }
+    }
+  }
+
+  loadAnalysisHistory();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
+
 async function runRequirementsAnalysis() {
   if (!selectedProject) return;
 
@@ -325,6 +388,29 @@ async function runRequirementsAnalysis() {
 
     setAnalysisOutput(data.output || "");
     setAnalysisRunId(data.runId || null);
+    setAnalysisHistoryError("");
+
+try {
+  const historyResponse = await fetch(
+    `/api/requirements-analysis?projectId=${encodeURIComponent(projectId)}`,
+  );
+
+  const historyData = await historyResponse.json();
+
+  if (!historyResponse.ok) {
+    throw new Error(
+      historyData.error || "Não foi possível atualizar o histórico.",
+    );
+  }
+
+  setAnalysisHistory(historyData as AnalysisRun[]);
+} catch (error) {
+  setAnalysisHistoryError(
+    error instanceof Error
+      ? `Análise concluída, mas o histórico não foi atualizado: ${error.message}`
+      : "Análise concluída, mas não foi possível atualizar o histórico.",
+  );
+}
   } catch (error) {
     setAnalysisError(
       error instanceof Error
@@ -1562,6 +1648,68 @@ async function saveArchitectureEdit(
     </p>
   )}
 
+  <div className="mt-5 border-t border-white/10 pt-5">
+  <h4 className="mb-3 font-semibold">Histórico de análises</h4>
+
+  {analysisHistoryError && (
+    <p role="alert" className="mb-3 text-sm text-red-400">
+      {analysisHistoryError}
+    </p>
+  )}
+
+  {analysisHistoryLoading ? (
+    <p className="text-sm text-slate-400">
+      Carregando histórico...
+    </p>
+  ) : analysisHistory.length === 0 ? (
+    <p className="text-sm text-slate-400">
+      Nenhuma análise anterior encontrada.
+    </p>
+  ) : (
+    <div className="space-y-2">
+      {analysisHistory.map((run) => (
+        <div
+          key={run.id}
+          className="flex flex-col gap-3 rounded-xl border border-white/10 p-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="min-w-0">
+            <p className="text-sm font-medium">
+              Análise de requisitos
+            </p>
+
+            <p className="mt-1 text-xs text-slate-400">
+              {new Date(run.createdAt).toLocaleString("pt-BR")}
+            </p>
+
+            <p className="mt-1 text-xs text-slate-400">
+              Execução: {run.id}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">
+              {run.status === "COMPLETED"
+                ? "Concluída"
+                : run.status}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => {
+                setAnalysisOutput(run.output ?? "");
+                setAnalysisRunId(run.id);
+                setAnalysisError("");
+              }}
+              className="rounded-lg border border-indigo-400/20 px-3 py-2 text-xs text-indigo-300 transition hover:bg-indigo-400/10"
+            >
+              Abrir análise
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
   {analysisRunId && (
     <p className="mt-4 text-xs text-slate-400">
       Execução registrada: {analysisRunId}
