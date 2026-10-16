@@ -33,6 +33,11 @@ export type Agent = $Result.DefaultSelection<Prisma.$AgentPayload>
  * 
  */
 export type WorkflowRun = $Result.DefaultSelection<Prisma.$WorkflowRunPayload>
+/**
+ * Model Requirement
+ * 
+ */
+export type Requirement = $Result.DefaultSelection<Prisma.$RequirementPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -191,6 +196,16 @@ export class PrismaClient<
     * ```
     */
   get workflowRun(): Prisma.WorkflowRunDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.requirement`: Exposes CRUD operations for the **Requirement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Requirements
+    * const requirements = await prisma.requirement.findMany()
+    * ```
+    */
+  get requirement(): Prisma.RequirementDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -635,7 +650,8 @@ export namespace Prisma {
     Project: 'Project',
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
-    WorkflowRun: 'WorkflowRun'
+    WorkflowRun: 'WorkflowRun',
+    Requirement: 'Requirement'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -654,7 +670,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun"
+      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -954,6 +970,80 @@ export namespace Prisma {
           }
         }
       }
+      Requirement: {
+        payload: Prisma.$RequirementPayload<ExtArgs>
+        fields: Prisma.RequirementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RequirementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RequirementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          findFirst: {
+            args: Prisma.RequirementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RequirementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          findMany: {
+            args: Prisma.RequirementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>[]
+          }
+          create: {
+            args: Prisma.RequirementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          createMany: {
+            args: Prisma.RequirementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RequirementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>[]
+          }
+          delete: {
+            args: Prisma.RequirementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          update: {
+            args: Prisma.RequirementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          deleteMany: {
+            args: Prisma.RequirementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RequirementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RequirementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>[]
+          }
+          upsert: {
+            args: Prisma.RequirementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RequirementPayload>
+          }
+          aggregate: {
+            args: Prisma.RequirementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRequirement>
+          }
+          groupBy: {
+            args: Prisma.RequirementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RequirementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RequirementCountArgs<ExtArgs>
+            result: $Utils.Optional<RequirementCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1054,6 +1144,7 @@ export namespace Prisma {
     promptTemplate?: PromptTemplateOmit
     agent?: AgentOmit
     workflowRun?: WorkflowRunOmit
+    requirement?: RequirementOmit
   }
 
   /* Types for Logging */
@@ -1136,11 +1227,13 @@ export namespace Prisma {
   export type ProjectCountOutputType = {
     prompts: number
     workflowRuns: number
+    requirements: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prompts?: boolean | ProjectCountOutputTypeCountPromptsArgs
     workflowRuns?: boolean | ProjectCountOutputTypeCountWorkflowRunsArgs
+    requirements?: boolean | ProjectCountOutputTypeCountRequirementsArgs
   }
 
   // Custom InputTypes
@@ -1166,6 +1259,13 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountWorkflowRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkflowRunWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountRequirementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RequirementWhereInput
   }
 
 
@@ -1355,6 +1455,7 @@ export namespace Prisma {
     updatedAt?: boolean
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
+    requirements?: boolean | Project$requirementsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -1392,6 +1493,7 @@ export namespace Prisma {
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
+    requirements?: boolean | Project$requirementsArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1402,6 +1504,7 @@ export namespace Prisma {
     objects: {
       prompts: Prisma.$PromptTemplatePayload<ExtArgs>[]
       workflowRuns: Prisma.$WorkflowRunPayload<ExtArgs>[]
+      requirements: Prisma.$RequirementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1807,6 +1910,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     prompts<T extends Project$promptsArgs<ExtArgs> = {}>(args?: Subset<T, Project$promptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workflowRuns<T extends Project$workflowRunsArgs<ExtArgs> = {}>(args?: Subset<T, Project$workflowRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkflowRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    requirements<T extends Project$requirementsArgs<ExtArgs> = {}>(args?: Subset<T, Project$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2274,6 +2378,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkflowRunScalarFieldEnum | WorkflowRunScalarFieldEnum[]
+  }
+
+  /**
+   * Project.requirements
+   */
+  export type Project$requirementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    where?: RequirementWhereInput
+    orderBy?: RequirementOrderByWithRelationInput | RequirementOrderByWithRelationInput[]
+    cursor?: RequirementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RequirementScalarFieldEnum | RequirementScalarFieldEnum[]
   }
 
   /**
@@ -5623,6 +5751,1101 @@ export namespace Prisma {
 
 
   /**
+   * Model Requirement
+   */
+
+  export type AggregateRequirement = {
+    _count: RequirementCountAggregateOutputType | null
+    _min: RequirementMinAggregateOutputType | null
+    _max: RequirementMaxAggregateOutputType | null
+  }
+
+  export type RequirementMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    priority: string | null
+    status: string | null
+    projectId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RequirementMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    priority: string | null
+    status: string | null
+    projectId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RequirementCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    priority: number
+    status: number
+    projectId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RequirementMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    status?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RequirementMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    status?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RequirementCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    status?: true
+    projectId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RequirementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Requirement to aggregate.
+     */
+    where?: RequirementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Requirements to fetch.
+     */
+    orderBy?: RequirementOrderByWithRelationInput | RequirementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RequirementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Requirements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Requirements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Requirements
+    **/
+    _count?: true | RequirementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RequirementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RequirementMaxAggregateInputType
+  }
+
+  export type GetRequirementAggregateType<T extends RequirementAggregateArgs> = {
+        [P in keyof T & keyof AggregateRequirement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRequirement[P]>
+      : GetScalarType<T[P], AggregateRequirement[P]>
+  }
+
+
+
+
+  export type RequirementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RequirementWhereInput
+    orderBy?: RequirementOrderByWithAggregationInput | RequirementOrderByWithAggregationInput[]
+    by: RequirementScalarFieldEnum[] | RequirementScalarFieldEnum
+    having?: RequirementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RequirementCountAggregateInputType | true
+    _min?: RequirementMinAggregateInputType
+    _max?: RequirementMaxAggregateInputType
+  }
+
+  export type RequirementGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    priority: string
+    status: string
+    projectId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: RequirementCountAggregateOutputType | null
+    _min: RequirementMinAggregateOutputType | null
+    _max: RequirementMaxAggregateOutputType | null
+  }
+
+  type GetRequirementGroupByPayload<T extends RequirementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RequirementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RequirementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RequirementGroupByOutputType[P]>
+            : GetScalarType<T[P], RequirementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RequirementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    status?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["requirement"]>
+
+  export type RequirementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    status?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["requirement"]>
+
+  export type RequirementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    status?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["requirement"]>
+
+  export type RequirementSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    status?: boolean
+    projectId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RequirementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "priority" | "status" | "projectId" | "createdAt" | "updatedAt", ExtArgs["result"]["requirement"]>
+  export type RequirementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type RequirementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type RequirementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $RequirementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Requirement"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      priority: string
+      status: string
+      projectId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["requirement"]>
+    composites: {}
+  }
+
+  type RequirementGetPayload<S extends boolean | null | undefined | RequirementDefaultArgs> = $Result.GetResult<Prisma.$RequirementPayload, S>
+
+  type RequirementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RequirementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RequirementCountAggregateInputType | true
+    }
+
+  export interface RequirementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Requirement'], meta: { name: 'Requirement' } }
+    /**
+     * Find zero or one Requirement that matches the filter.
+     * @param {RequirementFindUniqueArgs} args - Arguments to find a Requirement
+     * @example
+     * // Get one Requirement
+     * const requirement = await prisma.requirement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RequirementFindUniqueArgs>(args: SelectSubset<T, RequirementFindUniqueArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Requirement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RequirementFindUniqueOrThrowArgs} args - Arguments to find a Requirement
+     * @example
+     * // Get one Requirement
+     * const requirement = await prisma.requirement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RequirementFindUniqueOrThrowArgs>(args: SelectSubset<T, RequirementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Requirement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementFindFirstArgs} args - Arguments to find a Requirement
+     * @example
+     * // Get one Requirement
+     * const requirement = await prisma.requirement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RequirementFindFirstArgs>(args?: SelectSubset<T, RequirementFindFirstArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Requirement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementFindFirstOrThrowArgs} args - Arguments to find a Requirement
+     * @example
+     * // Get one Requirement
+     * const requirement = await prisma.requirement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RequirementFindFirstOrThrowArgs>(args?: SelectSubset<T, RequirementFindFirstOrThrowArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Requirements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Requirements
+     * const requirements = await prisma.requirement.findMany()
+     * 
+     * // Get first 10 Requirements
+     * const requirements = await prisma.requirement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const requirementWithIdOnly = await prisma.requirement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RequirementFindManyArgs>(args?: SelectSubset<T, RequirementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Requirement.
+     * @param {RequirementCreateArgs} args - Arguments to create a Requirement.
+     * @example
+     * // Create one Requirement
+     * const Requirement = await prisma.requirement.create({
+     *   data: {
+     *     // ... data to create a Requirement
+     *   }
+     * })
+     * 
+     */
+    create<T extends RequirementCreateArgs>(args: SelectSubset<T, RequirementCreateArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Requirements.
+     * @param {RequirementCreateManyArgs} args - Arguments to create many Requirements.
+     * @example
+     * // Create many Requirements
+     * const requirement = await prisma.requirement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RequirementCreateManyArgs>(args?: SelectSubset<T, RequirementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Requirements and returns the data saved in the database.
+     * @param {RequirementCreateManyAndReturnArgs} args - Arguments to create many Requirements.
+     * @example
+     * // Create many Requirements
+     * const requirement = await prisma.requirement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Requirements and only return the `id`
+     * const requirementWithIdOnly = await prisma.requirement.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RequirementCreateManyAndReturnArgs>(args?: SelectSubset<T, RequirementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Requirement.
+     * @param {RequirementDeleteArgs} args - Arguments to delete one Requirement.
+     * @example
+     * // Delete one Requirement
+     * const Requirement = await prisma.requirement.delete({
+     *   where: {
+     *     // ... filter to delete one Requirement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RequirementDeleteArgs>(args: SelectSubset<T, RequirementDeleteArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Requirement.
+     * @param {RequirementUpdateArgs} args - Arguments to update one Requirement.
+     * @example
+     * // Update one Requirement
+     * const requirement = await prisma.requirement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RequirementUpdateArgs>(args: SelectSubset<T, RequirementUpdateArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Requirements.
+     * @param {RequirementDeleteManyArgs} args - Arguments to filter Requirements to delete.
+     * @example
+     * // Delete a few Requirements
+     * const { count } = await prisma.requirement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RequirementDeleteManyArgs>(args?: SelectSubset<T, RequirementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Requirements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Requirements
+     * const requirement = await prisma.requirement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RequirementUpdateManyArgs>(args: SelectSubset<T, RequirementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Requirements and returns the data updated in the database.
+     * @param {RequirementUpdateManyAndReturnArgs} args - Arguments to update many Requirements.
+     * @example
+     * // Update many Requirements
+     * const requirement = await prisma.requirement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Requirements and only return the `id`
+     * const requirementWithIdOnly = await prisma.requirement.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RequirementUpdateManyAndReturnArgs>(args: SelectSubset<T, RequirementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Requirement.
+     * @param {RequirementUpsertArgs} args - Arguments to update or create a Requirement.
+     * @example
+     * // Update or create a Requirement
+     * const requirement = await prisma.requirement.upsert({
+     *   create: {
+     *     // ... data to create a Requirement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Requirement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RequirementUpsertArgs>(args: SelectSubset<T, RequirementUpsertArgs<ExtArgs>>): Prisma__RequirementClient<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Requirements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementCountArgs} args - Arguments to filter Requirements to count.
+     * @example
+     * // Count the number of Requirements
+     * const count = await prisma.requirement.count({
+     *   where: {
+     *     // ... the filter for the Requirements we want to count
+     *   }
+     * })
+    **/
+    count<T extends RequirementCountArgs>(
+      args?: Subset<T, RequirementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RequirementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Requirement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RequirementAggregateArgs>(args: Subset<T, RequirementAggregateArgs>): Prisma.PrismaPromise<GetRequirementAggregateType<T>>
+
+    /**
+     * Group by Requirement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RequirementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RequirementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RequirementGroupByArgs['orderBy'] }
+        : { orderBy?: RequirementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RequirementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRequirementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Requirement model
+   */
+  readonly fields: RequirementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Requirement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RequirementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Requirement model
+   */
+  interface RequirementFieldRefs {
+    readonly id: FieldRef<"Requirement", 'String'>
+    readonly title: FieldRef<"Requirement", 'String'>
+    readonly description: FieldRef<"Requirement", 'String'>
+    readonly priority: FieldRef<"Requirement", 'String'>
+    readonly status: FieldRef<"Requirement", 'String'>
+    readonly projectId: FieldRef<"Requirement", 'String'>
+    readonly createdAt: FieldRef<"Requirement", 'DateTime'>
+    readonly updatedAt: FieldRef<"Requirement", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Requirement findUnique
+   */
+  export type RequirementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter, which Requirement to fetch.
+     */
+    where: RequirementWhereUniqueInput
+  }
+
+  /**
+   * Requirement findUniqueOrThrow
+   */
+  export type RequirementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter, which Requirement to fetch.
+     */
+    where: RequirementWhereUniqueInput
+  }
+
+  /**
+   * Requirement findFirst
+   */
+  export type RequirementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter, which Requirement to fetch.
+     */
+    where?: RequirementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Requirements to fetch.
+     */
+    orderBy?: RequirementOrderByWithRelationInput | RequirementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Requirements.
+     */
+    cursor?: RequirementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Requirements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Requirements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Requirements.
+     */
+    distinct?: RequirementScalarFieldEnum | RequirementScalarFieldEnum[]
+  }
+
+  /**
+   * Requirement findFirstOrThrow
+   */
+  export type RequirementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter, which Requirement to fetch.
+     */
+    where?: RequirementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Requirements to fetch.
+     */
+    orderBy?: RequirementOrderByWithRelationInput | RequirementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Requirements.
+     */
+    cursor?: RequirementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Requirements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Requirements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Requirements.
+     */
+    distinct?: RequirementScalarFieldEnum | RequirementScalarFieldEnum[]
+  }
+
+  /**
+   * Requirement findMany
+   */
+  export type RequirementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter, which Requirements to fetch.
+     */
+    where?: RequirementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Requirements to fetch.
+     */
+    orderBy?: RequirementOrderByWithRelationInput | RequirementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Requirements.
+     */
+    cursor?: RequirementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Requirements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Requirements.
+     */
+    skip?: number
+    distinct?: RequirementScalarFieldEnum | RequirementScalarFieldEnum[]
+  }
+
+  /**
+   * Requirement create
+   */
+  export type RequirementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Requirement.
+     */
+    data: XOR<RequirementCreateInput, RequirementUncheckedCreateInput>
+  }
+
+  /**
+   * Requirement createMany
+   */
+  export type RequirementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Requirements.
+     */
+    data: RequirementCreateManyInput | RequirementCreateManyInput[]
+  }
+
+  /**
+   * Requirement createManyAndReturn
+   */
+  export type RequirementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * The data used to create many Requirements.
+     */
+    data: RequirementCreateManyInput | RequirementCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Requirement update
+   */
+  export type RequirementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Requirement.
+     */
+    data: XOR<RequirementUpdateInput, RequirementUncheckedUpdateInput>
+    /**
+     * Choose, which Requirement to update.
+     */
+    where: RequirementWhereUniqueInput
+  }
+
+  /**
+   * Requirement updateMany
+   */
+  export type RequirementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Requirements.
+     */
+    data: XOR<RequirementUpdateManyMutationInput, RequirementUncheckedUpdateManyInput>
+    /**
+     * Filter which Requirements to update
+     */
+    where?: RequirementWhereInput
+    /**
+     * Limit how many Requirements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Requirement updateManyAndReturn
+   */
+  export type RequirementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * The data used to update Requirements.
+     */
+    data: XOR<RequirementUpdateManyMutationInput, RequirementUncheckedUpdateManyInput>
+    /**
+     * Filter which Requirements to update
+     */
+    where?: RequirementWhereInput
+    /**
+     * Limit how many Requirements to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Requirement upsert
+   */
+  export type RequirementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Requirement to update in case it exists.
+     */
+    where: RequirementWhereUniqueInput
+    /**
+     * In case the Requirement found by the `where` argument doesn't exist, create a new Requirement with this data.
+     */
+    create: XOR<RequirementCreateInput, RequirementUncheckedCreateInput>
+    /**
+     * In case the Requirement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RequirementUpdateInput, RequirementUncheckedUpdateInput>
+  }
+
+  /**
+   * Requirement delete
+   */
+  export type RequirementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+    /**
+     * Filter which Requirement to delete.
+     */
+    where: RequirementWhereUniqueInput
+  }
+
+  /**
+   * Requirement deleteMany
+   */
+  export type RequirementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Requirements to delete
+     */
+    where?: RequirementWhereInput
+    /**
+     * Limit how many Requirements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Requirement without action
+   */
+  export type RequirementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Requirement
+     */
+    select?: RequirementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Requirement
+     */
+    omit?: RequirementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RequirementInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5690,6 +6913,20 @@ export namespace Prisma {
   };
 
   export type WorkflowRunScalarFieldEnum = (typeof WorkflowRunScalarFieldEnum)[keyof typeof WorkflowRunScalarFieldEnum]
+
+
+  export const RequirementScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    priority: 'priority',
+    status: 'status',
+    projectId: 'projectId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RequirementScalarFieldEnum = (typeof RequirementScalarFieldEnum)[keyof typeof RequirementScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5764,6 +7001,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
+    requirements?: RequirementListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -5776,6 +7014,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     prompts?: PromptTemplateOrderByRelationAggregateInput
     workflowRuns?: WorkflowRunOrderByRelationAggregateInput
+    requirements?: RequirementOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -5791,6 +7030,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
+    requirements?: RequirementListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -6048,6 +7288,76 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"WorkflowRun"> | Date | string
   }
 
+  export type RequirementWhereInput = {
+    AND?: RequirementWhereInput | RequirementWhereInput[]
+    OR?: RequirementWhereInput[]
+    NOT?: RequirementWhereInput | RequirementWhereInput[]
+    id?: StringFilter<"Requirement"> | string
+    title?: StringFilter<"Requirement"> | string
+    description?: StringFilter<"Requirement"> | string
+    priority?: StringFilter<"Requirement"> | string
+    status?: StringFilter<"Requirement"> | string
+    projectId?: StringFilter<"Requirement"> | string
+    createdAt?: DateTimeFilter<"Requirement"> | Date | string
+    updatedAt?: DateTimeFilter<"Requirement"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type RequirementOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type RequirementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RequirementWhereInput | RequirementWhereInput[]
+    OR?: RequirementWhereInput[]
+    NOT?: RequirementWhereInput | RequirementWhereInput[]
+    title?: StringFilter<"Requirement"> | string
+    description?: StringFilter<"Requirement"> | string
+    priority?: StringFilter<"Requirement"> | string
+    status?: StringFilter<"Requirement"> | string
+    projectId?: StringFilter<"Requirement"> | string
+    createdAt?: DateTimeFilter<"Requirement"> | Date | string
+    updatedAt?: DateTimeFilter<"Requirement"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id">
+
+  export type RequirementOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RequirementCountOrderByAggregateInput
+    _max?: RequirementMaxOrderByAggregateInput
+    _min?: RequirementMinOrderByAggregateInput
+  }
+
+  export type RequirementScalarWhereWithAggregatesInput = {
+    AND?: RequirementScalarWhereWithAggregatesInput | RequirementScalarWhereWithAggregatesInput[]
+    OR?: RequirementScalarWhereWithAggregatesInput[]
+    NOT?: RequirementScalarWhereWithAggregatesInput | RequirementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Requirement"> | string
+    title?: StringWithAggregatesFilter<"Requirement"> | string
+    description?: StringWithAggregatesFilter<"Requirement"> | string
+    priority?: StringWithAggregatesFilter<"Requirement"> | string
+    status?: StringWithAggregatesFilter<"Requirement"> | string
+    projectId?: StringWithAggregatesFilter<"Requirement"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Requirement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Requirement"> | Date | string
+  }
+
   export type ProjectCreateInput = {
     id?: string
     name: string
@@ -6058,6 +7368,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -6070,6 +7381,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -6082,6 +7394,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -6094,6 +7407,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -6383,6 +7697,82 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RequirementCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutRequirementsInput
+  }
+
+  export type RequirementUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RequirementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutRequirementsNestedInput
+  }
+
+  export type RequirementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RequirementCreateManyInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RequirementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RequirementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -6420,11 +7810,21 @@ export namespace Prisma {
     none?: WorkflowRunWhereInput
   }
 
+  export type RequirementListRelationFilter = {
+    every?: RequirementWhereInput
+    some?: RequirementWhereInput
+    none?: RequirementWhereInput
+  }
+
   export type PromptTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type WorkflowRunOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RequirementOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6719,6 +8119,39 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type RequirementCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RequirementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RequirementMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    projectId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type PromptTemplateCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -6733,6 +8166,13 @@ export namespace Prisma {
     connect?: WorkflowRunWhereUniqueInput | WorkflowRunWhereUniqueInput[]
   }
 
+  export type RequirementCreateNestedManyWithoutProjectInput = {
+    create?: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput> | RequirementCreateWithoutProjectInput[] | RequirementUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RequirementCreateOrConnectWithoutProjectInput | RequirementCreateOrConnectWithoutProjectInput[]
+    createMany?: RequirementCreateManyProjectInputEnvelope
+    connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+  }
+
   export type PromptTemplateUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -6745,6 +8185,13 @@ export namespace Prisma {
     connectOrCreate?: WorkflowRunCreateOrConnectWithoutProjectInput | WorkflowRunCreateOrConnectWithoutProjectInput[]
     createMany?: WorkflowRunCreateManyProjectInputEnvelope
     connect?: WorkflowRunWhereUniqueInput | WorkflowRunWhereUniqueInput[]
+  }
+
+  export type RequirementUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput> | RequirementCreateWithoutProjectInput[] | RequirementUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RequirementCreateOrConnectWithoutProjectInput | RequirementCreateOrConnectWithoutProjectInput[]
+    createMany?: RequirementCreateManyProjectInputEnvelope
+    connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6783,6 +8230,20 @@ export namespace Prisma {
     deleteMany?: WorkflowRunScalarWhereInput | WorkflowRunScalarWhereInput[]
   }
 
+  export type RequirementUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput> | RequirementCreateWithoutProjectInput[] | RequirementUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RequirementCreateOrConnectWithoutProjectInput | RequirementCreateOrConnectWithoutProjectInput[]
+    upsert?: RequirementUpsertWithWhereUniqueWithoutProjectInput | RequirementUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: RequirementCreateManyProjectInputEnvelope
+    set?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    disconnect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    delete?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    update?: RequirementUpdateWithWhereUniqueWithoutProjectInput | RequirementUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: RequirementUpdateManyWithWhereWithoutProjectInput | RequirementUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
+  }
+
   export type PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -6809,6 +8270,20 @@ export namespace Prisma {
     update?: WorkflowRunUpdateWithWhereUniqueWithoutProjectInput | WorkflowRunUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: WorkflowRunUpdateManyWithWhereWithoutProjectInput | WorkflowRunUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: WorkflowRunScalarWhereInput | WorkflowRunScalarWhereInput[]
+  }
+
+  export type RequirementUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput> | RequirementCreateWithoutProjectInput[] | RequirementUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: RequirementCreateOrConnectWithoutProjectInput | RequirementCreateOrConnectWithoutProjectInput[]
+    upsert?: RequirementUpsertWithWhereUniqueWithoutProjectInput | RequirementUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: RequirementCreateManyProjectInputEnvelope
+    set?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    disconnect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    delete?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    connect?: RequirementWhereUniqueInput | RequirementWhereUniqueInput[]
+    update?: RequirementUpdateWithWhereUniqueWithoutProjectInput | RequirementUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: RequirementUpdateManyWithWhereWithoutProjectInput | RequirementUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutPromptsInput = {
@@ -6859,6 +8334,20 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutWorkflowRunsInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutWorkflowRunsInput, ProjectUpdateWithoutWorkflowRunsInput>, ProjectUncheckedUpdateWithoutWorkflowRunsInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutRequirementsInput = {
+    create?: XOR<ProjectCreateWithoutRequirementsInput, ProjectUncheckedCreateWithoutRequirementsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRequirementsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutRequirementsNestedInput = {
+    create?: XOR<ProjectCreateWithoutRequirementsInput, ProjectUncheckedCreateWithoutRequirementsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutRequirementsInput
+    upsert?: ProjectUpsertWithoutRequirementsInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutRequirementsInput, ProjectUpdateWithoutRequirementsInput>, ProjectUncheckedUpdateWithoutRequirementsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7101,6 +8590,35 @@ export namespace Prisma {
     data: WorkflowRunCreateManyProjectInput | WorkflowRunCreateManyProjectInput[]
   }
 
+  export type RequirementCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RequirementUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RequirementCreateOrConnectWithoutProjectInput = {
+    where: RequirementWhereUniqueInput
+    create: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput>
+  }
+
+  export type RequirementCreateManyProjectInputEnvelope = {
+    data: RequirementCreateManyProjectInput | RequirementCreateManyProjectInput[]
+  }
+
   export type PromptTemplateUpsertWithWhereUniqueWithoutProjectInput = {
     where: PromptTemplateWhereUniqueInput
     update: XOR<PromptTemplateUpdateWithoutProjectInput, PromptTemplateUncheckedUpdateWithoutProjectInput>
@@ -7165,6 +8683,36 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"WorkflowRun"> | Date | string
   }
 
+  export type RequirementUpsertWithWhereUniqueWithoutProjectInput = {
+    where: RequirementWhereUniqueInput
+    update: XOR<RequirementUpdateWithoutProjectInput, RequirementUncheckedUpdateWithoutProjectInput>
+    create: XOR<RequirementCreateWithoutProjectInput, RequirementUncheckedCreateWithoutProjectInput>
+  }
+
+  export type RequirementUpdateWithWhereUniqueWithoutProjectInput = {
+    where: RequirementWhereUniqueInput
+    data: XOR<RequirementUpdateWithoutProjectInput, RequirementUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type RequirementUpdateManyWithWhereWithoutProjectInput = {
+    where: RequirementScalarWhereInput
+    data: XOR<RequirementUpdateManyMutationInput, RequirementUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type RequirementScalarWhereInput = {
+    AND?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
+    OR?: RequirementScalarWhereInput[]
+    NOT?: RequirementScalarWhereInput | RequirementScalarWhereInput[]
+    id?: StringFilter<"Requirement"> | string
+    title?: StringFilter<"Requirement"> | string
+    description?: StringFilter<"Requirement"> | string
+    priority?: StringFilter<"Requirement"> | string
+    status?: StringFilter<"Requirement"> | string
+    projectId?: StringFilter<"Requirement"> | string
+    createdAt?: DateTimeFilter<"Requirement"> | Date | string
+    updatedAt?: DateTimeFilter<"Requirement"> | Date | string
+  }
+
   export type ProjectCreateWithoutPromptsInput = {
     id?: string
     name: string
@@ -7174,6 +8722,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPromptsInput = {
@@ -7185,6 +8734,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPromptsInput = {
@@ -7212,6 +8762,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutPromptsInput = {
@@ -7223,6 +8774,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutWorkflowRunsInput = {
@@ -7234,6 +8786,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkflowRunsInput = {
@@ -7245,6 +8798,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkflowRunsInput = {
@@ -7272,6 +8826,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkflowRunsInput = {
@@ -7283,6 +8838,71 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateWithoutRequirementsInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutRequirementsInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutRequirementsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutRequirementsInput, ProjectUncheckedCreateWithoutRequirementsInput>
+  }
+
+  export type ProjectUpsertWithoutRequirementsInput = {
+    update: XOR<ProjectUpdateWithoutRequirementsInput, ProjectUncheckedUpdateWithoutRequirementsInput>
+    create: XOR<ProjectCreateWithoutRequirementsInput, ProjectUncheckedCreateWithoutRequirementsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutRequirementsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutRequirementsInput, ProjectUncheckedUpdateWithoutRequirementsInput>
+  }
+
+  export type ProjectUpdateWithoutRequirementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutRequirementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type PromptTemplateCreateManyProjectInput = {
@@ -7307,6 +8927,16 @@ export namespace Prisma {
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type RequirementCreateManyProjectInput = {
+    id?: string
+    title: string
+    description?: string
+    priority?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PromptTemplateUpdateWithoutProjectInput = {
@@ -7379,6 +9009,36 @@ export namespace Prisma {
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RequirementUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RequirementUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RequirementUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

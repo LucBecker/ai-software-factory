@@ -165,6 +165,17 @@ exports.Prisma.WorkflowRunScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RequirementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  status: 'status',
+  projectId: 'projectId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -180,7 +191,8 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   PromptTemplate: 'PromptTemplate',
   Agent: 'Agent',
-  WorkflowRun: 'WorkflowRun'
+  WorkflowRun: 'WorkflowRun',
+  Requirement: 'Requirement'
 };
 
 /**
