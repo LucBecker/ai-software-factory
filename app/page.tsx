@@ -82,6 +82,7 @@ const stages = [
 export default function Home() {
   const [page, setPage] = useState("Visão geral");
   const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [projectError, setProjectError] = useState("");
   const [search, setSearch] = useState("");
@@ -424,6 +425,10 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
               <ProjectList
                 projects={projects.slice(0, 3)}
                 onView={() => setPage("Projetos")}
+                onSelectProject={(project) => {
+                  setSelectedProject(project);
+                  setPage("Detalhes do projeto");
+                }}
               />
             </>
           )}
@@ -437,6 +442,10 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
               <ProjectList
                 projects={projects}
                 onView={() => setShowForm(true)}
+                onSelectProject={(project) => {
+                  setSelectedProject(project);
+                  setPage("Detalhes do projeto");
+                }}
                 showAction
               />
             </>
@@ -665,10 +674,12 @@ function SectionTitle({
 function ProjectList({
   projects,
   onView,
+  onSelectProject,
   showAction = false,
 }: {
   projects: Project[];
   onView: () => void;
+  onSelectProject: (project: Project) => void;
   showAction?: boolean;
 }) {
   return (
