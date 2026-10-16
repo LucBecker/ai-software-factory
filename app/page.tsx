@@ -595,11 +595,137 @@ async function createProject(event: React.FormEvent<HTMLFormElement>) {
               e as regras de negócio.
             </p>
 
-            <div className="mt-5 rounded-xl border border-dashed border-white/10 p-4">
-              <p className="text-sm text-slate-400">
-                Nenhum requisito cadastrado ainda.
-              </p>
-            </div>
+            <div className="mt-5 space-y-4">
+  <form
+    onSubmit={createRequirement}
+    className="space-y-3 rounded-xl border border-white/10 p-4"
+  >
+    <div>
+      <label
+        htmlFor="requirement-title"
+        className="mb-1 block text-sm font-medium"
+      >
+        Título do requisito
+      </label>
+
+      <input
+        id="requirement-title"
+        value={requirementTitle}
+        onChange={(event) => setRequirementTitle(event.target.value)}
+        placeholder="Ex.: Permitir login com e-mail e senha"
+        maxLength={120}
+        required
+        className="w-full min-w-0 rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    <div>
+      <label
+        htmlFor="requirement-description"
+        className="mb-1 block text-sm font-medium"
+      >
+        Descrição
+      </label>
+
+      <textarea
+        id="requirement-description"
+        value={requirementDescription}
+        onChange={(event) =>
+          setRequirementDescription(event.target.value)
+        }
+        placeholder="Descreva o comportamento esperado..."
+        maxLength={2000}
+        rows={3}
+        className="w-full min-w-0 resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+    </div>
+
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+      <div className="min-w-0 flex-1">
+        <label
+          htmlFor="requirement-priority"
+          className="mb-1 block text-sm font-medium"
+        >
+          Prioridade
+        </label>
+
+        <select
+          id="requirement-priority"
+          value={requirementPriority}
+          onChange={(event) =>
+            setRequirementPriority(event.target.value)
+          }
+          className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
+          <option value="LOW">Baixa</option>
+          <option value="MEDIUM">Média</option>
+          <option value="HIGH">Alta</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        disabled={!requirementTitle.trim()}
+        className="rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Adicionar requisito
+      </button>
+    </div>
+
+    {requirementError && (
+      <p role="alert" className="text-sm text-red-400">
+        {requirementError}
+      </p>
+    )}
+
+    {requirementSuccess && (
+      <p role="status" className="text-sm text-emerald-400">
+        {requirementSuccess}
+      </p>
+    )}
+  </form>
+
+  {requirementsLoading ? (
+    <p className="text-sm text-slate-400">
+      Carregando requisitos...
+    </p>
+  ) : requirements.length === 0 ? (
+    <div className="rounded-xl border border-dashed border-white/10 p-4">
+      <p className="text-sm text-slate-400">
+        Nenhum requisito cadastrado ainda.
+      </p>
+    </div>
+  ) : (
+    <div className="space-y-3">
+      {requirements.map((requirement) => (
+        <div
+          key={requirement.id}
+          className="rounded-xl border border-white/10 p-4"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <h4 className="text-sm font-medium">
+              {requirement.title}
+            </h4>
+
+            <span className="rounded-full bg-indigo-400/10 px-3 py-1 text-xs text-indigo-300">
+              {requirement.priority === "HIGH"
+                ? "Prioridade alta"
+                : requirement.priority === "LOW"
+                  ? "Prioridade baixa"
+                  : "Prioridade média"}
+            </span>
+          </div>
+
+          {requirement.description && (
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
+              {requirement.description}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
           </div>
 
               <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
