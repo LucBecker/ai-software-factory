@@ -37,6 +37,15 @@ type AnalysisRun = {
   finishedAt: string | null;
 };
 
+type ReviewRun = {
+  id: string;
+  status: string;
+  sourceRunId: string | null;
+  comment: string;
+  output: string | null;
+  createdAt: string;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -129,6 +138,9 @@ export default function Home() {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
   const [reviewError, setReviewError] = useState("");
+  const [reviewHistory, setReviewHistory] = useState<ReviewRun[]>([]);
+  const [reviewHistoryLoading, setReviewHistoryLoading] = useState(false);
+  const [reviewHistoryError, setReviewHistoryError] = useState("");
   const [editingArchitectureDecisionId, setEditingArchitectureDecisionId] = useState<string | null>(null);
   const [editArchitectureTitle, setEditArchitectureTitle] = useState("");
   const [editArchitectureDescription, setEditArchitectureDescription] = useState("");
@@ -409,6 +421,28 @@ async function submitRequirementsReview(
     );
 
     setReviewComment("");
+    try {
+  const historyResponse = await fetch(
+    `/api/requirements-analysis/review?projectId=${encodeURIComponent(selectedProject.id)}`,
+  );
+
+  const historyData = await historyResponse.json();
+
+  if (!historyResponse.ok) {
+    throw new Error(
+      historyData.error || "Não foi possível atualizar o histórico.",
+    );
+  }
+
+  setReviewHistory(historyData as ReviewRun[]);
+  setReviewHistoryError("");
+} catch (historyError) {
+  setReviewHistoryError(
+    historyError instanceof Error
+      ? `Revisão registrada, mas o histórico não foi atualizado: ${historyError.message}`
+      : "Revisão registrada, mas não foi possível atualizar o histórico.",
+  );
+}
   } catch (error) {
     setReviewError(
       error instanceof Error
@@ -419,6 +453,57 @@ async function submitRequirementsReview(
     setReviewLoading(false);
   }
 }
+
+useEffect(() => {
+  if (!selectedProject) {
+    setReviewHistory([]);
+    return;
+  }
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadReviewHistory() {
+    setReviewHistoryLoading(true);
+    setReviewHistoryError("");
+
+    try {
+      const response = await fetch(
+        `/api/requirements-analysis/review?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o histórico de revisões.",
+        );
+      }
+
+      if (!cancelled) {
+        setReviewHistory(data as ReviewRun[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setReviewHistoryError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar o histórico de revisões.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setReviewHistoryLoading(false);
+      }
+    }
+  }
+
+  loadReviewHistory();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
 
 async function runRequirementsAnalysis() {
   if (!selectedProject) return;
@@ -1848,7 +1933,82 @@ async function saveArchitectureEdit(
       </button>
     </div>
   </div>
-)}  
+)}
+<div className="mt-6 border-t border-white/10 pt-5">
+  <h4 className="mb-3 font-semibold">Histórico de revisões</h4>
+
+  {reviewHistoryError && (
+    <p role="alert" className="mb-3 text-sm text-red-400">
+      {reviewHistoryError}
+    </p>
+  )}
+
+  {reviewHistoryLoading ? (
+    <p className="text-sm text-slate-400">
+      Carregando histórico de revisões...
+    </p>
+  ) : reviewHistory.length === 0 ? (
+    <p className="text-sm text-slate-400">
+      Nenhuma revisão registrada ainda.
+    </p>
+  ) : (
+    <div className="space-y-3">
+      {reviewHistory.map((review) => (
+        <div
+          key={review.id}
+          className="rounded-xl border border-white/10 p-4"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <h5 className="text-sm font-medium">
+                {review.status === "APPROVED"
+                  ? "Especificação aprovada"
+                  : review.status === "CHANGES_REQUESTED"
+                    ? "Ajustes solicitados"
+                    : review.status}
+              </h5>
+
+              <p className="mt-1 text-xs text-slate-400">
+                {new Date(review.createdAt).toLocaleString("pt-BR")}
+              </p>
+            </div>
+
+            <span
+              className={`rounded-full px-3 py-1 text-xs ${
+                review.status === "APPROVED"
+                  ? "bg-emerald-400/10 text-emerald-300"
+                  : "bg-amber-400/10 text-amber-300"
+              }`}
+            >
+              {review.status === "APPROVED"
+                ? "Aprovada"
+                : review.status === "CHANGES_REQUESTED"
+                  ? "Pendente de ajustes"
+                  : review.status}
+            </span>
+          </div>
+
+          {review.comment && (
+            <div className="mt-3">
+              <p className="text-xs font-medium text-slate-400">
+                Comentário da revisão
+              </p>
+              <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-300">
+                {review.comment}
+              </p>
+            </div>
+          )}
+
+          {review.sourceRunId && (
+            <p className="mt-3 break-all text-xs text-slate-500">
+              Análise de origem: {review.sourceRunId}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>  
 </div>  
 
     <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
