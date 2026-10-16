@@ -703,7 +703,16 @@ function ProjectList({
         {projects.map((project) => (
           <div
             key={project.id}
-            className="rounded-xl border border-white/[.07] p-4"
+            role="button"
+            tabIndex={0}
+            onClick={() => onSelectProject(project)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onSelectProject(project);
+              }
+            }}
+            className="cursor-pointer rounded-xl border border-white/[.07] p-4 transition hover:border-indigo-400/40 hover:bg-white/[.02] focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
