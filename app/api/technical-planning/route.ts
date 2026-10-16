@@ -1,0 +1,244 @@
+import { NextResponse } from "next/server";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { prisma } from "../../../src/lib/prisma";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+  typeof body.analysisRunId !== "string" ||
+  !body.analysisRunId.trim()
+) {
+  return NextResponse.json(
+    { error: "Informe a análise que será planejada." },
+    { status: 400 },
+  );
+}
+
+const analysisRunId = body.analysisRunId.trim();
+
+// Primeiro, encontra a análise e obtém o ID real do projeto no banco.
+const analysis = await prisma.workflowRun.findFirst({
+  where: {
+    id: analysisRunId,
+    stage: "REQUIREMENTS_ANALYSIS",
+    status: "COMPLETED",
+  },
+  select: {
+    id: true,
+    projectId: true,
+    output: true,
+    createdAt: true,
+  },
+});
+
+if (!analysis) {
+  return NextResponse.json(
+    { error: "A análise selecionada não foi encontrada." },
+    { status: 404 },
+  );
+}
+
+// O ID é obtido do registro da análise, evitando erros de cópia.
+const projectId = analysis.projectId;
+
+const project = await prisma.project.findUnique({
+  where: { id: projectId },
+  include: {
+    requirements: {
+      orderBy: { createdAt: "asc" },
+    },
+    architectureDecisions: {
+      orderBy: { createdAt: "asc" },
+    },
+  },
+});
+
+if (!project) {
+  return NextResponse.json(
+    { error: "O projeto associado à análise não foi encontrado." },
+    { status: 404 },
+  );
+}
+
+    // Busca as revisões mais recentes primeiro.
+    const reviews = await prisma.workflowRun.findMany({
+      where: {
+        projectId,
+        stage: "REQUIREMENTS_REVIEW",
+      },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        status: true,
+        input: true,
+        createdAt: true,
+      },
+    });
+
+    // Encontra a revisão mais recente vinculada à análise selecionada.
+    const latestReview = reviews.find((review) => {
+      try {
+        const reviewInput = JSON.parse(review.input ?? "{}");
+        return reviewInput.sourceRunId === analysis.id;
+      } catch {
+        return false;
+      }
+    });
+
+    if (!latestReview || latestReview.status !== "APPROVED") {
+      return NextResponse.json(
+        {
+          error:
+            "Planejamento bloqueado. A análise selecionada precisa estar aprovada antes de avançar.",
+        },
+        { status: 409 },
+      );
+    }
+
+    if (project.requirements.length === 0) {
+      return NextResponse.json(
+        {
+          error:
+            "O projeto precisa ter pelo menos um requisito cadastrado.",
+        },
+        { status: 400 },
+      );
+    }
+
+    // Carrega as instruções do agente definido no arquivo Markdown.
+    const agentInstructions = await readFile(
+      path.join(
+        process.cwd(),
+        "agents",
+        "planejador-tecnico.md",
+      ),
+      "utf8",
+    );
+
+    const priorityLabel: Record<string, string> = {
+      HIGH: "Alta",
+      MEDIUM: "Média",
+      LOW: "Baixa",
+    };
+
+    const requirementTasks = project.requirements
+      .map((requirement, index) =>
+        [
+          `### Tarefa ${String(index + 1).padStart(2, "0")} — ${requirement.title}`,
+          `- Requisito relacionado: ${requirement.title}`,
+          `- Prioridade: ${priorityLabel[requirement.priority] ?? requirement.priority}`,
+          `- Descrição de referência: ${requirement.description.trim() || "Não informada."}`,
+          "- Dependências: validar os critérios de aceitação e as regras de negócio.",
+          "- Resultado esperado: funcionalidade implementada conforme o requisito aprovado.",
+          "- Critério de conclusão: critérios de aceitação definidos e testes funcionais aprovados.",
+        ].join("\n"),
+      )
+      .join("\n\n");
+
+    const architectureSection =
+      project.architectureDecisions.length > 0
+        ? project.architectureDecisions
+            .map(
+              (decision) =>
+                `- ${decision.title}: ${decision.description.trim() || "Sem justificativa registrada."} (categoria: ${decision.category})`,
+            )
+            .join("\n")
+        : "Nenhuma decisão de arquitetura cadastrada. As decisões técnicas necessárias deverão ser identificadas antes da implementação.";
+
+    const output = [
+      `# Plano técnico — ${project.name}`,
+      "",
+      "> MODO DEMONSTRATIVO: este plano foi montado por regras fixas, sem chamada a um modelo de IA.",
+      "",
+      `Análise de origem aprovada: ${analysis.id}`,
+      "",
+      "## 1. Objetivo e escopo",
+      project.description.trim() ||
+        `Implementar as funcionalidades definidas nos requisitos do projeto ${project.name}.`,
+      "",
+      "## 2. Pré-requisitos",
+      "- Especificação funcional revisada e aprovada.",
+      "- Requisitos cadastrados no projeto.",
+      "- Revisão humana deste plano antes da implementação.",
+      "",
+      "## 3. Decisões de arquitetura disponíveis",
+      architectureSection,
+      "",
+      "## 4. Plano de tarefas",
+      requirementTasks,
+      "",
+      "## 5. Estratégia de testes",
+      "- Testes funcionais dos critérios de aceitação de cada requisito.",
+      "- Testes de validação e tratamento de erros.",
+      "- Testes de integração dos componentes envolvidos.",
+      "- Testes de regressão antes de concluir a entrega.",
+      "- Revisão de segurança compatível com as funcionalidades implementadas.",
+      "",
+      "## 6. Riscos e dependências",
+      "- Requisitos com descrições incompletas podem exigir esclarecimentos.",
+      "- Decisões de arquitetura pendentes devem ser resolvidas antes das tarefas dependentes.",
+      "- A sequência definitiva de implementação depende da revisão técnica das tarefas.",
+      "",
+      "## 7. Decisões pendentes",
+      "- Confirmar critérios de aceitação detalhados.",
+      "- Validar tecnologias e integrações ainda não especificadas.",
+      "- Confirmar dependências entre as tarefas antes de iniciar o desenvolvimento.",
+      "",
+      "## 8. Ordem recomendada de execução",
+      "1. Revisar o plano e esclarecer as pendências.",
+      "2. Confirmar as decisões de arquitetura necessárias.",
+      "3. Implementar as funcionalidades por requisito e dependência.",
+      "4. Executar os testes e corrigir os problemas encontrados.",
+      "5. Realizar auditoria antes de liberar a entrega.",
+      "",
+      "## 9. Aprovação do plano",
+      "Plano demonstrativo pendente de revisão humana. Nenhum código foi gerado ou executado nesta etapa.",
+    ].join("\n");
+
+    const startedAt = new Date();
+    const finishedAt = new Date();
+
+    const run = await prisma.workflowRun.create({
+      data: {
+        projectId: project.id,
+        stage: "TECHNICAL_PLANNING",
+        status: "COMPLETED",
+        input: JSON.stringify({
+          agent: "Planejador Técnico",
+          agentFile: "agents/planejador-tecnico.md",
+          agentInstructions,
+          sourceRunId: analysis.id,
+          sourceAnalysis: analysis.output,
+          requirements: project.requirements,
+          architectureDecisions: project.architectureDecisions,
+        }),
+        output,
+        startedAt,
+        finishedAt,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        runId: run.id,
+        status: run.status,
+        mode: "DEMO",
+        output: run.output,
+        createdAt: run.createdAt,
+      },
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Erro no Planejador Técnico:", error);
+
+    return NextResponse.json(
+      {
+        error: "Não foi possível executar o planejamento técnico.",
+      },
+      { status: 500 },
+    );
+  }
+}
