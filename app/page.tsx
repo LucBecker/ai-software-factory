@@ -221,6 +221,27 @@ export default function Home() {
   (review) => review.sourceRunId === analysisRunId,
   );
 
+    const totalDevelopmentTasks = developmentTasks.length;
+
+      const todoDevelopmentTasks = developmentTasks.filter(
+        (task) => task.status === "TODO",
+      ).length;
+
+      const inProgressDevelopmentTasks = developmentTasks.filter(
+        (task) => task.status === "IN_PROGRESS",
+      ).length;
+
+      const doneDevelopmentTasks = developmentTasks.filter(
+        (task) => task.status === "DONE",
+      ).length;
+
+      const developmentProgress =
+        totalDevelopmentTasks > 0
+          ? Math.round(
+              (doneDevelopmentTasks / totalDevelopmentTasks) * 100,
+            )
+          : 0;
+
   const filteredPrompts = useMemo(
     () =>
       prompts.filter(
@@ -877,6 +898,15 @@ async function updateDevelopmentTaskStatus(
     );
   }
 }
+
+useEffect(() => {
+  if (!selectedProject || !technicalPlanRunId) {
+    setDevelopmentTasks([]);
+    return;
+  }
+
+  loadDevelopmentTasks(technicalPlanRunId);
+}, [selectedProject, technicalPlanRunId]);
 
 async function submitTechnicalPlanReview(
   decision: "APPROVED" | "CHANGES_REQUESTED",
@@ -1600,6 +1630,73 @@ async function saveArchitectureEdit(
                     </p>
                   </div>
                 ))}
+              </div>
+              
+              <div className="mb-6 rounded-2xl border border-white/10 bg-[#11182b] p-5 md:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold">
+                      Progresso do desenvolvimento
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-400">
+                      Acompanhe o andamento das tarefas do plano técnico selecionado.
+                    </p>
+                  </div>
+
+                  <span className="text-lg font-semibold text-indigo-300">
+                    {developmentProgress}% concluído
+                  </span>
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <div className="rounded-xl border border-white/10 p-4">
+                    <p className="text-sm text-slate-400">Total de tarefas</p>
+                    <p className="mt-2 text-2xl font-semibold">
+                      {totalDevelopmentTasks}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 p-4">
+                    <p className="text-sm text-slate-400">A fazer</p>
+                    <p className="mt-2 text-2xl font-semibold">
+                      {todoDevelopmentTasks}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 p-4">
+                    <p className="text-sm text-slate-400">Em andamento</p>
+                    <p className="mt-2 text-2xl font-semibold">
+                      {inProgressDevelopmentTasks}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 p-4">
+                    <p className="text-sm text-slate-400">Concluídas</p>
+                    <p className="mt-2 text-2xl font-semibold">
+                      {doneDevelopmentTasks}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  role="progressbar"
+                  aria-label="Progresso do desenvolvimento"
+                  aria-valuenow={developmentProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  className="mt-5 h-2.5 overflow-hidden rounded-full bg-white/10"
+                >
+                  <div
+                    className="h-full rounded-full bg-indigo-500 transition-all duration-300"
+                    style={{ width: `${developmentProgress}%` }}
+                  />
+                </div>
+
+                {totalDevelopmentTasks === 0 && (
+                  <p className="mt-3 text-xs text-slate-400">
+                    As tarefas aparecerão aqui quando forem carregadas no Planejamento.
+                  </p>
+                )}
               </div>
 
               <div className="mb-9 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
@@ -2797,6 +2894,59 @@ async function saveArchitectureEdit(
     Transforme o plano técnico aprovado em tarefas rastreáveis.
   </p>
 
+  <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+    <p className="text-sm text-slate-400">Total de tarefas</p>
+    <p className="mt-2 text-2xl font-semibold">
+      {totalDevelopmentTasks}
+    </p>
+  </div>
+
+  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+    <p className="text-sm text-slate-400">A fazer</p>
+    <p className="mt-2 text-2xl font-semibold">
+      {todoDevelopmentTasks}
+    </p>
+  </div>
+
+  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+    <p className="text-sm text-slate-400">Em andamento</p>
+    <p className="mt-2 text-2xl font-semibold">
+      {inProgressDevelopmentTasks}
+    </p>
+  </div>
+
+  <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+    <p className="text-sm text-slate-400">Concluídas</p>
+    <p className="mt-2 text-2xl font-semibold">
+      {doneDevelopmentTasks}
+    </p>
+  </div>
+</div>
+
+<div className="mt-4">
+  <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+    <span className="text-slate-400">Progresso do desenvolvimento</span>
+    <span className="font-semibold text-indigo-300">
+      {developmentProgress}%
+    </span>
+  </div>
+
+  <div
+    role="progressbar"
+    aria-label="Progresso do desenvolvimento"
+    aria-valuenow={developmentProgress}
+    aria-valuemin={0}
+    aria-valuemax={100}
+    className="h-2.5 overflow-hidden rounded-full bg-white/10"
+  >
+    <div
+      className="h-full rounded-full bg-indigo-500 transition-all duration-300"
+      style={{ width: `${developmentProgress}%` }}
+    />
+  </div>
+</div>
+    
   <p className="mt-2 text-xs text-amber-300">
     Modo demonstrativo — sem chamada a um modelo de IA.
   </p>
