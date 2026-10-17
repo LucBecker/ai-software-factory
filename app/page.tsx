@@ -149,6 +149,16 @@ export default function Home() {
   const [technicalPlanHistory, setTechnicalPlanHistory] =   useState<TechnicalPlanRun[]>([]);
   const [technicalPlanHistoryLoading, setTechnicalPlanHistoryLoading] =   useState(false);
   const [technicalPlanHistoryError, setTechnicalPlanHistoryError] =   useState("");
+  const [technicalPlanReviewComment, setTechnicalPlanReviewComment] =   useState("");
+  const [technicalPlanReviewLoading, setTechnicalPlanReviewLoading] =   useState(false);
+  const [technicalPlanReviewMessage, setTechnicalPlanReviewMessage] =   useState("");
+  const [technicalPlanReviewError, setTechnicalPlanReviewError] =    useState("");
+  const [technicalPlanReviewHistory, setTechnicalPlanReviewHistory] =
+  useState<ReviewRun[]>([]);
+  const [technicalPlanReviewHistoryLoading, setTechnicalPlanReviewHistoryLoading] =
+  useState(false);
+  const [technicalPlanReviewHistoryError, setTechnicalPlanReviewHistoryError] =
+  useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
@@ -226,6 +236,29 @@ export default function Home() {
       }));
 
       setProjects(loadedProjects);
+
+        const savedProjectId = localStorage.getItem(
+          "ai-software-factory:selectedProjectId",
+        );
+
+        const projectToRestore =
+          loadedProjects.find((project) => project.id === savedProjectId) ??
+          loadedProjects.find((project) => project.name === "AI Software Factory") ??
+          loadedProjects[0];
+
+        if (projectToRestore) {
+          setSelectedProject(projectToRestore);
+        }
+
+      if (savedProjectId) {
+        const savedProject = loadedProjects.find(
+          (project) => project.id === savedProjectId,
+        );
+
+        if (savedProject) {
+          setSelectedProject(savedProject);
+        }
+      }
     } catch (error) {
       console.error("Erro ao carregar projetos:", error);
 
@@ -552,7 +585,23 @@ useEffect(() => {
       }
 
       if (!cancelled) {
-        setTechnicalPlanHistory(data as TechnicalPlanRun[]);
+        const plans = data as TechnicalPlanRun[];
+        setTechnicalPlanHistory(plans);
+
+        const savedPlanId = localStorage.getItem(
+          `ai-software-factory:selectedTechnicalPlanId:${projectId}`,
+        );
+
+        const planToRestore =
+          plans.find((plan) => plan.id === savedPlanId) ?? plans[0];
+
+        if (planToRestore) {
+          setTechnicalPlanOutput(planToRestore.output ?? "");
+          setTechnicalPlanRunId(planToRestore.id);
+        } else {
+          setTechnicalPlanOutput("");
+          setTechnicalPlanRunId(null);
+        }
       }
     } catch (error) {
       if (!cancelled) {
@@ -575,6 +624,163 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+useEffect(() => {
+  if (!selectedProject) {
+    setTechnicalPlanReviewHistory([]);
+    return;
+  }
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadTechnicalPlanReviewHistory() {
+    setTechnicalPlanReviewHistoryLoading(true);
+    setTechnicalPlanReviewHistoryError("");
+
+    try {
+      const response = await fetch(
+        `/api/technical-planning/review?projectId=${encodeURIComponent(projectId)}`,
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o histórico de revisões.",
+        );
+      }
+
+      if (!cancelled) {
+        setTechnicalPlanReviewHistory(data as ReviewRun[]);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setTechnicalPlanReviewHistoryError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar as revisões do plano.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setTechnicalPlanReviewHistoryLoading(false);
+      }
+    }
+  }
+
+  loadTechnicalPlanReviewHistory();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
+
+useEffect(() => {
+  if (!selectedProject) return;
+
+  localStorage.setItem(
+    "ai-software-factory:selectedProjectId",
+    selectedProject.id,
+  );
+}, [selectedProject]);
+
+useEffect(() => {
+  if (!selectedProject || !analysisRunId) return;
+
+  localStorage.setItem(
+    `ai-software-factory:selectedAnalysisRunId:${selectedProject.id}`,
+    analysisRunId,
+  );
+}, [selectedProject, analysisRunId]);
+
+useEffect(() => {
+  if (
+    !selectedProject ||
+    analysisHistoryLoading ||
+    analysisHistory.length === 0
+  ) {
+    return;
+  }
+
+  const savedAnalysisRunId = localStorage.getItem(
+    `ai-software-factory:selectedAnalysisRunId:${selectedProject.id}`,
+  );
+
+  if (!savedAnalysisRunId) return;
+
+  const savedAnalysis = analysisHistory.find(
+    (analysis) => analysis.id === savedAnalysisRunId,
+  );
+
+  if (!savedAnalysis) return;
+
+  setAnalysisRunId(savedAnalysis.id);
+  setAnalysisOutput(savedAnalysis.output ?? "");
+}, [selectedProject, analysisHistory, analysisHistoryLoading]);
+
+async function submitTechnicalPlanReview(
+  decision: "APPROVED" | "CHANGES_REQUESTED",
+) {
+  if (!selectedProject || !technicalPlanRunId) {
+    setTechnicalPlanReviewError(
+      "Abra um plano técnico antes de registrar a revisão.",
+    );
+    return;
+  }
+
+  const comment = technicalPlanReviewComment.trim();
+
+  if (decision === "CHANGES_REQUESTED" && !comment) {
+    setTechnicalPlanReviewError(
+      "Descreva os ajustes necessários antes de solicitar alterações.",
+    );
+    return;
+  }
+
+  setTechnicalPlanReviewLoading(true);
+  setTechnicalPlanReviewError("");
+  setTechnicalPlanReviewMessage("");
+
+  try {
+    const response = await fetch("/api/technical-planning/review", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        planRunId: technicalPlanRunId,
+        decision,
+        comment,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível registrar a revisão do plano.",
+      );
+    }
+
+    setTechnicalPlanReviewMessage(
+      decision === "APPROVED"
+        ? "Plano técnico aprovado. A revisão foi registrada."
+        : "Ajustes solicitados. A revisão do plano foi registrada.",
+    );
+
+    setTechnicalPlanReviewComment("");
+  } catch (error) {
+    setTechnicalPlanReviewError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao registrar a revisão do plano.",
+    );
+  } finally {
+    setTechnicalPlanReviewLoading(false);
+  }
+}
 
 async function runTechnicalPlanning() {
   if (!selectedProject || !analysisRunId) {
@@ -1255,20 +1461,7 @@ async function saveArchitectureEdit(
                     {stages.map((stage, index) => (
                       <button
                         key={stage.key}
-                        onClick={() => {
-                          if (
-                            stage.key === "Plan" &&
-                            currentAnalysisReview?.status !== "APPROVED"
-                          ) {
-                            window.alert(
-                              "Planejamento bloqueado: abra uma análise e aprove a especificação antes de avançar.",
-                            );
-                            return;
-                          }
-
-                          setSelectedStage(stage.key);
-                          setPage("Fluxos de trabalho");
-                        }}
+                        onClick={() => setSelectedStage(stage.key)}
                       >
                         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-sm text-indigo-300">
                           {stage.number}
@@ -2282,19 +2475,7 @@ async function saveArchitectureEdit(
                 {stages.map((stage) => (
                   <button
                     key={stage.key}
-                    onClick={() => {
-                      if (
-                        stage.key === "Plan" &&
-                        currentAnalysisReview?.status !== "APPROVED"
-                      ) {
-                        window.alert(
-                          "Planejamento bloqueado: abra uma análise e aprove a especificação antes de avançar.",
-                        );
-                        return;
-                      }
-
-                      setSelectedStage(stage.key);
-                    }}
+                    onClick={() => setSelectedStage(stage.key)}
                     className={`rounded-2xl border p-4 text-left ${
                       selectedStage === stage.key
                         ? "border-indigo-400/50 bg-indigo-400/10"
@@ -2388,23 +2569,159 @@ async function saveArchitectureEdit(
                   </div>
                 )}
                 <div className="mt-6 border-t border-white/10 pt-5">
-  <h4 className="mb-3 font-semibold">Histórico de planos técnicos</h4>
+                <div className="mt-6 border-t border-white/10 pt-5">
+                  <h4 className="font-semibold">Revisão do plano técnico</h4>
 
-  {technicalPlanHistoryError && (
+                  <p className="mt-2 text-sm text-slate-400">
+                    Revise o plano gerado antes de liberar as próximas etapas de desenvolvimento.
+                  </p>
+
+                  <label
+                    htmlFor="technical-plan-review-comment"
+                    className="mt-4 block text-sm font-medium"
+                  >
+                    Comentários da revisão
+                  </label>
+
+                  <textarea
+                    id="technical-plan-review-comment"
+                    value={technicalPlanReviewComment}
+                    onChange={(event) =>
+                      setTechnicalPlanReviewComment(event.target.value)
+                    }
+                    placeholder="Registre observações ou ajustes necessários..."
+                    rows={3}
+                    className="mt-2 w-full rounded-xl border border-white/10 bg-[#0b1020] p-3 text-sm text-slate-200 outline-none focus:border-indigo-400"
+                  />
+
+                  {technicalPlanReviewError && (
+                    <p role="alert" className="mt-3 text-sm text-red-400">
+                      {technicalPlanReviewError}
+                    </p>
+                  )}
+
+                  {technicalPlanReviewMessage && (
+                    <p className="mt-3 text-sm text-emerald-400">
+                      {technicalPlanReviewMessage}
+                    </p>
+                  )}
+
+  <div className="mt-4 flex flex-wrap gap-3">
+    <button
+      type="button"
+      onClick={() => submitTechnicalPlanReview("APPROVED")}
+      disabled={!technicalPlanRunId || technicalPlanReviewLoading}
+      className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {technicalPlanReviewLoading
+        ? "Registrando..."
+        : "Aprovar plano"}
+    </button>
+
+    <button
+      type="button"
+      onClick={() =>
+        submitTechnicalPlanReview("CHANGES_REQUESTED")
+      }
+      disabled={!technicalPlanRunId || technicalPlanReviewLoading}
+      className="rounded-xl border border-amber-400/20 px-4 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/10 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      Solicitar ajustes
+    </button>
+  </div>
+</div>
+
+      <div className="mt-6 border-t border-white/10 pt-5">
+  <h4 className="mb-3 font-semibold">
+    Histórico de revisões do plano
+  </h4>
+
+  {technicalPlanReviewHistoryError && (
     <p role="alert" className="mb-3 text-sm text-red-400">
-      {technicalPlanHistoryError}
+      {technicalPlanReviewHistoryError}
     </p>
   )}
 
-  {technicalPlanHistoryLoading ? (
+  {technicalPlanReviewHistoryLoading ? (
     <p className="text-sm text-slate-400">
-      Carregando histórico de planos...
+      Carregando histórico de revisões...
     </p>
-  ) : technicalPlanHistory.length === 0 ? (
+  ) : technicalPlanReviewHistory.length === 0 ? (
     <p className="text-sm text-slate-400">
-      Nenhum plano técnico registrado ainda.
+      Nenhuma revisão de plano registrada ainda.
     </p>
   ) : (
+    <div className="space-y-3">
+      {technicalPlanReviewHistory.map((review) => (
+        <div
+          key={review.id}
+          className="rounded-xl border border-white/10 p-4"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h5 className="text-sm font-medium">
+                {review.status === "APPROVED"
+                  ? "Plano aprovado"
+                  : review.status === "CHANGES_REQUESTED"
+                    ? "Ajustes solicitados"
+                    : review.status}
+              </h5>
+
+              <p className="mt-1 text-xs text-slate-400">
+                {new Date(review.createdAt).toLocaleString("pt-BR")}
+              </p>
+            </div>
+
+            <span
+              className={`rounded-full px-3 py-1 text-xs ${
+                review.status === "APPROVED"
+                  ? "bg-emerald-400/10 text-emerald-300"
+                  : "bg-amber-400/10 text-amber-300"
+              }`}
+            >
+              {review.status === "APPROVED"
+                ? "Aprovado"
+                : review.status === "CHANGES_REQUESTED"
+                  ? "Pendente de ajustes"
+                  : review.status}
+            </span>
+          </div>
+
+          <p className="mt-3 text-xs text-slate-400">
+            Comentário da revisão
+          </p>
+
+          <p className="mt-1 whitespace-pre-wrap break-words text-sm text-slate-200">
+            {review.comment || "Nenhum comentário informado."}
+          </p>
+
+          {review.sourceRunId && (
+            <p className="mt-3 break-all text-xs text-slate-500">
+              Plano de origem: {review.sourceRunId}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+                <h4 className="mb-3 font-semibold">Histórico de planos técnicos</h4>
+
+                  {technicalPlanHistoryError && (
+                    <p role="alert" className="mb-3 text-sm text-red-400">
+                      {technicalPlanHistoryError}
+                    </p>
+                  )}
+
+                  {technicalPlanHistoryLoading ? (
+                    <p className="text-sm text-slate-400">
+                      Carregando histórico de planos...
+                    </p>
+                  ) : technicalPlanHistory.length === 0 ? (
+                    <p className="text-sm text-slate-400">
+                      Nenhum plano técnico registrado ainda.
+                    </p>
+                  ) : (
     <div className="space-y-3">
       {technicalPlanHistory.map((plan) => (
         <div
@@ -2451,6 +2768,11 @@ async function saveArchitectureEdit(
                   setTechnicalPlanOutput(plan.output ?? "");
                   setTechnicalPlanRunId(plan.id);
                   setTechnicalPlanError("");
+
+                  localStorage.setItem(
+                    `ai-software-factory:selectedTechnicalPlanId:${selectedProject?.id}`,
+                    plan.id,
+                  );
 
                   document
                   .getElementById("technical-plan-result")
