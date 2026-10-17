@@ -54,6 +54,22 @@ type TechnicalPlanRun = {
   createdAt: string;
 };
 
+type DevelopmentTask = {
+  id: string;
+  projectId: string;
+  sourcePlanRunId: string;
+  taskKey: string;
+  title: string;
+  description: string;
+  requirement: string;
+  dependencies: string;
+  expectedResult: string;
+  acceptanceCriteria: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type Prompt = {
   title: string;
   category: string;
@@ -158,6 +174,14 @@ export default function Home() {
   const [technicalPlanReviewHistoryLoading, setTechnicalPlanReviewHistoryLoading] =
   useState(false);
   const [technicalPlanReviewHistoryError, setTechnicalPlanReviewHistoryError] =
+  useState("");
+  const [developmentTasks, setDevelopmentTasks] =
+  useState<DevelopmentTask[]>([]);
+  const [developmentTasksLoading, setDevelopmentTasksLoading] =
+  useState(false);
+  const [developmentTasksError, setDevelopmentTasksError] =
+  useState("");
+  const [developmentTasksMessage, setDevelopmentTasksMessage] =
   useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
@@ -718,6 +742,141 @@ useEffect(() => {
   setAnalysisRunId(savedAnalysis.id);
   setAnalysisOutput(savedAnalysis.output ?? "");
 }, [selectedProject, analysisHistory, analysisHistoryLoading]);
+
+async function loadDevelopmentTasks(
+  planRunId: string | null = technicalPlanRunId,
+) {
+  if (!selectedProject) return;
+
+  setDevelopmentTasksLoading(true);
+  setDevelopmentTasksError("");
+
+  try {
+    const params = new URLSearchParams({
+      projectId: selectedProject.id,
+    });
+
+    if (planRunId) {
+      params.set("planRunId", planRunId);
+    }
+
+    const response = await fetch(
+      `/api/development-tasks?${params.toString()}`,
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível carregar as tarefas.",
+      );
+    }
+
+    setDevelopmentTasks(data as DevelopmentTask[]);
+  } catch (error) {
+    setDevelopmentTasksError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao carregar as tarefas.",
+    );
+  } finally {
+    setDevelopmentTasksLoading(false);
+  }
+}
+
+async function generateDevelopmentTasks() {
+  if (!selectedProject || !technicalPlanRunId) {
+    setDevelopmentTasksError(
+      "Selecione um plano técnico antes de gerar as tarefas.",
+    );
+    return;
+  }
+
+  setDevelopmentTasksLoading(true);
+  setDevelopmentTasksError("");
+  setDevelopmentTasksMessage("");
+
+  try {
+    const response = await fetch("/api/development-tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        planRunId: technicalPlanRunId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível gerar as tarefas.",
+      );
+    }
+
+    setDevelopmentTasks(data.tasks as DevelopmentTask[]);
+    setDevelopmentTasksMessage(
+      data.message || "Tarefas carregadas com sucesso.",
+    );
+  } catch (error) {
+    setDevelopmentTasksError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao gerar as tarefas.",
+    );
+  } finally {
+    setDevelopmentTasksLoading(false);
+  }
+}
+
+async function updateDevelopmentTaskStatus(
+  taskId: string,
+  status: "TODO" | "IN_PROGRESS" | "DONE",
+) {
+  setDevelopmentTasksError("");
+  setDevelopmentTasksMessage("");
+
+  try {
+    const response = await fetch("/api/development-tasks", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskId,
+        status,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível atualizar o status.",
+      );
+    }
+
+    setDevelopmentTasks((currentTasks) =>
+      currentTasks.map((task) =>
+        task.id === taskId
+          ? { ...task, ...data.task }
+          : task,
+      ),
+    );
+
+    setDevelopmentTasksMessage(
+      "Status da tarefa atualizado com sucesso.",
+    );
+  } catch (error) {
+    setDevelopmentTasksError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao atualizar o status.",
+    );
+  }
+}
 
 async function submitTechnicalPlanReview(
   decision: "APPROVED" | "CHANGES_REQUESTED",
@@ -2628,6 +2787,166 @@ async function saveArchitectureEdit(
     >
       Solicitar ajustes
     </button>
+  </div>
+</div>
+
+      <div className="mt-6 border-t border-white/10 pt-5">
+  <h4 className="font-semibold">Tarefas de desenvolvimento</h4>
+
+  <p className="mt-2 text-sm text-slate-400">
+    Transforme o plano técnico aprovado em tarefas rastreáveis.
+  </p>
+
+  <p className="mt-2 text-xs text-amber-300">
+    Modo demonstrativo — sem chamada a um modelo de IA.
+  </p>
+
+  {(!technicalPlanRunId || !selectedProject) && (
+    <p className="mt-3 text-sm text-amber-300">
+      Abra um plano técnico no histórico para continuar.
+    </p>
+  )}
+
+  {developmentTasksError && (
+    <p role="alert" className="mt-3 text-sm text-red-400">
+      {developmentTasksError}
+    </p>
+  )}
+
+  {developmentTasksMessage && (
+    <p className="mt-3 text-sm text-emerald-400">
+      {developmentTasksMessage}
+    </p>
+  )}
+
+  <div className="mt-4 flex flex-wrap gap-3">
+    <button
+      type="button"
+      onClick={generateDevelopmentTasks}
+      disabled={
+        !selectedProject ||
+        !technicalPlanRunId ||
+        developmentTasksLoading
+      }
+      className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {developmentTasksLoading
+        ? "Processando..."
+        : "Gerar tarefas de desenvolvimento"}
+    </button>
+
+    <button
+      type="button"
+      onClick={() => loadDevelopmentTasks(technicalPlanRunId)}
+      disabled={
+        !selectedProject ||
+        !technicalPlanRunId ||
+        developmentTasksLoading
+      }
+      className="rounded-xl border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      Carregar tarefas salvas
+    </button>
+  </div>
+
+  <div className="mt-5 space-y-3">
+    {developmentTasksLoading && (
+      <p className="text-sm text-slate-400">
+        Carregando tarefas...
+      </p>
+    )}
+
+    {!developmentTasksLoading &&
+      developmentTasks.length === 0 &&
+      !developmentTasksError && (
+        <p className="text-sm text-slate-400">
+          Nenhuma tarefa carregada para este plano.
+        </p>
+      )}
+
+    {developmentTasks.map((task) => (
+      <div
+        key={task.id}
+        className="rounded-xl border border-white/10 p-4"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-indigo-300">
+              {task.taskKey}
+            </p>
+
+            <h5 className="mt-1 font-medium">{task.title}</h5>
+          </div>
+
+          <select
+              value={task.status}
+              onChange={(event) =>
+                updateDevelopmentTaskStatus(
+                  task.id,
+                  event.target.value as "TODO" | "IN_PROGRESS" | "DONE",
+                )
+              }
+              disabled={developmentTasksLoading}
+              aria-label={`Status da tarefa ${task.taskKey}`}
+              className="rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-xs text-slate-200 outline-none focus:border-indigo-400 disabled:opacity-50"
+                      >
+            <option value="TODO">A fazer</option>
+            <option value="IN_PROGRESS">Em andamento</option>
+            <option value="DONE">Concluída</option>
+          </select>
+        </div>
+
+        <p className="mt-3 whitespace-pre-wrap text-sm text-slate-300">
+          {task.description}
+        </p>
+
+        <div className="mt-4 space-y-2 text-sm">
+          <p>
+            <span className="text-slate-400">
+              Requisito relacionado:
+            </span>{" "}
+            {task.requirement || "Não informado"}
+          </p>
+
+          <p>
+            <span className="text-slate-400">
+              Dependências:
+            </span>{" "}
+            {(() => {
+              try {
+                const dependencies = JSON.parse(
+                  task.dependencies || "[]",
+                ) as string[];
+
+                return dependencies.length > 0
+                  ? dependencies.join(", ")
+                  : "Nenhuma";
+              } catch {
+                return task.dependencies || "Nenhuma";
+              }
+            })()}
+          </p>
+
+          <p>
+            <span className="text-slate-400">
+              Resultado esperado:
+            </span>{" "}
+            {task.expectedResult || "Não informado"}
+          </p>
+
+          <p>
+            <span className="text-slate-400">
+              Critérios de conclusão:
+            </span>{" "}
+            {task.acceptanceCriteria || "Não informado"}
+          </p>
+        </div>
+
+        <p className="mt-3 break-all text-xs text-slate-500">
+          Plano de origem: {task.sourcePlanRunId}
+        </p>
+      </div>
+    ))}
   </div>
 </div>
 
