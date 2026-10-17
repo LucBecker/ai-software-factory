@@ -21,7 +21,7 @@ model Project {
   workflowRuns WorkflowRun[]
   requirements Requirement[]
   architectureDecisions ArchitectureDecision[]
-
+  developmentTasks DevelopmentTask[]
   @@index([status])
   @@index([updatedAt])
 }
@@ -96,4 +96,27 @@ model ArchitectureDecision {
   updatedAt   DateTime @updatedAt
 
   @@index([projectId, createdAt])
+}
+
+model DevelopmentTask {
+  id                  String   @id @default(cuid())
+  projectId           String
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  sourcePlanRunId     String
+  taskKey             String
+  title               String
+  description         String   @default("")
+  requirement         String   @default("")
+  dependencies        String   @default("[]")
+  expectedResult      String   @default("")
+  acceptanceCriteria  String   @default("")
+  status              String   @default("TODO")
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([sourcePlanRunId, taskKey])
+  @@index([projectId, createdAt])
+  @@index([status])
 }

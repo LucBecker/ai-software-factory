@@ -43,6 +43,11 @@ export type Requirement = $Result.DefaultSelection<Prisma.$RequirementPayload>
  * 
  */
 export type ArchitectureDecision = $Result.DefaultSelection<Prisma.$ArchitectureDecisionPayload>
+/**
+ * Model DevelopmentTask
+ * 
+ */
+export type DevelopmentTask = $Result.DefaultSelection<Prisma.$DevelopmentTaskPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -221,6 +226,16 @@ export class PrismaClient<
     * ```
     */
   get architectureDecision(): Prisma.ArchitectureDecisionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.developmentTask`: Exposes CRUD operations for the **DevelopmentTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DevelopmentTasks
+    * const developmentTasks = await prisma.developmentTask.findMany()
+    * ```
+    */
+  get developmentTask(): Prisma.DevelopmentTaskDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -667,7 +682,8 @@ export namespace Prisma {
     Agent: 'Agent',
     WorkflowRun: 'WorkflowRun',
     Requirement: 'Requirement',
-    ArchitectureDecision: 'ArchitectureDecision'
+    ArchitectureDecision: 'ArchitectureDecision',
+    DevelopmentTask: 'DevelopmentTask'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -686,7 +702,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision"
+      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1134,6 +1150,80 @@ export namespace Prisma {
           }
         }
       }
+      DevelopmentTask: {
+        payload: Prisma.$DevelopmentTaskPayload<ExtArgs>
+        fields: Prisma.DevelopmentTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DevelopmentTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DevelopmentTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.DevelopmentTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DevelopmentTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          findMany: {
+            args: Prisma.DevelopmentTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>[]
+          }
+          create: {
+            args: Prisma.DevelopmentTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          createMany: {
+            args: Prisma.DevelopmentTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DevelopmentTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.DevelopmentTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          update: {
+            args: Prisma.DevelopmentTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.DevelopmentTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DevelopmentTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DevelopmentTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.DevelopmentTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DevelopmentTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.DevelopmentTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDevelopmentTask>
+          }
+          groupBy: {
+            args: Prisma.DevelopmentTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DevelopmentTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DevelopmentTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<DevelopmentTaskCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1236,6 +1326,7 @@ export namespace Prisma {
     workflowRun?: WorkflowRunOmit
     requirement?: RequirementOmit
     architectureDecision?: ArchitectureDecisionOmit
+    developmentTask?: DevelopmentTaskOmit
   }
 
   /* Types for Logging */
@@ -1320,6 +1411,7 @@ export namespace Prisma {
     workflowRuns: number
     requirements: number
     architectureDecisions: number
+    developmentTasks: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1327,6 +1419,7 @@ export namespace Prisma {
     workflowRuns?: boolean | ProjectCountOutputTypeCountWorkflowRunsArgs
     requirements?: boolean | ProjectCountOutputTypeCountRequirementsArgs
     architectureDecisions?: boolean | ProjectCountOutputTypeCountArchitectureDecisionsArgs
+    developmentTasks?: boolean | ProjectCountOutputTypeCountDevelopmentTasksArgs
   }
 
   // Custom InputTypes
@@ -1366,6 +1459,13 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountArchitectureDecisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ArchitectureDecisionWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountDevelopmentTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevelopmentTaskWhereInput
   }
 
 
@@ -1557,6 +1657,7 @@ export namespace Prisma {
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
     architectureDecisions?: boolean | Project$architectureDecisionsArgs<ExtArgs>
+    developmentTasks?: boolean | Project$developmentTasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -1596,6 +1697,7 @@ export namespace Prisma {
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
     architectureDecisions?: boolean | Project$architectureDecisionsArgs<ExtArgs>
+    developmentTasks?: boolean | Project$developmentTasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1608,6 +1710,7 @@ export namespace Prisma {
       workflowRuns: Prisma.$WorkflowRunPayload<ExtArgs>[]
       requirements: Prisma.$RequirementPayload<ExtArgs>[]
       architectureDecisions: Prisma.$ArchitectureDecisionPayload<ExtArgs>[]
+      developmentTasks: Prisma.$DevelopmentTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2015,6 +2118,7 @@ export namespace Prisma {
     workflowRuns<T extends Project$workflowRunsArgs<ExtArgs> = {}>(args?: Subset<T, Project$workflowRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkflowRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     requirements<T extends Project$requirementsArgs<ExtArgs> = {}>(args?: Subset<T, Project$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     architectureDecisions<T extends Project$architectureDecisionsArgs<ExtArgs> = {}>(args?: Subset<T, Project$architectureDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchitectureDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    developmentTasks<T extends Project$developmentTasksArgs<ExtArgs> = {}>(args?: Subset<T, Project$developmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2530,6 +2634,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ArchitectureDecisionScalarFieldEnum | ArchitectureDecisionScalarFieldEnum[]
+  }
+
+  /**
+   * Project.developmentTasks
+   */
+  export type Project$developmentTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    where?: DevelopmentTaskWhereInput
+    orderBy?: DevelopmentTaskOrderByWithRelationInput | DevelopmentTaskOrderByWithRelationInput[]
+    cursor?: DevelopmentTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DevelopmentTaskScalarFieldEnum | DevelopmentTaskScalarFieldEnum[]
   }
 
   /**
@@ -8056,6 +8184,1166 @@ export namespace Prisma {
 
 
   /**
+   * Model DevelopmentTask
+   */
+
+  export type AggregateDevelopmentTask = {
+    _count: DevelopmentTaskCountAggregateOutputType | null
+    _min: DevelopmentTaskMinAggregateOutputType | null
+    _max: DevelopmentTaskMaxAggregateOutputType | null
+  }
+
+  export type DevelopmentTaskMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    sourcePlanRunId: string | null
+    taskKey: string | null
+    title: string | null
+    description: string | null
+    requirement: string | null
+    dependencies: string | null
+    expectedResult: string | null
+    acceptanceCriteria: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DevelopmentTaskMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    sourcePlanRunId: string | null
+    taskKey: string | null
+    title: string | null
+    description: string | null
+    requirement: string | null
+    dependencies: string | null
+    expectedResult: string | null
+    acceptanceCriteria: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DevelopmentTaskCountAggregateOutputType = {
+    id: number
+    projectId: number
+    sourcePlanRunId: number
+    taskKey: number
+    title: number
+    description: number
+    requirement: number
+    dependencies: number
+    expectedResult: number
+    acceptanceCriteria: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DevelopmentTaskMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    sourcePlanRunId?: true
+    taskKey?: true
+    title?: true
+    description?: true
+    requirement?: true
+    dependencies?: true
+    expectedResult?: true
+    acceptanceCriteria?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DevelopmentTaskMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    sourcePlanRunId?: true
+    taskKey?: true
+    title?: true
+    description?: true
+    requirement?: true
+    dependencies?: true
+    expectedResult?: true
+    acceptanceCriteria?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DevelopmentTaskCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    sourcePlanRunId?: true
+    taskKey?: true
+    title?: true
+    description?: true
+    requirement?: true
+    dependencies?: true
+    expectedResult?: true
+    acceptanceCriteria?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DevelopmentTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevelopmentTask to aggregate.
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevelopmentTasks to fetch.
+     */
+    orderBy?: DevelopmentTaskOrderByWithRelationInput | DevelopmentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DevelopmentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevelopmentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevelopmentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DevelopmentTasks
+    **/
+    _count?: true | DevelopmentTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DevelopmentTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DevelopmentTaskMaxAggregateInputType
+  }
+
+  export type GetDevelopmentTaskAggregateType<T extends DevelopmentTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateDevelopmentTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDevelopmentTask[P]>
+      : GetScalarType<T[P], AggregateDevelopmentTask[P]>
+  }
+
+
+
+
+  export type DevelopmentTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DevelopmentTaskWhereInput
+    orderBy?: DevelopmentTaskOrderByWithAggregationInput | DevelopmentTaskOrderByWithAggregationInput[]
+    by: DevelopmentTaskScalarFieldEnum[] | DevelopmentTaskScalarFieldEnum
+    having?: DevelopmentTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DevelopmentTaskCountAggregateInputType | true
+    _min?: DevelopmentTaskMinAggregateInputType
+    _max?: DevelopmentTaskMaxAggregateInputType
+  }
+
+  export type DevelopmentTaskGroupByOutputType = {
+    id: string
+    projectId: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description: string
+    requirement: string
+    dependencies: string
+    expectedResult: string
+    acceptanceCriteria: string
+    status: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DevelopmentTaskCountAggregateOutputType | null
+    _min: DevelopmentTaskMinAggregateOutputType | null
+    _max: DevelopmentTaskMaxAggregateOutputType | null
+  }
+
+  type GetDevelopmentTaskGroupByPayload<T extends DevelopmentTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DevelopmentTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DevelopmentTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DevelopmentTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], DevelopmentTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DevelopmentTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    sourcePlanRunId?: boolean
+    taskKey?: boolean
+    title?: boolean
+    description?: boolean
+    requirement?: boolean
+    dependencies?: boolean
+    expectedResult?: boolean
+    acceptanceCriteria?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["developmentTask"]>
+
+  export type DevelopmentTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    sourcePlanRunId?: boolean
+    taskKey?: boolean
+    title?: boolean
+    description?: boolean
+    requirement?: boolean
+    dependencies?: boolean
+    expectedResult?: boolean
+    acceptanceCriteria?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["developmentTask"]>
+
+  export type DevelopmentTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    sourcePlanRunId?: boolean
+    taskKey?: boolean
+    title?: boolean
+    description?: boolean
+    requirement?: boolean
+    dependencies?: boolean
+    expectedResult?: boolean
+    acceptanceCriteria?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["developmentTask"]>
+
+  export type DevelopmentTaskSelectScalar = {
+    id?: boolean
+    projectId?: boolean
+    sourcePlanRunId?: boolean
+    taskKey?: boolean
+    title?: boolean
+    description?: boolean
+    requirement?: boolean
+    dependencies?: boolean
+    expectedResult?: boolean
+    acceptanceCriteria?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DevelopmentTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "sourcePlanRunId" | "taskKey" | "title" | "description" | "requirement" | "dependencies" | "expectedResult" | "acceptanceCriteria" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["developmentTask"]>
+  export type DevelopmentTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type DevelopmentTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type DevelopmentTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $DevelopmentTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DevelopmentTask"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectId: string
+      sourcePlanRunId: string
+      taskKey: string
+      title: string
+      description: string
+      requirement: string
+      dependencies: string
+      expectedResult: string
+      acceptanceCriteria: string
+      status: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["developmentTask"]>
+    composites: {}
+  }
+
+  type DevelopmentTaskGetPayload<S extends boolean | null | undefined | DevelopmentTaskDefaultArgs> = $Result.GetResult<Prisma.$DevelopmentTaskPayload, S>
+
+  type DevelopmentTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DevelopmentTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DevelopmentTaskCountAggregateInputType | true
+    }
+
+  export interface DevelopmentTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DevelopmentTask'], meta: { name: 'DevelopmentTask' } }
+    /**
+     * Find zero or one DevelopmentTask that matches the filter.
+     * @param {DevelopmentTaskFindUniqueArgs} args - Arguments to find a DevelopmentTask
+     * @example
+     * // Get one DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DevelopmentTaskFindUniqueArgs>(args: SelectSubset<T, DevelopmentTaskFindUniqueArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DevelopmentTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DevelopmentTaskFindUniqueOrThrowArgs} args - Arguments to find a DevelopmentTask
+     * @example
+     * // Get one DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DevelopmentTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, DevelopmentTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DevelopmentTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskFindFirstArgs} args - Arguments to find a DevelopmentTask
+     * @example
+     * // Get one DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DevelopmentTaskFindFirstArgs>(args?: SelectSubset<T, DevelopmentTaskFindFirstArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DevelopmentTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskFindFirstOrThrowArgs} args - Arguments to find a DevelopmentTask
+     * @example
+     * // Get one DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DevelopmentTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, DevelopmentTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DevelopmentTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DevelopmentTasks
+     * const developmentTasks = await prisma.developmentTask.findMany()
+     * 
+     * // Get first 10 DevelopmentTasks
+     * const developmentTasks = await prisma.developmentTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const developmentTaskWithIdOnly = await prisma.developmentTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DevelopmentTaskFindManyArgs>(args?: SelectSubset<T, DevelopmentTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DevelopmentTask.
+     * @param {DevelopmentTaskCreateArgs} args - Arguments to create a DevelopmentTask.
+     * @example
+     * // Create one DevelopmentTask
+     * const DevelopmentTask = await prisma.developmentTask.create({
+     *   data: {
+     *     // ... data to create a DevelopmentTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends DevelopmentTaskCreateArgs>(args: SelectSubset<T, DevelopmentTaskCreateArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DevelopmentTasks.
+     * @param {DevelopmentTaskCreateManyArgs} args - Arguments to create many DevelopmentTasks.
+     * @example
+     * // Create many DevelopmentTasks
+     * const developmentTask = await prisma.developmentTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DevelopmentTaskCreateManyArgs>(args?: SelectSubset<T, DevelopmentTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DevelopmentTasks and returns the data saved in the database.
+     * @param {DevelopmentTaskCreateManyAndReturnArgs} args - Arguments to create many DevelopmentTasks.
+     * @example
+     * // Create many DevelopmentTasks
+     * const developmentTask = await prisma.developmentTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DevelopmentTasks and only return the `id`
+     * const developmentTaskWithIdOnly = await prisma.developmentTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DevelopmentTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, DevelopmentTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DevelopmentTask.
+     * @param {DevelopmentTaskDeleteArgs} args - Arguments to delete one DevelopmentTask.
+     * @example
+     * // Delete one DevelopmentTask
+     * const DevelopmentTask = await prisma.developmentTask.delete({
+     *   where: {
+     *     // ... filter to delete one DevelopmentTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DevelopmentTaskDeleteArgs>(args: SelectSubset<T, DevelopmentTaskDeleteArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DevelopmentTask.
+     * @param {DevelopmentTaskUpdateArgs} args - Arguments to update one DevelopmentTask.
+     * @example
+     * // Update one DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DevelopmentTaskUpdateArgs>(args: SelectSubset<T, DevelopmentTaskUpdateArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DevelopmentTasks.
+     * @param {DevelopmentTaskDeleteManyArgs} args - Arguments to filter DevelopmentTasks to delete.
+     * @example
+     * // Delete a few DevelopmentTasks
+     * const { count } = await prisma.developmentTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DevelopmentTaskDeleteManyArgs>(args?: SelectSubset<T, DevelopmentTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DevelopmentTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DevelopmentTasks
+     * const developmentTask = await prisma.developmentTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DevelopmentTaskUpdateManyArgs>(args: SelectSubset<T, DevelopmentTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DevelopmentTasks and returns the data updated in the database.
+     * @param {DevelopmentTaskUpdateManyAndReturnArgs} args - Arguments to update many DevelopmentTasks.
+     * @example
+     * // Update many DevelopmentTasks
+     * const developmentTask = await prisma.developmentTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DevelopmentTasks and only return the `id`
+     * const developmentTaskWithIdOnly = await prisma.developmentTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DevelopmentTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, DevelopmentTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DevelopmentTask.
+     * @param {DevelopmentTaskUpsertArgs} args - Arguments to update or create a DevelopmentTask.
+     * @example
+     * // Update or create a DevelopmentTask
+     * const developmentTask = await prisma.developmentTask.upsert({
+     *   create: {
+     *     // ... data to create a DevelopmentTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DevelopmentTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DevelopmentTaskUpsertArgs>(args: SelectSubset<T, DevelopmentTaskUpsertArgs<ExtArgs>>): Prisma__DevelopmentTaskClient<$Result.GetResult<Prisma.$DevelopmentTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DevelopmentTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskCountArgs} args - Arguments to filter DevelopmentTasks to count.
+     * @example
+     * // Count the number of DevelopmentTasks
+     * const count = await prisma.developmentTask.count({
+     *   where: {
+     *     // ... the filter for the DevelopmentTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends DevelopmentTaskCountArgs>(
+      args?: Subset<T, DevelopmentTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DevelopmentTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DevelopmentTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DevelopmentTaskAggregateArgs>(args: Subset<T, DevelopmentTaskAggregateArgs>): Prisma.PrismaPromise<GetDevelopmentTaskAggregateType<T>>
+
+    /**
+     * Group by DevelopmentTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DevelopmentTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DevelopmentTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DevelopmentTaskGroupByArgs['orderBy'] }
+        : { orderBy?: DevelopmentTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DevelopmentTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDevelopmentTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DevelopmentTask model
+   */
+  readonly fields: DevelopmentTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DevelopmentTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DevelopmentTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DevelopmentTask model
+   */
+  interface DevelopmentTaskFieldRefs {
+    readonly id: FieldRef<"DevelopmentTask", 'String'>
+    readonly projectId: FieldRef<"DevelopmentTask", 'String'>
+    readonly sourcePlanRunId: FieldRef<"DevelopmentTask", 'String'>
+    readonly taskKey: FieldRef<"DevelopmentTask", 'String'>
+    readonly title: FieldRef<"DevelopmentTask", 'String'>
+    readonly description: FieldRef<"DevelopmentTask", 'String'>
+    readonly requirement: FieldRef<"DevelopmentTask", 'String'>
+    readonly dependencies: FieldRef<"DevelopmentTask", 'String'>
+    readonly expectedResult: FieldRef<"DevelopmentTask", 'String'>
+    readonly acceptanceCriteria: FieldRef<"DevelopmentTask", 'String'>
+    readonly status: FieldRef<"DevelopmentTask", 'String'>
+    readonly createdAt: FieldRef<"DevelopmentTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"DevelopmentTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DevelopmentTask findUnique
+   */
+  export type DevelopmentTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which DevelopmentTask to fetch.
+     */
+    where: DevelopmentTaskWhereUniqueInput
+  }
+
+  /**
+   * DevelopmentTask findUniqueOrThrow
+   */
+  export type DevelopmentTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which DevelopmentTask to fetch.
+     */
+    where: DevelopmentTaskWhereUniqueInput
+  }
+
+  /**
+   * DevelopmentTask findFirst
+   */
+  export type DevelopmentTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which DevelopmentTask to fetch.
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevelopmentTasks to fetch.
+     */
+    orderBy?: DevelopmentTaskOrderByWithRelationInput | DevelopmentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevelopmentTasks.
+     */
+    cursor?: DevelopmentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevelopmentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevelopmentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevelopmentTasks.
+     */
+    distinct?: DevelopmentTaskScalarFieldEnum | DevelopmentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * DevelopmentTask findFirstOrThrow
+   */
+  export type DevelopmentTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which DevelopmentTask to fetch.
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevelopmentTasks to fetch.
+     */
+    orderBy?: DevelopmentTaskOrderByWithRelationInput | DevelopmentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DevelopmentTasks.
+     */
+    cursor?: DevelopmentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevelopmentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevelopmentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DevelopmentTasks.
+     */
+    distinct?: DevelopmentTaskScalarFieldEnum | DevelopmentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * DevelopmentTask findMany
+   */
+  export type DevelopmentTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which DevelopmentTasks to fetch.
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DevelopmentTasks to fetch.
+     */
+    orderBy?: DevelopmentTaskOrderByWithRelationInput | DevelopmentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DevelopmentTasks.
+     */
+    cursor?: DevelopmentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DevelopmentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DevelopmentTasks.
+     */
+    skip?: number
+    distinct?: DevelopmentTaskScalarFieldEnum | DevelopmentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * DevelopmentTask create
+   */
+  export type DevelopmentTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DevelopmentTask.
+     */
+    data: XOR<DevelopmentTaskCreateInput, DevelopmentTaskUncheckedCreateInput>
+  }
+
+  /**
+   * DevelopmentTask createMany
+   */
+  export type DevelopmentTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DevelopmentTasks.
+     */
+    data: DevelopmentTaskCreateManyInput | DevelopmentTaskCreateManyInput[]
+  }
+
+  /**
+   * DevelopmentTask createManyAndReturn
+   */
+  export type DevelopmentTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many DevelopmentTasks.
+     */
+    data: DevelopmentTaskCreateManyInput | DevelopmentTaskCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DevelopmentTask update
+   */
+  export type DevelopmentTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DevelopmentTask.
+     */
+    data: XOR<DevelopmentTaskUpdateInput, DevelopmentTaskUncheckedUpdateInput>
+    /**
+     * Choose, which DevelopmentTask to update.
+     */
+    where: DevelopmentTaskWhereUniqueInput
+  }
+
+  /**
+   * DevelopmentTask updateMany
+   */
+  export type DevelopmentTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DevelopmentTasks.
+     */
+    data: XOR<DevelopmentTaskUpdateManyMutationInput, DevelopmentTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which DevelopmentTasks to update
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * Limit how many DevelopmentTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DevelopmentTask updateManyAndReturn
+   */
+  export type DevelopmentTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update DevelopmentTasks.
+     */
+    data: XOR<DevelopmentTaskUpdateManyMutationInput, DevelopmentTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which DevelopmentTasks to update
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * Limit how many DevelopmentTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DevelopmentTask upsert
+   */
+  export type DevelopmentTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DevelopmentTask to update in case it exists.
+     */
+    where: DevelopmentTaskWhereUniqueInput
+    /**
+     * In case the DevelopmentTask found by the `where` argument doesn't exist, create a new DevelopmentTask with this data.
+     */
+    create: XOR<DevelopmentTaskCreateInput, DevelopmentTaskUncheckedCreateInput>
+    /**
+     * In case the DevelopmentTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DevelopmentTaskUpdateInput, DevelopmentTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * DevelopmentTask delete
+   */
+  export type DevelopmentTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+    /**
+     * Filter which DevelopmentTask to delete.
+     */
+    where: DevelopmentTaskWhereUniqueInput
+  }
+
+  /**
+   * DevelopmentTask deleteMany
+   */
+  export type DevelopmentTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DevelopmentTasks to delete
+     */
+    where?: DevelopmentTaskWhereInput
+    /**
+     * Limit how many DevelopmentTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DevelopmentTask without action
+   */
+  export type DevelopmentTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DevelopmentTask
+     */
+    select?: DevelopmentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DevelopmentTask
+     */
+    omit?: DevelopmentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DevelopmentTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8152,6 +9440,25 @@ export namespace Prisma {
   export type ArchitectureDecisionScalarFieldEnum = (typeof ArchitectureDecisionScalarFieldEnum)[keyof typeof ArchitectureDecisionScalarFieldEnum]
 
 
+  export const DevelopmentTaskScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    sourcePlanRunId: 'sourcePlanRunId',
+    taskKey: 'taskKey',
+    title: 'title',
+    description: 'description',
+    requirement: 'requirement',
+    dependencies: 'dependencies',
+    expectedResult: 'expectedResult',
+    acceptanceCriteria: 'acceptanceCriteria',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DevelopmentTaskScalarFieldEnum = (typeof DevelopmentTaskScalarFieldEnum)[keyof typeof DevelopmentTaskScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -8226,6 +9533,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
     architectureDecisions?: ArchitectureDecisionListRelationFilter
+    developmentTasks?: DevelopmentTaskListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -8240,6 +9548,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunOrderByRelationAggregateInput
     requirements?: RequirementOrderByRelationAggregateInput
     architectureDecisions?: ArchitectureDecisionOrderByRelationAggregateInput
+    developmentTasks?: DevelopmentTaskOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -8257,6 +9566,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
     architectureDecisions?: ArchitectureDecisionListRelationFilter
+    developmentTasks?: DevelopmentTaskListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -8649,6 +9959,102 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ArchitectureDecision"> | Date | string
   }
 
+  export type DevelopmentTaskWhereInput = {
+    AND?: DevelopmentTaskWhereInput | DevelopmentTaskWhereInput[]
+    OR?: DevelopmentTaskWhereInput[]
+    NOT?: DevelopmentTaskWhereInput | DevelopmentTaskWhereInput[]
+    id?: StringFilter<"DevelopmentTask"> | string
+    projectId?: StringFilter<"DevelopmentTask"> | string
+    sourcePlanRunId?: StringFilter<"DevelopmentTask"> | string
+    taskKey?: StringFilter<"DevelopmentTask"> | string
+    title?: StringFilter<"DevelopmentTask"> | string
+    description?: StringFilter<"DevelopmentTask"> | string
+    requirement?: StringFilter<"DevelopmentTask"> | string
+    dependencies?: StringFilter<"DevelopmentTask"> | string
+    expectedResult?: StringFilter<"DevelopmentTask"> | string
+    acceptanceCriteria?: StringFilter<"DevelopmentTask"> | string
+    status?: StringFilter<"DevelopmentTask"> | string
+    createdAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type DevelopmentTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    sourcePlanRunId?: SortOrder
+    taskKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    requirement?: SortOrder
+    dependencies?: SortOrder
+    expectedResult?: SortOrder
+    acceptanceCriteria?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type DevelopmentTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sourcePlanRunId_taskKey?: DevelopmentTaskSourcePlanRunIdTaskKeyCompoundUniqueInput
+    AND?: DevelopmentTaskWhereInput | DevelopmentTaskWhereInput[]
+    OR?: DevelopmentTaskWhereInput[]
+    NOT?: DevelopmentTaskWhereInput | DevelopmentTaskWhereInput[]
+    projectId?: StringFilter<"DevelopmentTask"> | string
+    sourcePlanRunId?: StringFilter<"DevelopmentTask"> | string
+    taskKey?: StringFilter<"DevelopmentTask"> | string
+    title?: StringFilter<"DevelopmentTask"> | string
+    description?: StringFilter<"DevelopmentTask"> | string
+    requirement?: StringFilter<"DevelopmentTask"> | string
+    dependencies?: StringFilter<"DevelopmentTask"> | string
+    expectedResult?: StringFilter<"DevelopmentTask"> | string
+    acceptanceCriteria?: StringFilter<"DevelopmentTask"> | string
+    status?: StringFilter<"DevelopmentTask"> | string
+    createdAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id" | "sourcePlanRunId_taskKey">
+
+  export type DevelopmentTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    sourcePlanRunId?: SortOrder
+    taskKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    requirement?: SortOrder
+    dependencies?: SortOrder
+    expectedResult?: SortOrder
+    acceptanceCriteria?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DevelopmentTaskCountOrderByAggregateInput
+    _max?: DevelopmentTaskMaxOrderByAggregateInput
+    _min?: DevelopmentTaskMinOrderByAggregateInput
+  }
+
+  export type DevelopmentTaskScalarWhereWithAggregatesInput = {
+    AND?: DevelopmentTaskScalarWhereWithAggregatesInput | DevelopmentTaskScalarWhereWithAggregatesInput[]
+    OR?: DevelopmentTaskScalarWhereWithAggregatesInput[]
+    NOT?: DevelopmentTaskScalarWhereWithAggregatesInput | DevelopmentTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    projectId?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    sourcePlanRunId?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    taskKey?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    title?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    description?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    requirement?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    dependencies?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    expectedResult?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    acceptanceCriteria?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    status?: StringWithAggregatesFilter<"DevelopmentTask"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DevelopmentTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DevelopmentTask"> | Date | string
+  }
+
   export type ProjectCreateInput = {
     id?: string
     name: string
@@ -8661,6 +10067,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -8675,6 +10082,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -8689,6 +10097,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -8703,6 +10112,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -9137,6 +10547,117 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DevelopmentTaskCreateInput = {
+    id?: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutDevelopmentTasksInput
+  }
+
+  export type DevelopmentTaskUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevelopmentTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutDevelopmentTasksNestedInput
+  }
+
+  export type DevelopmentTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevelopmentTaskCreateManyInput = {
+    id?: string
+    projectId: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevelopmentTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevelopmentTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -9186,6 +10707,12 @@ export namespace Prisma {
     none?: ArchitectureDecisionWhereInput
   }
 
+  export type DevelopmentTaskListRelationFilter = {
+    every?: DevelopmentTaskWhereInput
+    some?: DevelopmentTaskWhereInput
+    none?: DevelopmentTaskWhereInput
+  }
+
   export type PromptTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -9199,6 +10726,10 @@ export namespace Prisma {
   }
 
   export type ArchitectureDecisionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DevelopmentTaskOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9556,6 +11087,59 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type DevelopmentTaskSourcePlanRunIdTaskKeyCompoundUniqueInput = {
+    sourcePlanRunId: string
+    taskKey: string
+  }
+
+  export type DevelopmentTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    sourcePlanRunId?: SortOrder
+    taskKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    requirement?: SortOrder
+    dependencies?: SortOrder
+    expectedResult?: SortOrder
+    acceptanceCriteria?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DevelopmentTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    sourcePlanRunId?: SortOrder
+    taskKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    requirement?: SortOrder
+    dependencies?: SortOrder
+    expectedResult?: SortOrder
+    acceptanceCriteria?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DevelopmentTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    sourcePlanRunId?: SortOrder
+    taskKey?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    requirement?: SortOrder
+    dependencies?: SortOrder
+    expectedResult?: SortOrder
+    acceptanceCriteria?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type PromptTemplateCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -9584,6 +11168,13 @@ export namespace Prisma {
     connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
   }
 
+  export type DevelopmentTaskCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput> | DevelopmentTaskCreateWithoutProjectInput[] | DevelopmentTaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DevelopmentTaskCreateOrConnectWithoutProjectInput | DevelopmentTaskCreateOrConnectWithoutProjectInput[]
+    createMany?: DevelopmentTaskCreateManyProjectInputEnvelope
+    connect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+  }
+
   export type PromptTemplateUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -9610,6 +11201,13 @@ export namespace Prisma {
     connectOrCreate?: ArchitectureDecisionCreateOrConnectWithoutProjectInput | ArchitectureDecisionCreateOrConnectWithoutProjectInput[]
     createMany?: ArchitectureDecisionCreateManyProjectInputEnvelope
     connect?: ArchitectureDecisionWhereUniqueInput | ArchitectureDecisionWhereUniqueInput[]
+  }
+
+  export type DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput> | DevelopmentTaskCreateWithoutProjectInput[] | DevelopmentTaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DevelopmentTaskCreateOrConnectWithoutProjectInput | DevelopmentTaskCreateOrConnectWithoutProjectInput[]
+    createMany?: DevelopmentTaskCreateManyProjectInputEnvelope
+    connect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9676,6 +11274,20 @@ export namespace Prisma {
     deleteMany?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
   }
 
+  export type DevelopmentTaskUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput> | DevelopmentTaskCreateWithoutProjectInput[] | DevelopmentTaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DevelopmentTaskCreateOrConnectWithoutProjectInput | DevelopmentTaskCreateOrConnectWithoutProjectInput[]
+    upsert?: DevelopmentTaskUpsertWithWhereUniqueWithoutProjectInput | DevelopmentTaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DevelopmentTaskCreateManyProjectInputEnvelope
+    set?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    disconnect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    delete?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    connect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    update?: DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput | DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DevelopmentTaskUpdateManyWithWhereWithoutProjectInput | DevelopmentTaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DevelopmentTaskScalarWhereInput | DevelopmentTaskScalarWhereInput[]
+  }
+
   export type PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -9730,6 +11342,20 @@ export namespace Prisma {
     update?: ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput | ArchitectureDecisionUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput | ArchitectureDecisionUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: ArchitectureDecisionScalarWhereInput | ArchitectureDecisionScalarWhereInput[]
+  }
+
+  export type DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput> | DevelopmentTaskCreateWithoutProjectInput[] | DevelopmentTaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: DevelopmentTaskCreateOrConnectWithoutProjectInput | DevelopmentTaskCreateOrConnectWithoutProjectInput[]
+    upsert?: DevelopmentTaskUpsertWithWhereUniqueWithoutProjectInput | DevelopmentTaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: DevelopmentTaskCreateManyProjectInputEnvelope
+    set?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    disconnect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    delete?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    connect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+    update?: DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput | DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: DevelopmentTaskUpdateManyWithWhereWithoutProjectInput | DevelopmentTaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: DevelopmentTaskScalarWhereInput | DevelopmentTaskScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutPromptsInput = {
@@ -9808,6 +11434,20 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutArchitectureDecisionsInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutArchitectureDecisionsInput, ProjectUpdateWithoutArchitectureDecisionsInput>, ProjectUncheckedUpdateWithoutArchitectureDecisionsInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutDevelopmentTasksInput = {
+    create?: XOR<ProjectCreateWithoutDevelopmentTasksInput, ProjectUncheckedCreateWithoutDevelopmentTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDevelopmentTasksInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutDevelopmentTasksNestedInput = {
+    create?: XOR<ProjectCreateWithoutDevelopmentTasksInput, ProjectUncheckedCreateWithoutDevelopmentTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutDevelopmentTasksInput
+    upsert?: ProjectUpsertWithoutDevelopmentTasksInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutDevelopmentTasksInput, ProjectUpdateWithoutDevelopmentTasksInput>, ProjectUncheckedUpdateWithoutDevelopmentTasksInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -10106,6 +11746,45 @@ export namespace Prisma {
     data: ArchitectureDecisionCreateManyProjectInput | ArchitectureDecisionCreateManyProjectInput[]
   }
 
+  export type DevelopmentTaskCreateWithoutProjectInput = {
+    id?: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevelopmentTaskUncheckedCreateWithoutProjectInput = {
+    id?: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevelopmentTaskCreateOrConnectWithoutProjectInput = {
+    where: DevelopmentTaskWhereUniqueInput
+    create: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DevelopmentTaskCreateManyProjectInputEnvelope = {
+    data: DevelopmentTaskCreateManyProjectInput | DevelopmentTaskCreateManyProjectInput[]
+  }
+
   export type PromptTemplateUpsertWithWhereUniqueWithoutProjectInput = {
     where: PromptTemplateWhereUniqueInput
     update: XOR<PromptTemplateUpdateWithoutProjectInput, PromptTemplateUncheckedUpdateWithoutProjectInput>
@@ -10229,6 +11908,41 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
   }
 
+  export type DevelopmentTaskUpsertWithWhereUniqueWithoutProjectInput = {
+    where: DevelopmentTaskWhereUniqueInput
+    update: XOR<DevelopmentTaskUpdateWithoutProjectInput, DevelopmentTaskUncheckedUpdateWithoutProjectInput>
+    create: XOR<DevelopmentTaskCreateWithoutProjectInput, DevelopmentTaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput = {
+    where: DevelopmentTaskWhereUniqueInput
+    data: XOR<DevelopmentTaskUpdateWithoutProjectInput, DevelopmentTaskUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type DevelopmentTaskUpdateManyWithWhereWithoutProjectInput = {
+    where: DevelopmentTaskScalarWhereInput
+    data: XOR<DevelopmentTaskUpdateManyMutationInput, DevelopmentTaskUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type DevelopmentTaskScalarWhereInput = {
+    AND?: DevelopmentTaskScalarWhereInput | DevelopmentTaskScalarWhereInput[]
+    OR?: DevelopmentTaskScalarWhereInput[]
+    NOT?: DevelopmentTaskScalarWhereInput | DevelopmentTaskScalarWhereInput[]
+    id?: StringFilter<"DevelopmentTask"> | string
+    projectId?: StringFilter<"DevelopmentTask"> | string
+    sourcePlanRunId?: StringFilter<"DevelopmentTask"> | string
+    taskKey?: StringFilter<"DevelopmentTask"> | string
+    title?: StringFilter<"DevelopmentTask"> | string
+    description?: StringFilter<"DevelopmentTask"> | string
+    requirement?: StringFilter<"DevelopmentTask"> | string
+    dependencies?: StringFilter<"DevelopmentTask"> | string
+    expectedResult?: StringFilter<"DevelopmentTask"> | string
+    acceptanceCriteria?: StringFilter<"DevelopmentTask"> | string
+    status?: StringFilter<"DevelopmentTask"> | string
+    createdAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
+  }
+
   export type ProjectCreateWithoutPromptsInput = {
     id?: string
     name: string
@@ -10240,6 +11954,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPromptsInput = {
@@ -10253,6 +11968,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPromptsInput = {
@@ -10282,6 +11998,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutPromptsInput = {
@@ -10295,6 +12012,7 @@ export namespace Prisma {
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutWorkflowRunsInput = {
@@ -10308,6 +12026,7 @@ export namespace Prisma {
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkflowRunsInput = {
@@ -10321,6 +12040,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkflowRunsInput = {
@@ -10350,6 +12070,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkflowRunsInput = {
@@ -10363,6 +12084,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutRequirementsInput = {
@@ -10376,6 +12098,7 @@ export namespace Prisma {
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutRequirementsInput = {
@@ -10389,6 +12112,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutRequirementsInput = {
@@ -10418,6 +12142,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutRequirementsInput = {
@@ -10431,6 +12156,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateWithoutArchitectureDecisionsInput = {
@@ -10444,6 +12170,7 @@ export namespace Prisma {
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutArchitectureDecisionsInput = {
@@ -10457,6 +12184,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutArchitectureDecisionsInput = {
@@ -10486,6 +12214,7 @@ export namespace Prisma {
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutArchitectureDecisionsInput = {
@@ -10499,6 +12228,79 @@ export namespace Prisma {
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateWithoutDevelopmentTasksInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutDevelopmentTasksInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutDevelopmentTasksInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutDevelopmentTasksInput, ProjectUncheckedCreateWithoutDevelopmentTasksInput>
+  }
+
+  export type ProjectUpsertWithoutDevelopmentTasksInput = {
+    update: XOR<ProjectUpdateWithoutDevelopmentTasksInput, ProjectUncheckedUpdateWithoutDevelopmentTasksInput>
+    create: XOR<ProjectCreateWithoutDevelopmentTasksInput, ProjectUncheckedCreateWithoutDevelopmentTasksInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutDevelopmentTasksInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutDevelopmentTasksInput, ProjectUncheckedUpdateWithoutDevelopmentTasksInput>
+  }
+
+  export type ProjectUpdateWithoutDevelopmentTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutDevelopmentTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type PromptTemplateCreateManyProjectInput = {
@@ -10540,6 +12342,21 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DevelopmentTaskCreateManyProjectInput = {
+    id?: string
+    sourcePlanRunId: string
+    taskKey: string
+    title: string
+    description?: string
+    requirement?: string
+    dependencies?: string
+    expectedResult?: string
+    acceptanceCriteria?: string
+    status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10669,6 +12486,51 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevelopmentTaskUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevelopmentTaskUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DevelopmentTaskUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourcePlanRunId?: StringFieldUpdateOperationsInput | string
+    taskKey?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirement?: StringFieldUpdateOperationsInput | string
+    dependencies?: StringFieldUpdateOperationsInput | string
+    expectedResult?: StringFieldUpdateOperationsInput | string
+    acceptanceCriteria?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
