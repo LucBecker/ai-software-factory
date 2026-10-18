@@ -90,6 +90,8 @@ model ArchitectureDecision {
   title       String
   description String   @default("")
   category    String   @default("GENERAL")
+  status     String    @default("PROPOSED")
+  approvedAt DateTime?
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())

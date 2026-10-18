@@ -181,6 +181,8 @@ exports.Prisma.ArchitectureDecisionScalarFieldEnum = {
   title: 'title',
   description: 'description',
   category: 'category',
+  status: 'status',
+  approvedAt: 'approvedAt',
   projectId: 'projectId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

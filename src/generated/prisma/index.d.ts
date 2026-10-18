@@ -7116,6 +7116,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     category: string | null
+    status: string | null
+    approvedAt: Date | null
     projectId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7126,6 +7128,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     category: string | null
+    status: string | null
+    approvedAt: Date | null
     projectId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -7136,6 +7140,8 @@ export namespace Prisma {
     title: number
     description: number
     category: number
+    status: number
+    approvedAt: number
     projectId: number
     createdAt: number
     updatedAt: number
@@ -7148,6 +7154,8 @@ export namespace Prisma {
     title?: true
     description?: true
     category?: true
+    status?: true
+    approvedAt?: true
     projectId?: true
     createdAt?: true
     updatedAt?: true
@@ -7158,6 +7166,8 @@ export namespace Prisma {
     title?: true
     description?: true
     category?: true
+    status?: true
+    approvedAt?: true
     projectId?: true
     createdAt?: true
     updatedAt?: true
@@ -7168,6 +7178,8 @@ export namespace Prisma {
     title?: true
     description?: true
     category?: true
+    status?: true
+    approvedAt?: true
     projectId?: true
     createdAt?: true
     updatedAt?: true
@@ -7251,6 +7263,8 @@ export namespace Prisma {
     title: string
     description: string
     category: string
+    status: string
+    approvedAt: Date | null
     projectId: string
     createdAt: Date
     updatedAt: Date
@@ -7278,6 +7292,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     category?: boolean
+    status?: boolean
+    approvedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7289,6 +7305,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     category?: boolean
+    status?: boolean
+    approvedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7300,6 +7318,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     category?: boolean
+    status?: boolean
+    approvedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -7311,12 +7331,14 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     category?: boolean
+    status?: boolean
+    approvedAt?: boolean
     projectId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ArchitectureDecisionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "category" | "projectId" | "createdAt" | "updatedAt", ExtArgs["result"]["architectureDecision"]>
+  export type ArchitectureDecisionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "category" | "status" | "approvedAt" | "projectId" | "createdAt" | "updatedAt", ExtArgs["result"]["architectureDecision"]>
   export type ArchitectureDecisionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     project?: boolean | ProjectDefaultArgs<ExtArgs>
   }
@@ -7337,6 +7359,8 @@ export namespace Prisma {
       title: string
       description: string
       category: string
+      status: string
+      approvedAt: Date | null
       projectId: string
       createdAt: Date
       updatedAt: Date
@@ -7768,6 +7792,8 @@ export namespace Prisma {
     readonly title: FieldRef<"ArchitectureDecision", 'String'>
     readonly description: FieldRef<"ArchitectureDecision", 'String'>
     readonly category: FieldRef<"ArchitectureDecision", 'String'>
+    readonly status: FieldRef<"ArchitectureDecision", 'String'>
+    readonly approvedAt: FieldRef<"ArchitectureDecision", 'DateTime'>
     readonly projectId: FieldRef<"ArchitectureDecision", 'String'>
     readonly createdAt: FieldRef<"ArchitectureDecision", 'DateTime'>
     readonly updatedAt: FieldRef<"ArchitectureDecision", 'DateTime'>
@@ -9432,6 +9458,8 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     category: 'category',
+    status: 'status',
+    approvedAt: 'approvedAt',
     projectId: 'projectId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -9902,6 +9930,8 @@ export namespace Prisma {
     title?: StringFilter<"ArchitectureDecision"> | string
     description?: StringFilter<"ArchitectureDecision"> | string
     category?: StringFilter<"ArchitectureDecision"> | string
+    status?: StringFilter<"ArchitectureDecision"> | string
+    approvedAt?: DateTimeNullableFilter<"ArchitectureDecision"> | Date | string | null
     projectId?: StringFilter<"ArchitectureDecision"> | string
     createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
     updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
@@ -9913,6 +9943,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    status?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9927,6 +9959,8 @@ export namespace Prisma {
     title?: StringFilter<"ArchitectureDecision"> | string
     description?: StringFilter<"ArchitectureDecision"> | string
     category?: StringFilter<"ArchitectureDecision"> | string
+    status?: StringFilter<"ArchitectureDecision"> | string
+    approvedAt?: DateTimeNullableFilter<"ArchitectureDecision"> | Date | string | null
     projectId?: StringFilter<"ArchitectureDecision"> | string
     createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
     updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
@@ -9938,6 +9972,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    status?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -9954,6 +9990,8 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
     description?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
     category?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    status?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"ArchitectureDecision"> | Date | string | null
     projectId?: StringWithAggregatesFilter<"ArchitectureDecision"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ArchitectureDecision"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ArchitectureDecision"> | Date | string
@@ -10483,6 +10521,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutArchitectureDecisionsInput
@@ -10493,6 +10533,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     projectId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10503,6 +10545,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutArchitectureDecisionsNestedInput
@@ -10513,6 +10557,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10523,6 +10569,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     projectId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10533,6 +10581,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10542,6 +10592,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     projectId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11062,6 +11114,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    status?: SortOrder
+    approvedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11072,6 +11126,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    status?: SortOrder
+    approvedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11082,6 +11138,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    status?: SortOrder
+    approvedAt?: SortOrder
     projectId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -11724,6 +11782,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11733,6 +11793,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11903,6 +11965,8 @@ export namespace Prisma {
     title?: StringFilter<"ArchitectureDecision"> | string
     description?: StringFilter<"ArchitectureDecision"> | string
     category?: StringFilter<"ArchitectureDecision"> | string
+    status?: StringFilter<"ArchitectureDecision"> | string
+    approvedAt?: DateTimeNullableFilter<"ArchitectureDecision"> | Date | string | null
     projectId?: StringFilter<"ArchitectureDecision"> | string
     createdAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
     updatedAt?: DateTimeFilter<"ArchitectureDecision"> | Date | string
@@ -12342,6 +12406,8 @@ export namespace Prisma {
     title: string
     description?: string
     category?: string
+    status?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12468,6 +12534,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12477,6 +12545,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12486,6 +12556,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

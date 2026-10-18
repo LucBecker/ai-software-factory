@@ -165,6 +165,59 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
 
+        // Aprovação explícita de uma decisão de arquitetura.
+    if (body.action === "APPROVE") {
+      if (
+        typeof body.id !== "string" ||
+        !body.id.trim() ||
+        typeof body.projectId !== "string" ||
+        !body.projectId.trim()
+      ) {
+        return NextResponse.json(
+          { error: "Informe a decisão e o projeto." },
+          { status: 400 },
+        );
+      }
+
+      const existingDecision =
+        await prisma.architectureDecision.findFirst({
+          where: {
+            id: body.id.trim(),
+            projectId: body.projectId.trim(),
+          },
+        });
+
+      if (!existingDecision) {
+        return NextResponse.json(
+          { error: "Decisão não encontrada neste projeto." },
+          { status: 404 },
+        );
+      }
+
+      if (
+        existingDecision.status === "APPROVED" &&
+        existingDecision.approvedAt !== null
+      ) {
+        return NextResponse.json({
+          message: "Esta decisão já estava aprovada.",
+          decision: existingDecision,
+        });
+      }
+
+      const decision = await prisma.architectureDecision.update({
+        where: { id: existingDecision.id },
+        data: {
+          status: "APPROVED",
+          approvedAt: new Date(),
+        },
+      });
+
+      return NextResponse.json({
+        message: "Decisão de arquitetura aprovada com sucesso.",
+        decision,
+      });
+    }
+
     if (
       typeof body.id !== "string" ||
       !body.id.trim() ||
@@ -230,6 +283,8 @@ export async function PATCH(request: Request) {
             ? body.description.trim()
             : "",
         category: body.category,
+        status: "PROPOSED",
+        approvedAt: null,
       },
     });
 

@@ -86,14 +86,16 @@ model Requirement {
 }
 
 model ArchitectureDecision {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
-  description String   @default("")
-  category    String   @default("GENERAL")
+  description String    @default("")
+  category    String    @default("GENERAL")
+  status      String    @default("PROPOSED")
+  approvedAt  DateTime?
   projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([projectId, createdAt])
 }

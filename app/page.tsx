@@ -26,6 +26,8 @@ type ArchitectureDecision = {
   description: string;
   category: string;
   projectId: string;
+  status: string;
+  approvedAt: string | null;
 };
 
 type AnalysisRun = {
@@ -183,6 +185,20 @@ export default function Home() {
   useState("");
   const [developmentTasksMessage, setDevelopmentTasksMessage] =
   useState("");
+  const [developmentAgentLoading, setDevelopmentAgentLoading] =
+  useState(false);
+  const [developmentAgentError, setDevelopmentAgentError] =
+  useState("");
+  const [developmentAgentMessage, setDevelopmentAgentMessage] =
+  useState("");
+  const [developmentAgentOutput, setDevelopmentAgentOutput] =
+  useState("");
+  const [developmentAgentRunId, setDevelopmentAgentRunId] =
+  useState<string | null>(null);
+  const [developmentAgentStatus, setDevelopmentAgentStatus] =
+  useState("");
+  const [developmentAgentTaskId, setDevelopmentAgentTaskId] =
+  useState<string | null>(null);
   const [reviewComment, setReviewComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
@@ -908,6 +924,57 @@ useEffect(() => {
   loadDevelopmentTasks(technicalPlanRunId);
 }, [selectedProject, technicalPlanRunId]);
 
+async function analyzeDevelopmentTask(taskId: string) {
+  if (!selectedProject) {
+    setDevelopmentAgentError("Selecione um projeto primeiro.");
+    return;
+  }
+
+  setDevelopmentAgentTaskId(taskId);
+  setDevelopmentAgentLoading(true);
+  setDevelopmentAgentError("");
+  setDevelopmentAgentMessage("");
+  setDevelopmentAgentOutput("");
+  setDevelopmentAgentRunId(null);
+  setDevelopmentAgentStatus("");
+
+  try {
+    const response = await fetch("/api/development-agent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        taskId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível analisar a tarefa.",
+      );
+    }
+
+    setDevelopmentAgentOutput(data.output ?? "");
+    setDevelopmentAgentRunId(data.runId ?? null);
+    setDevelopmentAgentStatus(data.status ?? "");
+    setDevelopmentAgentMessage(
+      data.message || "Análise registrada com sucesso.",
+    );
+  } catch (error) {
+    setDevelopmentAgentError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao analisar a tarefa.",
+    );
+  } finally {
+    setDevelopmentAgentLoading(false);
+  }
+}
+
 async function submitTechnicalPlanReview(
   decision: "APPROVED" | "CHANGES_REQUESTED",
 ) {
@@ -1359,6 +1426,56 @@ async function deleteRequirement(requirement: Requirement) {
   setEditingArchitectureError("");
   setArchitectureError("");
   setArchitectureSuccess("");
+}
+
+async function approveArchitectureDecision(
+  decision: (typeof architectureDecisions)[number],
+) {
+  if (!selectedProject) {
+    setArchitectureError("Selecione um projeto primeiro.");
+    return;
+  }
+
+  setArchitectureError("");
+  setArchitectureSuccess("");
+
+  try {
+    const response = await fetch("/api/architecture-decisions", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "APPROVE",
+        id: decision.id,
+        projectId: selectedProject.id,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível aprovar a decisão.",
+      );
+    }
+
+    setArchitectureDecisions((current) =>
+      current.map((item) =>
+        item.id === decision.id ? data.decision : item,
+      ),
+    );
+
+    setArchitectureSuccess(
+      data.message || "Decisão de arquitetura aprovada com sucesso.",
+    );
+  } catch (error) {
+    setArchitectureError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao aprovar a decisão.",
+    );
+  }
 }
 
 async function saveArchitectureEdit(
@@ -2311,6 +2428,25 @@ async function saveArchitectureEdit(
         )}
 
         <div className="mt-3 flex flex-wrap justify-end gap-2">
+          {decision.status === "APPROVED" && decision.approvedAt ? (
+            <div className="flex flex-col items-end gap-1">
+              <span className="rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-300">
+                Aprovada
+              </span>
+              <span className="text-xs text-slate-500">
+                {new Date(decision.approvedAt).toLocaleString("pt-BR")}
+              </span>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => approveArchitectureDecision(decision)}
+              disabled={!selectedProject}
+              className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Aprovar decisão
+            </button>
+          )}
           <button
             type="button"
             onClick={() =>
@@ -3095,6 +3231,68 @@ async function saveArchitectureEdit(
         <p className="mt-3 break-all text-xs text-slate-500">
           Plano de origem: {task.sourcePlanRunId}
         </p>
+        <div className="mt-4">
+  <button
+    type="button"
+    onClick={() => analyzeDevelopmentTask(task.id)}
+    disabled={developmentAgentLoading}
+    className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    {developmentAgentLoading &&
+    developmentAgentTaskId === task.id
+      ? "Analisando tarefa..."
+      : "Analisar tarefa"}
+  </button>
+</div>
+
+{developmentAgentTaskId === task.id && (
+  <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+    {developmentAgentLoading && (
+      <p className="text-sm text-slate-400">
+        Analisando a tarefa e verificando as aprovações...
+      </p>
+    )}
+
+    {developmentAgentError && (
+      <p role="alert" className="text-sm text-red-400">
+        {developmentAgentError}
+      </p>
+    )}
+
+    {developmentAgentMessage && (
+      <p className="text-sm text-emerald-400">
+        {developmentAgentMessage}
+      </p>
+    )}
+
+    {developmentAgentStatus && (
+      <p className="mt-3 text-sm">
+        <span className="text-slate-400">
+          Status da proposta:
+        </span>{" "}
+        <span className="font-semibold">
+          {developmentAgentStatus === "BLOCKED"
+            ? "Bloqueada"
+            : developmentAgentStatus === "READY_FOR_REVIEW"
+              ? "Pronta para revisão"
+              : developmentAgentStatus}
+        </span>
+      </p>
+    )}
+
+    {developmentAgentRunId && (
+      <p className="mt-2 break-all text-xs text-slate-500">
+        Execução registrada: {developmentAgentRunId}
+      </p>
+    )}
+
+    {developmentAgentOutput && (
+      <pre className="mt-4 max-h-[600px] overflow-auto whitespace-pre-wrap break-words rounded-lg bg-[#0b1020] p-4 text-sm leading-6 text-slate-200">
+        {developmentAgentOutput}
+      </pre>
+    )}
+  </div>
+)}
       </div>
     ))}
   </div>
