@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
 
 export async function GET(request: Request) {
   try {
@@ -13,16 +14,10 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
-      );
+    if (!access.ok) {
+    return access.response;
     }
 
     const decisions = await prisma.architectureDecision.findMany({
@@ -65,18 +60,6 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "O título ou a descrição ultrapassa o limite permitido." },
         { status: 400 },
-      );
-    }
-
-    const project = await prisma.project.findUnique({
-      where: { id: body.projectId },
-      select: { id: true },
-    });
-
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
       );
     }
 

@@ -1,11 +1,20 @@
 
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
+import { requireSession } from "../../../src/lib/require-session";
 
 
-export async function GET() {
+export async function GET(request: Request) {
+  const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
   try {
     const projects = await prisma.project.findMany({
+      where: {
+        userId: authResult.session.user.id,
+      },
       orderBy: { updatedAt: "desc" },
     });
 
@@ -22,6 +31,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
     const body: unknown = await request.json();
 
     if (
@@ -55,6 +69,7 @@ export async function POST(request: Request) {
       data: {
         name: body.name.trim(),
         description,
+        userId: authResult.session.user.id,
       },
     });
 
