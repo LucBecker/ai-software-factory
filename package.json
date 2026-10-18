@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@better-auth/prisma-adapter": "^1.7.10",
     "@prisma/client": "^6.19.3",
+    "better-auth": "^1.7.10",
     "next": "16.4.2",
     "prisma": "^6.19.3",
     "react": "19.3.0",
