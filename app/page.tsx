@@ -199,6 +199,8 @@ export default function Home() {
   useState("");
   const [developmentAgentTaskId, setDevelopmentAgentTaskId] =
   useState<string | null>(null);
+  const [developmentAgentApprovalLoading, setDevelopmentAgentApprovalLoading] =
+  useState(false);
   const [reviewComment, setReviewComment] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
@@ -923,6 +925,59 @@ useEffect(() => {
 
   loadDevelopmentTasks(technicalPlanRunId);
 }, [selectedProject, technicalPlanRunId]);
+
+async function approveDevelopmentProposal() {
+  if (!selectedProject || !developmentAgentRunId) {
+    setDevelopmentAgentError(
+      "Selecione um projeto e execute a análise antes de aprovar.",
+    );
+    return;
+  }
+
+  setDevelopmentAgentApprovalLoading(true);
+  setDevelopmentAgentError("");
+  setDevelopmentAgentMessage("");
+
+  try {
+    const response = await fetch("/api/development-agent", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "APPROVE_PROPOSAL",
+        projectId: selectedProject.id,
+        runId: developmentAgentRunId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível aprovar a proposta.",
+      );
+    }
+
+    setDevelopmentAgentStatus(data.status);
+
+    if (typeof data.output === "string") {
+      setDevelopmentAgentOutput(data.output);
+    }
+
+    setDevelopmentAgentMessage(
+      data.message || "Aprovação registrada com sucesso.",
+    );
+  } catch (error) {
+    setDevelopmentAgentError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao aprovar a proposta.",
+    );
+  } finally {
+    setDevelopmentAgentApprovalLoading(false);
+  }
+}
 
 async function analyzeDevelopmentTask(taskId: string) {
   if (!selectedProject) {
@@ -3291,6 +3346,33 @@ async function saveArchitectureEdit(
         {developmentAgentOutput}
       </pre>
     )}
+    {developmentAgentStatus === "READY_FOR_REVIEW" && (
+  <div className="mt-4 border-t border-white/10 pt-4">
+    <p className="mb-3 text-sm text-amber-300">
+      A proposta precisa da sua aprovação antes de qualquer implementação.
+    </p>
+
+    <button
+      type="button"
+      onClick={approveDevelopmentProposal}
+      disabled={
+        developmentAgentApprovalLoading ||
+        !developmentAgentRunId
+      }
+      className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {developmentAgentApprovalLoading
+        ? "Registrando aprovação..."
+        : "Aprovar proposta de implementação"}
+    </button>
+  </div>
+)}
+
+      {developmentAgentStatus === "APPROVED_FOR_IMPLEMENTATION" && (
+        <p className="mt-4 rounded-lg bg-emerald-400/10 p-3 text-sm text-emerald-300">
+          Proposta aprovada e registrada. Nenhum código foi implementado nesta etapa.
+        </p>
+      )}
   </div>
 )}
       </div>

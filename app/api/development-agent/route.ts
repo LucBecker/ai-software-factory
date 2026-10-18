@@ -428,3 +428,146 @@ if (isAuthenticationTask) {
     );
   }
 }
+export async function PATCH(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (
+      body.action !== "APPROVE_PROPOSAL" ||
+      typeof body.projectId !== "string" ||
+      typeof body.runId !== "string" ||
+      !body.projectId.trim() ||
+      !body.runId.trim()
+    ) {
+      return NextResponse.json(
+        { error: "Informe o projeto, a execução e a ação de aprovação." },
+        { status: 400 },
+      );
+    }
+
+    const run = await prisma.workflowRun.findFirst({
+      where: {
+        id: body.runId,
+        projectId: body.projectId,
+        stage: "DEVELOPMENT_AGENT_ANALYSIS",
+      },
+    });
+
+    if (!run) {
+      return NextResponse.json(
+        { error: "Análise não encontrada neste projeto." },
+        { status: 404 },
+      );
+    }
+
+    let input: Record<string, unknown>;
+
+    try {
+      input = JSON.parse(run.input ?? "{}") as Record<string, unknown>;
+    } catch {
+      return NextResponse.json(
+        { error: "Não foi possível validar os dados da análise." },
+        { status: 409 },
+      );
+    }
+
+    if (input.proposalStatus !== "READY_FOR_REVIEW") {
+      return NextResponse.json(
+        { error: "A proposta não está disponível para aprovação." },
+        { status: 409 },
+      );
+    }
+
+    const sourcePlanRunId =
+      typeof input.sourcePlanRunId === "string"
+        ? input.sourcePlanRunId
+        : "";
+
+    const sourceReviewRunId =
+      typeof input.sourceReviewRunId === "string"
+        ? input.sourceReviewRunId
+        : "";
+
+    const sourcePlan = await prisma.workflowRun.findFirst({
+      where: {
+        id: sourcePlanRunId,
+        projectId: body.projectId,
+        stage: "TECHNICAL_PLANNING",
+        status: "COMPLETED",
+      },
+      select: { id: true },
+    });
+
+    const sourceReview = await prisma.workflowRun.findFirst({
+      where: {
+        id: sourceReviewRunId,
+        projectId: body.projectId,
+        stage: "TECHNICAL_PLANNING_REVIEW",
+        status: "APPROVED",
+      },
+      select: {
+        id: true,
+        input: true,
+      },
+    });
+
+    if (
+      !sourcePlan ||
+      !sourceReview ||
+      getReviewSourceRunId(sourceReview.input) !== sourcePlan.id
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "A aprovação do plano de origem precisa continuar válida.",
+        },
+        { status: 409 },
+      );
+    }
+
+    const approvedAt = new Date();
+
+    const updatedInput = {
+      ...input,
+      proposalStatus: "APPROVED_FOR_IMPLEMENTATION",
+      humanReview: {
+        status: "APPROVED",
+        approvedAt: approvedAt.toISOString(),
+        identityVerified: false,
+      },
+    };
+
+    const updatedOutput = [
+      run.output ?? "",
+      "",
+      "## 8. Revisão humana",
+      "",
+      "- Status: APPROVED_FOR_IMPLEMENTATION",
+      `- Aprovado em: ${approvedAt.toISOString()}`,
+      "- Identidade do aprovador: não verificada.",
+    ].join("\n");
+
+    await prisma.workflowRun.update({
+      where: { id: run.id },
+      data: {
+        input: JSON.stringify(updatedInput),
+        output: updatedOutput,
+      },
+    });
+
+    return NextResponse.json({
+      message: "A aprovação da proposta foi registrada.",
+      runId: run.id,
+      status: "APPROVED_FOR_IMPLEMENTATION",
+      approvedAt: approvedAt.toISOString(),
+      output: updatedOutput
+    });
+  } catch (error) {
+    console.error("Erro ao aprovar proposta de desenvolvimento:", error);
+
+    return NextResponse.json(
+      { error: "Não foi possível registrar a aprovação da proposta." },
+      { status: 500 },
+    );
+  }
+}
