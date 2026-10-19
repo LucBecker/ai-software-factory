@@ -182,8 +182,20 @@ exports.Prisma.SkillScalarFieldEnum = {
   activationCriteria: 'activationCriteria',
   version: 'version',
   isActive: 'isActive',
+  reviewStatus: 'reviewStatus',
+  approvedAt: 'approvedAt',
+  approvedById: 'approvedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SkillReviewScalarFieldEnum = {
+  id: 'id',
+  skillId: 'skillId',
+  reviewerId: 'reviewerId',
+  decision: 'decision',
+  comment: 'comment',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AgentSkillScalarFieldEnum = {
@@ -251,6 +263,7 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  accessLevel: 'accessLevel',
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
@@ -310,6 +323,7 @@ exports.Prisma.ModelName = {
   PromptTemplate: 'PromptTemplate',
   Agent: 'Agent',
   Skill: 'Skill',
+  SkillReview: 'SkillReview',
   AgentSkill: 'AgentSkill',
   WorkflowRun: 'WorkflowRun',
   Requirement: 'Requirement',

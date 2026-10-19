@@ -91,15 +91,21 @@ model Agent {
 }
 
 model Skill {
-  id                 String  @id @default(cuid())
+  id                 String    @id @default(cuid())
   key                String
   name               String
-  description        String  @default("")
-  category           String  @default("GENERAL")
+  description        String    @default("")
+  category           String    @default("GENERAL")
   instructions       String
-  activationCriteria String  @default("")
-  version            Int     @default(1)
-  isActive           Boolean @default(false)
+  activationCriteria String    @default("")
+  version            Int       @default(1)
+  isActive           Boolean   @default(false)
+  reviewStatus       String    @default("PENDING")
+  approvedAt         DateTime?
+  approvedById       String?
+  approvedBy         User?     @relation("SkillApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+
+  reviews SkillReview[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -108,6 +114,23 @@ model Skill {
 
   @@unique([key, version])
   @@index([category, isActive])
+  @@index([reviewStatus])
+  @@index([approvedById])
+}
+
+model SkillReview {
+  id         String   @id @default(cuid())
+  skillId    String
+  reviewerId String?
+  decision   String
+  comment    String   @default("")
+  createdAt  DateTime @default(now())
+
+  skill    Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  reviewer User? @relation("SkillReviewAuthor", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([skillId, createdAt])
+  @@index([reviewerId])
 }
 
 model AgentSkill {
@@ -195,16 +218,19 @@ model DevelopmentTask {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  projects      Project[]
+  id             String        @id
+  name           String
+  email          String
+  accessLevel    String        @default("USER")
+  emailVerified  Boolean       @default(false)
+  image          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  sessions       Session[]
+  accounts       Account[]
+  projects       Project[]
+  approvedSkills Skill[]       @relation("SkillApprover")
+  skillReviews   SkillReview[] @relation("SkillReviewAuthor")
 
   @@unique([email])
   @@map("user")

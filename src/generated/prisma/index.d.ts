@@ -39,6 +39,11 @@ export type Agent = $Result.DefaultSelection<Prisma.$AgentPayload>
  */
 export type Skill = $Result.DefaultSelection<Prisma.$SkillPayload>
 /**
+ * Model SkillReview
+ * 
+ */
+export type SkillReview = $Result.DefaultSelection<Prisma.$SkillReviewPayload>
+/**
  * Model AgentSkill
  * 
  */
@@ -251,6 +256,16 @@ export class PrismaClient<
     * ```
     */
   get skill(): Prisma.SkillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.skillReview`: Exposes CRUD operations for the **SkillReview** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SkillReviews
+    * const skillReviews = await prisma.skillReview.findMany()
+    * ```
+    */
+  get skillReview(): Prisma.SkillReviewDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.agentSkill`: Exposes CRUD operations for the **AgentSkill** model.
@@ -787,6 +802,7 @@ export namespace Prisma {
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
     Skill: 'Skill',
+    SkillReview: 'SkillReview',
     AgentSkill: 'AgentSkill',
     WorkflowRun: 'WorkflowRun',
     Requirement: 'Requirement',
@@ -814,7 +830,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "skill" | "agentSkill" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
+      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "skill" | "skillReview" | "agentSkill" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1185,6 +1201,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SkillCountArgs<ExtArgs>
             result: $Utils.Optional<SkillCountAggregateOutputType> | number
+          }
+        }
+      }
+      SkillReview: {
+        payload: Prisma.$SkillReviewPayload<ExtArgs>
+        fields: Prisma.SkillReviewFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SkillReviewFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SkillReviewFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          findFirst: {
+            args: Prisma.SkillReviewFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SkillReviewFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          findMany: {
+            args: Prisma.SkillReviewFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>[]
+          }
+          create: {
+            args: Prisma.SkillReviewCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          createMany: {
+            args: Prisma.SkillReviewCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SkillReviewCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>[]
+          }
+          delete: {
+            args: Prisma.SkillReviewDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          update: {
+            args: Prisma.SkillReviewUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          deleteMany: {
+            args: Prisma.SkillReviewDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SkillReviewUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SkillReviewUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>[]
+          }
+          upsert: {
+            args: Prisma.SkillReviewUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillReviewPayload>
+          }
+          aggregate: {
+            args: Prisma.SkillReviewAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSkillReview>
+          }
+          groupBy: {
+            args: Prisma.SkillReviewGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SkillReviewGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SkillReviewCountArgs<ExtArgs>
+            result: $Utils.Optional<SkillReviewCountAggregateOutputType> | number
           }
         }
       }
@@ -1955,6 +2045,7 @@ export namespace Prisma {
     promptTemplate?: PromptTemplateOmit
     agent?: AgentOmit
     skill?: SkillOmit
+    skillReview?: SkillReviewOmit
     agentSkill?: AgentSkillOmit
     workflowRun?: WorkflowRunOmit
     requirement?: RequirementOmit
@@ -2142,10 +2233,12 @@ export namespace Prisma {
    */
 
   export type SkillCountOutputType = {
+    reviews: number
     agentAssignments: number
   }
 
   export type SkillCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reviews?: boolean | SkillCountOutputTypeCountReviewsArgs
     agentAssignments?: boolean | SkillCountOutputTypeCountAgentAssignmentsArgs
   }
 
@@ -2158,6 +2251,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the SkillCountOutputType
      */
     select?: SkillCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SkillCountOutputType without action
+   */
+  export type SkillCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillReviewWhereInput
   }
 
   /**
@@ -2176,12 +2276,16 @@ export namespace Prisma {
     sessions: number
     accounts: number
     projects: number
+    approvedSkills: number
+    skillReviews: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     projects?: boolean | UserCountOutputTypeCountProjectsArgs
+    approvedSkills?: boolean | UserCountOutputTypeCountApprovedSkillsArgs
+    skillReviews?: boolean | UserCountOutputTypeCountSkillReviewsArgs
   }
 
   // Custom InputTypes
@@ -2214,6 +2318,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountApprovedSkillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSkillReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillReviewWhereInput
   }
 
 
@@ -7010,6 +7128,9 @@ export namespace Prisma {
     activationCriteria: string | null
     version: number | null
     isActive: boolean | null
+    reviewStatus: string | null
+    approvedAt: Date | null
+    approvedById: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7024,6 +7145,9 @@ export namespace Prisma {
     activationCriteria: string | null
     version: number | null
     isActive: boolean | null
+    reviewStatus: string | null
+    approvedAt: Date | null
+    approvedById: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7038,6 +7162,9 @@ export namespace Prisma {
     activationCriteria: number
     version: number
     isActive: number
+    reviewStatus: number
+    approvedAt: number
+    approvedById: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7062,6 +7189,9 @@ export namespace Prisma {
     activationCriteria?: true
     version?: true
     isActive?: true
+    reviewStatus?: true
+    approvedAt?: true
+    approvedById?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7076,6 +7206,9 @@ export namespace Prisma {
     activationCriteria?: true
     version?: true
     isActive?: true
+    reviewStatus?: true
+    approvedAt?: true
+    approvedById?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7090,6 +7223,9 @@ export namespace Prisma {
     activationCriteria?: true
     version?: true
     isActive?: true
+    reviewStatus?: true
+    approvedAt?: true
+    approvedById?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7191,6 +7327,9 @@ export namespace Prisma {
     activationCriteria: string
     version: number
     isActive: boolean
+    reviewStatus: string
+    approvedAt: Date | null
+    approvedById: string | null
     createdAt: Date
     updatedAt: Date
     _count: SkillCountAggregateOutputType | null
@@ -7224,8 +7363,13 @@ export namespace Prisma {
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
+    reviewStatus?: boolean
+    approvedAt?: boolean
+    approvedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+    reviews?: boolean | Skill$reviewsArgs<ExtArgs>
     agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
     _count?: boolean | SkillCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["skill"]>
@@ -7240,8 +7384,12 @@ export namespace Prisma {
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
+    reviewStatus?: boolean
+    approvedAt?: boolean
+    approvedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
   }, ExtArgs["result"]["skill"]>
 
   export type SkillSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7254,8 +7402,12 @@ export namespace Prisma {
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
+    reviewStatus?: boolean
+    approvedAt?: boolean
+    approvedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
   }, ExtArgs["result"]["skill"]>
 
   export type SkillSelectScalar = {
@@ -7268,21 +7420,32 @@ export namespace Prisma {
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
+    reviewStatus?: boolean
+    approvedAt?: boolean
+    approvedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "activationCriteria" | "version" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
+  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "activationCriteria" | "version" | "isActive" | "reviewStatus" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
   export type SkillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+    reviews?: boolean | Skill$reviewsArgs<ExtArgs>
     agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
     _count?: boolean | SkillCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SkillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type SkillIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SkillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+  }
+  export type SkillIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+  }
 
   export type $SkillPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Skill"
     objects: {
+      approvedBy: Prisma.$UserPayload<ExtArgs> | null
+      reviews: Prisma.$SkillReviewPayload<ExtArgs>[]
       agentAssignments: Prisma.$AgentSkillPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -7295,6 +7458,9 @@ export namespace Prisma {
       activationCriteria: string
       version: number
       isActive: boolean
+      reviewStatus: string
+      approvedAt: Date | null
+      approvedById: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["skill"]>
@@ -7691,6 +7857,8 @@ export namespace Prisma {
    */
   export interface Prisma__SkillClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    approvedBy<T extends Skill$approvedByArgs<ExtArgs> = {}>(args?: Subset<T, Skill$approvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    reviews<T extends Skill$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agentAssignments<T extends Skill$agentAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$agentAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7730,6 +7898,9 @@ export namespace Prisma {
     readonly activationCriteria: FieldRef<"Skill", 'String'>
     readonly version: FieldRef<"Skill", 'Int'>
     readonly isActive: FieldRef<"Skill", 'Boolean'>
+    readonly reviewStatus: FieldRef<"Skill", 'String'>
+    readonly approvedAt: FieldRef<"Skill", 'DateTime'>
+    readonly approvedById: FieldRef<"Skill", 'String'>
     readonly createdAt: FieldRef<"Skill", 'DateTime'>
     readonly updatedAt: FieldRef<"Skill", 'DateTime'>
   }
@@ -7979,6 +8150,10 @@ export namespace Prisma {
      * The data used to create many Skills.
      */
     data: SkillCreateManyInput | SkillCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8049,6 +8224,10 @@ export namespace Prisma {
      * Limit how many Skills to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8118,6 +8297,49 @@ export namespace Prisma {
   }
 
   /**
+   * Skill.approvedBy
+   */
+  export type Skill$approvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Skill.reviews
+   */
+  export type Skill$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    where?: SkillReviewWhereInput
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    cursor?: SkillReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SkillReviewScalarFieldEnum | SkillReviewScalarFieldEnum[]
+  }
+
+  /**
    * Skill.agentAssignments
    */
   export type Skill$agentAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8157,6 +8379,1102 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SkillInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SkillReview
+   */
+
+  export type AggregateSkillReview = {
+    _count: SkillReviewCountAggregateOutputType | null
+    _min: SkillReviewMinAggregateOutputType | null
+    _max: SkillReviewMaxAggregateOutputType | null
+  }
+
+  export type SkillReviewMinAggregateOutputType = {
+    id: string | null
+    skillId: string | null
+    reviewerId: string | null
+    decision: string | null
+    comment: string | null
+    createdAt: Date | null
+  }
+
+  export type SkillReviewMaxAggregateOutputType = {
+    id: string | null
+    skillId: string | null
+    reviewerId: string | null
+    decision: string | null
+    comment: string | null
+    createdAt: Date | null
+  }
+
+  export type SkillReviewCountAggregateOutputType = {
+    id: number
+    skillId: number
+    reviewerId: number
+    decision: number
+    comment: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SkillReviewMinAggregateInputType = {
+    id?: true
+    skillId?: true
+    reviewerId?: true
+    decision?: true
+    comment?: true
+    createdAt?: true
+  }
+
+  export type SkillReviewMaxAggregateInputType = {
+    id?: true
+    skillId?: true
+    reviewerId?: true
+    decision?: true
+    comment?: true
+    createdAt?: true
+  }
+
+  export type SkillReviewCountAggregateInputType = {
+    id?: true
+    skillId?: true
+    reviewerId?: true
+    decision?: true
+    comment?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SkillReviewAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SkillReview to aggregate.
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillReviews to fetch.
+     */
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SkillReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SkillReviews
+    **/
+    _count?: true | SkillReviewCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SkillReviewMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SkillReviewMaxAggregateInputType
+  }
+
+  export type GetSkillReviewAggregateType<T extends SkillReviewAggregateArgs> = {
+        [P in keyof T & keyof AggregateSkillReview]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSkillReview[P]>
+      : GetScalarType<T[P], AggregateSkillReview[P]>
+  }
+
+
+
+
+  export type SkillReviewGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillReviewWhereInput
+    orderBy?: SkillReviewOrderByWithAggregationInput | SkillReviewOrderByWithAggregationInput[]
+    by: SkillReviewScalarFieldEnum[] | SkillReviewScalarFieldEnum
+    having?: SkillReviewScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SkillReviewCountAggregateInputType | true
+    _min?: SkillReviewMinAggregateInputType
+    _max?: SkillReviewMaxAggregateInputType
+  }
+
+  export type SkillReviewGroupByOutputType = {
+    id: string
+    skillId: string
+    reviewerId: string | null
+    decision: string
+    comment: string
+    createdAt: Date
+    _count: SkillReviewCountAggregateOutputType | null
+    _min: SkillReviewMinAggregateOutputType | null
+    _max: SkillReviewMaxAggregateOutputType | null
+  }
+
+  type GetSkillReviewGroupByPayload<T extends SkillReviewGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SkillReviewGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SkillReviewGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SkillReviewGroupByOutputType[P]>
+            : GetScalarType<T[P], SkillReviewGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SkillReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    reviewerId?: boolean
+    decision?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }, ExtArgs["result"]["skillReview"]>
+
+  export type SkillReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    reviewerId?: boolean
+    decision?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }, ExtArgs["result"]["skillReview"]>
+
+  export type SkillReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    reviewerId?: boolean
+    decision?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }, ExtArgs["result"]["skillReview"]>
+
+  export type SkillReviewSelectScalar = {
+    id?: boolean
+    skillId?: boolean
+    reviewerId?: boolean
+    decision?: boolean
+    comment?: boolean
+    createdAt?: boolean
+  }
+
+  export type SkillReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "skillId" | "reviewerId" | "decision" | "comment" | "createdAt", ExtArgs["result"]["skillReview"]>
+  export type SkillReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }
+  export type SkillReviewIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }
+  export type SkillReviewIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+    reviewer?: boolean | SkillReview$reviewerArgs<ExtArgs>
+  }
+
+  export type $SkillReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SkillReview"
+    objects: {
+      skill: Prisma.$SkillPayload<ExtArgs>
+      reviewer: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      skillId: string
+      reviewerId: string | null
+      decision: string
+      comment: string
+      createdAt: Date
+    }, ExtArgs["result"]["skillReview"]>
+    composites: {}
+  }
+
+  type SkillReviewGetPayload<S extends boolean | null | undefined | SkillReviewDefaultArgs> = $Result.GetResult<Prisma.$SkillReviewPayload, S>
+
+  type SkillReviewCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SkillReviewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SkillReviewCountAggregateInputType | true
+    }
+
+  export interface SkillReviewDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SkillReview'], meta: { name: 'SkillReview' } }
+    /**
+     * Find zero or one SkillReview that matches the filter.
+     * @param {SkillReviewFindUniqueArgs} args - Arguments to find a SkillReview
+     * @example
+     * // Get one SkillReview
+     * const skillReview = await prisma.skillReview.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SkillReviewFindUniqueArgs>(args: SelectSubset<T, SkillReviewFindUniqueArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SkillReview that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SkillReviewFindUniqueOrThrowArgs} args - Arguments to find a SkillReview
+     * @example
+     * // Get one SkillReview
+     * const skillReview = await prisma.skillReview.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SkillReviewFindUniqueOrThrowArgs>(args: SelectSubset<T, SkillReviewFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SkillReview that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewFindFirstArgs} args - Arguments to find a SkillReview
+     * @example
+     * // Get one SkillReview
+     * const skillReview = await prisma.skillReview.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SkillReviewFindFirstArgs>(args?: SelectSubset<T, SkillReviewFindFirstArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SkillReview that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewFindFirstOrThrowArgs} args - Arguments to find a SkillReview
+     * @example
+     * // Get one SkillReview
+     * const skillReview = await prisma.skillReview.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SkillReviewFindFirstOrThrowArgs>(args?: SelectSubset<T, SkillReviewFindFirstOrThrowArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SkillReviews that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SkillReviews
+     * const skillReviews = await prisma.skillReview.findMany()
+     * 
+     * // Get first 10 SkillReviews
+     * const skillReviews = await prisma.skillReview.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const skillReviewWithIdOnly = await prisma.skillReview.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SkillReviewFindManyArgs>(args?: SelectSubset<T, SkillReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SkillReview.
+     * @param {SkillReviewCreateArgs} args - Arguments to create a SkillReview.
+     * @example
+     * // Create one SkillReview
+     * const SkillReview = await prisma.skillReview.create({
+     *   data: {
+     *     // ... data to create a SkillReview
+     *   }
+     * })
+     * 
+     */
+    create<T extends SkillReviewCreateArgs>(args: SelectSubset<T, SkillReviewCreateArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SkillReviews.
+     * @param {SkillReviewCreateManyArgs} args - Arguments to create many SkillReviews.
+     * @example
+     * // Create many SkillReviews
+     * const skillReview = await prisma.skillReview.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SkillReviewCreateManyArgs>(args?: SelectSubset<T, SkillReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SkillReviews and returns the data saved in the database.
+     * @param {SkillReviewCreateManyAndReturnArgs} args - Arguments to create many SkillReviews.
+     * @example
+     * // Create many SkillReviews
+     * const skillReview = await prisma.skillReview.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SkillReviews and only return the `id`
+     * const skillReviewWithIdOnly = await prisma.skillReview.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SkillReviewCreateManyAndReturnArgs>(args?: SelectSubset<T, SkillReviewCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SkillReview.
+     * @param {SkillReviewDeleteArgs} args - Arguments to delete one SkillReview.
+     * @example
+     * // Delete one SkillReview
+     * const SkillReview = await prisma.skillReview.delete({
+     *   where: {
+     *     // ... filter to delete one SkillReview
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SkillReviewDeleteArgs>(args: SelectSubset<T, SkillReviewDeleteArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SkillReview.
+     * @param {SkillReviewUpdateArgs} args - Arguments to update one SkillReview.
+     * @example
+     * // Update one SkillReview
+     * const skillReview = await prisma.skillReview.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SkillReviewUpdateArgs>(args: SelectSubset<T, SkillReviewUpdateArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SkillReviews.
+     * @param {SkillReviewDeleteManyArgs} args - Arguments to filter SkillReviews to delete.
+     * @example
+     * // Delete a few SkillReviews
+     * const { count } = await prisma.skillReview.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SkillReviewDeleteManyArgs>(args?: SelectSubset<T, SkillReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SkillReviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SkillReviews
+     * const skillReview = await prisma.skillReview.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SkillReviewUpdateManyArgs>(args: SelectSubset<T, SkillReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SkillReviews and returns the data updated in the database.
+     * @param {SkillReviewUpdateManyAndReturnArgs} args - Arguments to update many SkillReviews.
+     * @example
+     * // Update many SkillReviews
+     * const skillReview = await prisma.skillReview.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SkillReviews and only return the `id`
+     * const skillReviewWithIdOnly = await prisma.skillReview.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SkillReviewUpdateManyAndReturnArgs>(args: SelectSubset<T, SkillReviewUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SkillReview.
+     * @param {SkillReviewUpsertArgs} args - Arguments to update or create a SkillReview.
+     * @example
+     * // Update or create a SkillReview
+     * const skillReview = await prisma.skillReview.upsert({
+     *   create: {
+     *     // ... data to create a SkillReview
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SkillReview we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SkillReviewUpsertArgs>(args: SelectSubset<T, SkillReviewUpsertArgs<ExtArgs>>): Prisma__SkillReviewClient<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SkillReviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewCountArgs} args - Arguments to filter SkillReviews to count.
+     * @example
+     * // Count the number of SkillReviews
+     * const count = await prisma.skillReview.count({
+     *   where: {
+     *     // ... the filter for the SkillReviews we want to count
+     *   }
+     * })
+    **/
+    count<T extends SkillReviewCountArgs>(
+      args?: Subset<T, SkillReviewCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SkillReviewCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SkillReview.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SkillReviewAggregateArgs>(args: Subset<T, SkillReviewAggregateArgs>): Prisma.PrismaPromise<GetSkillReviewAggregateType<T>>
+
+    /**
+     * Group by SkillReview.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillReviewGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SkillReviewGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SkillReviewGroupByArgs['orderBy'] }
+        : { orderBy?: SkillReviewGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SkillReviewGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSkillReviewGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SkillReview model
+   */
+  readonly fields: SkillReviewFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SkillReview.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SkillReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    skill<T extends SkillDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SkillDefaultArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reviewer<T extends SkillReview$reviewerArgs<ExtArgs> = {}>(args?: Subset<T, SkillReview$reviewerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SkillReview model
+   */
+  interface SkillReviewFieldRefs {
+    readonly id: FieldRef<"SkillReview", 'String'>
+    readonly skillId: FieldRef<"SkillReview", 'String'>
+    readonly reviewerId: FieldRef<"SkillReview", 'String'>
+    readonly decision: FieldRef<"SkillReview", 'String'>
+    readonly comment: FieldRef<"SkillReview", 'String'>
+    readonly createdAt: FieldRef<"SkillReview", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SkillReview findUnique
+   */
+  export type SkillReviewFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillReview to fetch.
+     */
+    where: SkillReviewWhereUniqueInput
+  }
+
+  /**
+   * SkillReview findUniqueOrThrow
+   */
+  export type SkillReviewFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillReview to fetch.
+     */
+    where: SkillReviewWhereUniqueInput
+  }
+
+  /**
+   * SkillReview findFirst
+   */
+  export type SkillReviewFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillReview to fetch.
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillReviews to fetch.
+     */
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SkillReviews.
+     */
+    cursor?: SkillReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SkillReviews.
+     */
+    distinct?: SkillReviewScalarFieldEnum | SkillReviewScalarFieldEnum[]
+  }
+
+  /**
+   * SkillReview findFirstOrThrow
+   */
+  export type SkillReviewFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillReview to fetch.
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillReviews to fetch.
+     */
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SkillReviews.
+     */
+    cursor?: SkillReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillReviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SkillReviews.
+     */
+    distinct?: SkillReviewScalarFieldEnum | SkillReviewScalarFieldEnum[]
+  }
+
+  /**
+   * SkillReview findMany
+   */
+  export type SkillReviewFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillReviews to fetch.
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillReviews to fetch.
+     */
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SkillReviews.
+     */
+    cursor?: SkillReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillReviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillReviews.
+     */
+    skip?: number
+    distinct?: SkillReviewScalarFieldEnum | SkillReviewScalarFieldEnum[]
+  }
+
+  /**
+   * SkillReview create
+   */
+  export type SkillReviewCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SkillReview.
+     */
+    data: XOR<SkillReviewCreateInput, SkillReviewUncheckedCreateInput>
+  }
+
+  /**
+   * SkillReview createMany
+   */
+  export type SkillReviewCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SkillReviews.
+     */
+    data: SkillReviewCreateManyInput | SkillReviewCreateManyInput[]
+  }
+
+  /**
+   * SkillReview createManyAndReturn
+   */
+  export type SkillReviewCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * The data used to create many SkillReviews.
+     */
+    data: SkillReviewCreateManyInput | SkillReviewCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SkillReview update
+   */
+  export type SkillReviewUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SkillReview.
+     */
+    data: XOR<SkillReviewUpdateInput, SkillReviewUncheckedUpdateInput>
+    /**
+     * Choose, which SkillReview to update.
+     */
+    where: SkillReviewWhereUniqueInput
+  }
+
+  /**
+   * SkillReview updateMany
+   */
+  export type SkillReviewUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SkillReviews.
+     */
+    data: XOR<SkillReviewUpdateManyMutationInput, SkillReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which SkillReviews to update
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * Limit how many SkillReviews to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SkillReview updateManyAndReturn
+   */
+  export type SkillReviewUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * The data used to update SkillReviews.
+     */
+    data: XOR<SkillReviewUpdateManyMutationInput, SkillReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which SkillReviews to update
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * Limit how many SkillReviews to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SkillReview upsert
+   */
+  export type SkillReviewUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SkillReview to update in case it exists.
+     */
+    where: SkillReviewWhereUniqueInput
+    /**
+     * In case the SkillReview found by the `where` argument doesn't exist, create a new SkillReview with this data.
+     */
+    create: XOR<SkillReviewCreateInput, SkillReviewUncheckedCreateInput>
+    /**
+     * In case the SkillReview was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SkillReviewUpdateInput, SkillReviewUncheckedUpdateInput>
+  }
+
+  /**
+   * SkillReview delete
+   */
+  export type SkillReviewDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    /**
+     * Filter which SkillReview to delete.
+     */
+    where: SkillReviewWhereUniqueInput
+  }
+
+  /**
+   * SkillReview deleteMany
+   */
+  export type SkillReviewDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SkillReviews to delete
+     */
+    where?: SkillReviewWhereInput
+    /**
+     * Limit how many SkillReviews to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SkillReview.reviewer
+   */
+  export type SkillReview$reviewerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * SkillReview without action
+   */
+  export type SkillReviewDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
   }
 
 
@@ -13769,6 +15087,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
+    accessLevel: string | null
     emailVerified: boolean | null
     image: string | null
     createdAt: Date | null
@@ -13779,6 +15098,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
+    accessLevel: string | null
     emailVerified: boolean | null
     image: string | null
     createdAt: Date | null
@@ -13789,6 +15109,7 @@ export namespace Prisma {
     id: number
     name: number
     email: number
+    accessLevel: number
     emailVerified: number
     image: number
     createdAt: number
@@ -13801,6 +15122,7 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    accessLevel?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -13811,6 +15133,7 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    accessLevel?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -13821,6 +15144,7 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
+    accessLevel?: true
     emailVerified?: true
     image?: true
     createdAt?: true
@@ -13904,6 +15228,7 @@ export namespace Prisma {
     id: string
     name: string
     email: string
+    accessLevel: string
     emailVerified: boolean
     image: string | null
     createdAt: Date
@@ -13931,6 +15256,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    accessLevel?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -13938,6 +15264,8 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     projects?: boolean | User$projectsArgs<ExtArgs>
+    approvedSkills?: boolean | User$approvedSkillsArgs<ExtArgs>
+    skillReviews?: boolean | User$skillReviewsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -13945,6 +15273,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    accessLevel?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -13955,6 +15284,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    accessLevel?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
@@ -13965,17 +15295,20 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
+    accessLevel?: boolean
     emailVerified?: boolean
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "accessLevel" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     projects?: boolean | User$projectsArgs<ExtArgs>
+    approvedSkills?: boolean | User$approvedSkillsArgs<ExtArgs>
+    skillReviews?: boolean | User$skillReviewsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -13987,11 +15320,14 @@ export namespace Prisma {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      approvedSkills: Prisma.$SkillPayload<ExtArgs>[]
+      skillReviews: Prisma.$SkillReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       email: string
+      accessLevel: string
       emailVerified: boolean
       image: string | null
       createdAt: Date
@@ -14393,6 +15729,8 @@ export namespace Prisma {
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends User$projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    approvedSkills<T extends User$approvedSkillsArgs<ExtArgs> = {}>(args?: Subset<T, User$approvedSkillsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    skillReviews<T extends User$skillReviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$skillReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14425,6 +15763,7 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
+    readonly accessLevel: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -14884,6 +16223,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * User.approvedSkills
+   */
+  export type User$approvedSkillsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    where?: SkillWhereInput
+    orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
+    cursor?: SkillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
+  }
+
+  /**
+   * User.skillReviews
+   */
+  export type User$skillReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillReview
+     */
+    select?: SkillReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillReview
+     */
+    omit?: SkillReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillReviewInclude<ExtArgs> | null
+    where?: SkillReviewWhereInput
+    orderBy?: SkillReviewOrderByWithRelationInput | SkillReviewOrderByWithRelationInput[]
+    cursor?: SkillReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SkillReviewScalarFieldEnum | SkillReviewScalarFieldEnum[]
   }
 
   /**
@@ -18253,11 +19640,26 @@ export namespace Prisma {
     activationCriteria: 'activationCriteria',
     version: 'version',
     isActive: 'isActive',
+    reviewStatus: 'reviewStatus',
+    approvedAt: 'approvedAt',
+    approvedById: 'approvedById',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type SkillScalarFieldEnum = (typeof SkillScalarFieldEnum)[keyof typeof SkillScalarFieldEnum]
+
+
+  export const SkillReviewScalarFieldEnum: {
+    id: 'id',
+    skillId: 'skillId',
+    reviewerId: 'reviewerId',
+    decision: 'decision',
+    comment: 'comment',
+    createdAt: 'createdAt'
+  };
+
+  export type SkillReviewScalarFieldEnum = (typeof SkillReviewScalarFieldEnum)[keyof typeof SkillReviewScalarFieldEnum]
 
 
   export const AgentSkillScalarFieldEnum: {
@@ -18340,6 +19742,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     email: 'email',
+    accessLevel: 'accessLevel',
     emailVerified: 'emailVerified',
     image: 'image',
     createdAt: 'createdAt',
@@ -18816,8 +20219,13 @@ export namespace Prisma {
     activationCriteria?: StringFilter<"Skill"> | string
     version?: IntFilter<"Skill"> | number
     isActive?: BoolFilter<"Skill"> | boolean
+    reviewStatus?: StringFilter<"Skill"> | string
+    approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
+    approvedById?: StringNullableFilter<"Skill"> | string | null
     createdAt?: DateTimeFilter<"Skill"> | Date | string
     updatedAt?: DateTimeFilter<"Skill"> | Date | string
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    reviews?: SkillReviewListRelationFilter
     agentAssignments?: AgentSkillListRelationFilter
   }
 
@@ -18831,8 +20239,13 @@ export namespace Prisma {
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
+    reviewStatus?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    approvedBy?: UserOrderByWithRelationInput
+    reviews?: SkillReviewOrderByRelationAggregateInput
     agentAssignments?: AgentSkillOrderByRelationAggregateInput
   }
 
@@ -18850,8 +20263,13 @@ export namespace Prisma {
     activationCriteria?: StringFilter<"Skill"> | string
     version?: IntFilter<"Skill"> | number
     isActive?: BoolFilter<"Skill"> | boolean
+    reviewStatus?: StringFilter<"Skill"> | string
+    approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
+    approvedById?: StringNullableFilter<"Skill"> | string | null
     createdAt?: DateTimeFilter<"Skill"> | Date | string
     updatedAt?: DateTimeFilter<"Skill"> | Date | string
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    reviews?: SkillReviewListRelationFilter
     agentAssignments?: AgentSkillListRelationFilter
   }, "id" | "key_version">
 
@@ -18865,6 +20283,9 @@ export namespace Prisma {
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
+    reviewStatus?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SkillCountOrderByAggregateInput
@@ -18887,8 +20308,74 @@ export namespace Prisma {
     activationCriteria?: StringWithAggregatesFilter<"Skill"> | string
     version?: IntWithAggregatesFilter<"Skill"> | number
     isActive?: BoolWithAggregatesFilter<"Skill"> | boolean
+    reviewStatus?: StringWithAggregatesFilter<"Skill"> | string
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Skill"> | Date | string | null
+    approvedById?: StringNullableWithAggregatesFilter<"Skill"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
+  }
+
+  export type SkillReviewWhereInput = {
+    AND?: SkillReviewWhereInput | SkillReviewWhereInput[]
+    OR?: SkillReviewWhereInput[]
+    NOT?: SkillReviewWhereInput | SkillReviewWhereInput[]
+    id?: StringFilter<"SkillReview"> | string
+    skillId?: StringFilter<"SkillReview"> | string
+    reviewerId?: StringNullableFilter<"SkillReview"> | string | null
+    decision?: StringFilter<"SkillReview"> | string
+    comment?: StringFilter<"SkillReview"> | string
+    createdAt?: DateTimeFilter<"SkillReview"> | Date | string
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+    reviewer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type SkillReviewOrderByWithRelationInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    reviewerId?: SortOrderInput | SortOrder
+    decision?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    skill?: SkillOrderByWithRelationInput
+    reviewer?: UserOrderByWithRelationInput
+  }
+
+  export type SkillReviewWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SkillReviewWhereInput | SkillReviewWhereInput[]
+    OR?: SkillReviewWhereInput[]
+    NOT?: SkillReviewWhereInput | SkillReviewWhereInput[]
+    skillId?: StringFilter<"SkillReview"> | string
+    reviewerId?: StringNullableFilter<"SkillReview"> | string | null
+    decision?: StringFilter<"SkillReview"> | string
+    comment?: StringFilter<"SkillReview"> | string
+    createdAt?: DateTimeFilter<"SkillReview"> | Date | string
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+    reviewer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type SkillReviewOrderByWithAggregationInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    reviewerId?: SortOrderInput | SortOrder
+    decision?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+    _count?: SkillReviewCountOrderByAggregateInput
+    _max?: SkillReviewMaxOrderByAggregateInput
+    _min?: SkillReviewMinOrderByAggregateInput
+  }
+
+  export type SkillReviewScalarWhereWithAggregatesInput = {
+    AND?: SkillReviewScalarWhereWithAggregatesInput | SkillReviewScalarWhereWithAggregatesInput[]
+    OR?: SkillReviewScalarWhereWithAggregatesInput[]
+    NOT?: SkillReviewScalarWhereWithAggregatesInput | SkillReviewScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SkillReview"> | string
+    skillId?: StringWithAggregatesFilter<"SkillReview"> | string
+    reviewerId?: StringNullableWithAggregatesFilter<"SkillReview"> | string | null
+    decision?: StringWithAggregatesFilter<"SkillReview"> | string
+    comment?: StringWithAggregatesFilter<"SkillReview"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SkillReview"> | Date | string
   }
 
   export type AgentSkillWhereInput = {
@@ -19285,6 +20772,7 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
+    accessLevel?: StringFilter<"User"> | string
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -19292,12 +20780,15 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     projects?: ProjectListRelationFilter
+    approvedSkills?: SkillListRelationFilter
+    skillReviews?: SkillReviewListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    accessLevel?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -19305,6 +20796,8 @@ export namespace Prisma {
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
+    approvedSkills?: SkillOrderByRelationAggregateInput
+    skillReviews?: SkillReviewOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -19314,6 +20807,7 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
+    accessLevel?: StringFilter<"User"> | string
     emailVerified?: BoolFilter<"User"> | boolean
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -19321,12 +20815,15 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     projects?: ProjectListRelationFilter
+    approvedSkills?: SkillListRelationFilter
+    skillReviews?: SkillReviewListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    accessLevel?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -19343,6 +20840,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
+    accessLevel?: StringWithAggregatesFilter<"User"> | string
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -19984,8 +21482,12 @@ export namespace Prisma {
     activationCriteria?: string
     version?: number
     isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    reviews?: SkillReviewCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
   }
 
@@ -19999,8 +21501,12 @@ export namespace Prisma {
     activationCriteria?: string
     version?: number
     isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    approvedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
   }
 
@@ -20014,8 +21520,12 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
   }
 
@@ -20029,8 +21539,12 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
   }
 
@@ -20044,6 +21558,9 @@ export namespace Prisma {
     activationCriteria?: string
     version?: number
     isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    approvedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20058,6 +21575,8 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20072,8 +21591,72 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewCreateInput = {
+    id?: string
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+    skill: SkillCreateNestedOneWithoutReviewsInput
+    reviewer?: UserCreateNestedOneWithoutSkillReviewsInput
+  }
+
+  export type SkillReviewUncheckedCreateInput = {
+    id?: string
+    skillId: string
+    reviewerId?: string | null
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+  }
+
+  export type SkillReviewUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skill?: SkillUpdateOneRequiredWithoutReviewsNestedInput
+    reviewer?: UserUpdateOneWithoutSkillReviewsNestedInput
+  }
+
+  export type SkillReviewUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    reviewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewCreateManyInput = {
+    id?: string
+    skillId: string
+    reviewerId?: string | null
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+  }
+
+  export type SkillReviewUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    reviewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AgentSkillCreateInput = {
@@ -20501,6 +22084,7 @@ export namespace Prisma {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
@@ -20508,12 +22092,15 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     projects?: ProjectCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type UserUncheckedCreateInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
@@ -20521,12 +22108,15 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillUncheckedCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20534,12 +22124,15 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     projects?: ProjectUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20547,12 +22140,15 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUncheckedUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserCreateManyInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
@@ -20563,6 +22159,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20573,6 +22170,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21211,6 +22809,27 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type SkillReviewListRelationFilter = {
+    every?: SkillReviewWhereInput
+    some?: SkillReviewWhereInput
+    none?: SkillReviewWhereInput
+  }
+
+  export type SkillReviewOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type SkillKeyVersionCompoundUniqueInput = {
     key: string
     version: number
@@ -21226,6 +22845,9 @@ export namespace Prisma {
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
+    reviewStatus?: SortOrder
+    approvedAt?: SortOrder
+    approvedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21244,6 +22866,9 @@ export namespace Prisma {
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
+    reviewStatus?: SortOrder
+    approvedAt?: SortOrder
+    approvedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21258,6 +22883,9 @@ export namespace Prisma {
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
+    reviewStatus?: SortOrder
+    approvedAt?: SortOrder
+    approvedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -21266,14 +22894,55 @@ export namespace Prisma {
     version?: SortOrder
   }
 
-  export type AgentScalarRelationFilter = {
-    is?: AgentWhereInput
-    isNot?: AgentWhereInput
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type SkillScalarRelationFilter = {
     is?: SkillWhereInput
     isNot?: SkillWhereInput
+  }
+
+  export type SkillReviewCountOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    reviewerId?: SortOrder
+    decision?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SkillReviewMaxOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    reviewerId?: SortOrder
+    decision?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SkillReviewMinOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    reviewerId?: SortOrder
+    decision?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AgentScalarRelationFilter = {
+    is?: AgentWhereInput
+    isNot?: AgentWhereInput
   }
 
   export type AgentSkillAgentIdSkillIdCompoundUniqueInput = {
@@ -21316,17 +22985,6 @@ export namespace Prisma {
     priority?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type WorkflowRunCountOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
@@ -21364,20 +23022,6 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type RequirementCountOrderByAggregateInput = {
@@ -21520,6 +23164,12 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
+  export type SkillListRelationFilter = {
+    every?: SkillWhereInput
+    some?: SkillWhereInput
+    none?: SkillWhereInput
+  }
+
   export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -21532,10 +23182,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SkillOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    accessLevel?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -21546,6 +23201,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    accessLevel?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -21556,6 +23212,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    accessLevel?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
@@ -22029,6 +23686,19 @@ export namespace Prisma {
     deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutApprovedSkillsInput = {
+    create?: XOR<UserCreateWithoutApprovedSkillsInput, UserUncheckedCreateWithoutApprovedSkillsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApprovedSkillsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SkillReviewCreateNestedManyWithoutSkillInput = {
+    create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
+    createMany?: SkillReviewCreateManySkillInputEnvelope
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+  }
+
   export type AgentSkillCreateNestedManyWithoutSkillInput = {
     create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
     connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
@@ -22036,11 +23706,46 @@ export namespace Prisma {
     connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
   }
 
+  export type SkillReviewUncheckedCreateNestedManyWithoutSkillInput = {
+    create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
+    createMany?: SkillReviewCreateManySkillInputEnvelope
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+  }
+
   export type AgentSkillUncheckedCreateNestedManyWithoutSkillInput = {
     create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
     connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
     createMany?: AgentSkillCreateManySkillInputEnvelope
     connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneWithoutApprovedSkillsNestedInput = {
+    create?: XOR<UserCreateWithoutApprovedSkillsInput, UserUncheckedCreateWithoutApprovedSkillsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApprovedSkillsInput
+    upsert?: UserUpsertWithoutApprovedSkillsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApprovedSkillsInput, UserUpdateWithoutApprovedSkillsInput>, UserUncheckedUpdateWithoutApprovedSkillsInput>
+  }
+
+  export type SkillReviewUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
+    upsert?: SkillReviewUpsertWithWhereUniqueWithoutSkillInput | SkillReviewUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: SkillReviewCreateManySkillInputEnvelope
+    set?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    disconnect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    delete?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    update?: SkillReviewUpdateWithWhereUniqueWithoutSkillInput | SkillReviewUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: SkillReviewUpdateManyWithWhereWithoutSkillInput | SkillReviewUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
   }
 
   export type AgentSkillUpdateManyWithoutSkillNestedInput = {
@@ -22057,6 +23762,20 @@ export namespace Prisma {
     deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
   }
 
+  export type SkillReviewUncheckedUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
+    upsert?: SkillReviewUpsertWithWhereUniqueWithoutSkillInput | SkillReviewUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: SkillReviewCreateManySkillInputEnvelope
+    set?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    disconnect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    delete?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    update?: SkillReviewUpdateWithWhereUniqueWithoutSkillInput | SkillReviewUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: SkillReviewUpdateManyWithWhereWithoutSkillInput | SkillReviewUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
+  }
+
   export type AgentSkillUncheckedUpdateManyWithoutSkillNestedInput = {
     create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
     connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
@@ -22069,6 +23788,36 @@ export namespace Prisma {
     update?: AgentSkillUpdateWithWhereUniqueWithoutSkillInput | AgentSkillUpdateWithWhereUniqueWithoutSkillInput[]
     updateMany?: AgentSkillUpdateManyWithWhereWithoutSkillInput | AgentSkillUpdateManyWithWhereWithoutSkillInput[]
     deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type SkillCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<SkillCreateWithoutReviewsInput, SkillUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutReviewsInput
+    connect?: SkillWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSkillReviewsInput = {
+    create?: XOR<UserCreateWithoutSkillReviewsInput, UserUncheckedCreateWithoutSkillReviewsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSkillReviewsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SkillUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: XOR<SkillCreateWithoutReviewsInput, SkillUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutReviewsInput
+    upsert?: SkillUpsertWithoutReviewsInput
+    connect?: SkillWhereUniqueInput
+    update?: XOR<XOR<SkillUpdateToOneWithWhereWithoutReviewsInput, SkillUpdateWithoutReviewsInput>, SkillUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type UserUpdateOneWithoutSkillReviewsNestedInput = {
+    create?: XOR<UserCreateWithoutSkillReviewsInput, UserUncheckedCreateWithoutSkillReviewsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSkillReviewsInput
+    upsert?: UserUpsertWithoutSkillReviewsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSkillReviewsInput, UserUpdateWithoutSkillReviewsInput>, UserUncheckedUpdateWithoutSkillReviewsInput>
   }
 
   export type AgentCreateNestedOneWithoutSkillAssignmentsInput = {
@@ -22103,10 +23852,6 @@ export namespace Prisma {
     create?: XOR<ProjectCreateWithoutWorkflowRunsInput, ProjectUncheckedCreateWithoutWorkflowRunsInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutWorkflowRunsInput
     connect?: ProjectWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type ProjectUpdateOneRequiredWithoutWorkflowRunsNestedInput = {
@@ -22180,6 +23925,20 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type SkillCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput> | SkillCreateWithoutApprovedByInput[] | SkillUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: SkillCreateOrConnectWithoutApprovedByInput | SkillCreateOrConnectWithoutApprovedByInput[]
+    createMany?: SkillCreateManyApprovedByInputEnvelope
+    connect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+  }
+
+  export type SkillReviewCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput> | SkillReviewCreateWithoutReviewerInput[] | SkillReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutReviewerInput | SkillReviewCreateOrConnectWithoutReviewerInput[]
+    createMany?: SkillReviewCreateManyReviewerInputEnvelope
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -22199,6 +23958,20 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
     createMany?: ProjectCreateManyUserInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type SkillUncheckedCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput> | SkillCreateWithoutApprovedByInput[] | SkillUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: SkillCreateOrConnectWithoutApprovedByInput | SkillCreateOrConnectWithoutApprovedByInput[]
+    createMany?: SkillCreateManyApprovedByInputEnvelope
+    connect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+  }
+
+  export type SkillReviewUncheckedCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput> | SkillReviewCreateWithoutReviewerInput[] | SkillReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutReviewerInput | SkillReviewCreateOrConnectWithoutReviewerInput[]
+    createMany?: SkillReviewCreateManyReviewerInputEnvelope
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -22243,6 +24016,34 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type SkillUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput> | SkillCreateWithoutApprovedByInput[] | SkillUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: SkillCreateOrConnectWithoutApprovedByInput | SkillCreateOrConnectWithoutApprovedByInput[]
+    upsert?: SkillUpsertWithWhereUniqueWithoutApprovedByInput | SkillUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: SkillCreateManyApprovedByInputEnvelope
+    set?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    disconnect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    delete?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    connect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    update?: SkillUpdateWithWhereUniqueWithoutApprovedByInput | SkillUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: SkillUpdateManyWithWhereWithoutApprovedByInput | SkillUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: SkillScalarWhereInput | SkillScalarWhereInput[]
+  }
+
+  export type SkillReviewUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput> | SkillReviewCreateWithoutReviewerInput[] | SkillReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutReviewerInput | SkillReviewCreateOrConnectWithoutReviewerInput[]
+    upsert?: SkillReviewUpsertWithWhereUniqueWithoutReviewerInput | SkillReviewUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: SkillReviewCreateManyReviewerInputEnvelope
+    set?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    disconnect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    delete?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    update?: SkillReviewUpdateWithWhereUniqueWithoutReviewerInput | SkillReviewUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: SkillReviewUpdateManyWithWhereWithoutReviewerInput | SkillReviewUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -22283,6 +24084,34 @@ export namespace Prisma {
     update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type SkillUncheckedUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput> | SkillCreateWithoutApprovedByInput[] | SkillUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: SkillCreateOrConnectWithoutApprovedByInput | SkillCreateOrConnectWithoutApprovedByInput[]
+    upsert?: SkillUpsertWithWhereUniqueWithoutApprovedByInput | SkillUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: SkillCreateManyApprovedByInputEnvelope
+    set?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    disconnect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    delete?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    connect?: SkillWhereUniqueInput | SkillWhereUniqueInput[]
+    update?: SkillUpdateWithWhereUniqueWithoutApprovedByInput | SkillUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: SkillUpdateManyWithWhereWithoutApprovedByInput | SkillUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: SkillScalarWhereInput | SkillScalarWhereInput[]
+  }
+
+  export type SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput> | SkillReviewCreateWithoutReviewerInput[] | SkillReviewUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: SkillReviewCreateOrConnectWithoutReviewerInput | SkillReviewCreateOrConnectWithoutReviewerInput[]
+    upsert?: SkillReviewUpsertWithWhereUniqueWithoutReviewerInput | SkillReviewUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: SkillReviewCreateManyReviewerInputEnvelope
+    set?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    disconnect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    delete?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    connect?: SkillReviewWhereUniqueInput | SkillReviewWhereUniqueInput[]
+    update?: SkillReviewUpdateWithWhereUniqueWithoutReviewerInput | SkillReviewUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: SkillReviewUpdateManyWithWhereWithoutReviewerInput | SkillReviewUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -22491,24 +24320,30 @@ export namespace Prisma {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type UserUncheckedCreateWithoutProjectsInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillUncheckedCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type UserCreateOrConnectWithoutProjectsInput = {
@@ -22737,24 +24572,30 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUncheckedUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type ProjectProfileUpsertWithoutProjectInput = {
@@ -23177,6 +25018,66 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AgentSkill"> | Date | string
   }
 
+  export type UserCreateWithoutApprovedSkillsInput = {
+    id: string
+    name: string
+    email: string
+    accessLevel?: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    skillReviews?: SkillReviewCreateNestedManyWithoutReviewerInput
+  }
+
+  export type UserUncheckedCreateWithoutApprovedSkillsInput = {
+    id: string
+    name: string
+    email: string
+    accessLevel?: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    skillReviews?: SkillReviewUncheckedCreateNestedManyWithoutReviewerInput
+  }
+
+  export type UserCreateOrConnectWithoutApprovedSkillsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutApprovedSkillsInput, UserUncheckedCreateWithoutApprovedSkillsInput>
+  }
+
+  export type SkillReviewCreateWithoutSkillInput = {
+    id?: string
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+    reviewer?: UserCreateNestedOneWithoutSkillReviewsInput
+  }
+
+  export type SkillReviewUncheckedCreateWithoutSkillInput = {
+    id?: string
+    reviewerId?: string | null
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+  }
+
+  export type SkillReviewCreateOrConnectWithoutSkillInput = {
+    where: SkillReviewWhereUniqueInput
+    create: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput>
+  }
+
+  export type SkillReviewCreateManySkillInputEnvelope = {
+    data: SkillReviewCreateManySkillInput | SkillReviewCreateManySkillInput[]
+  }
+
   export type AgentSkillCreateWithoutSkillInput = {
     id?: string
     priority?: number
@@ -23202,6 +25103,75 @@ export namespace Prisma {
     data: AgentSkillCreateManySkillInput | AgentSkillCreateManySkillInput[]
   }
 
+  export type UserUpsertWithoutApprovedSkillsInput = {
+    update: XOR<UserUpdateWithoutApprovedSkillsInput, UserUncheckedUpdateWithoutApprovedSkillsInput>
+    create: XOR<UserCreateWithoutApprovedSkillsInput, UserUncheckedCreateWithoutApprovedSkillsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutApprovedSkillsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutApprovedSkillsInput, UserUncheckedUpdateWithoutApprovedSkillsInput>
+  }
+
+  export type UserUpdateWithoutApprovedSkillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    skillReviews?: SkillReviewUpdateManyWithoutReviewerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutApprovedSkillsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    skillReviews?: SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  }
+
+  export type SkillReviewUpsertWithWhereUniqueWithoutSkillInput = {
+    where: SkillReviewWhereUniqueInput
+    update: XOR<SkillReviewUpdateWithoutSkillInput, SkillReviewUncheckedUpdateWithoutSkillInput>
+    create: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput>
+  }
+
+  export type SkillReviewUpdateWithWhereUniqueWithoutSkillInput = {
+    where: SkillReviewWhereUniqueInput
+    data: XOR<SkillReviewUpdateWithoutSkillInput, SkillReviewUncheckedUpdateWithoutSkillInput>
+  }
+
+  export type SkillReviewUpdateManyWithWhereWithoutSkillInput = {
+    where: SkillReviewScalarWhereInput
+    data: XOR<SkillReviewUpdateManyMutationInput, SkillReviewUncheckedUpdateManyWithoutSkillInput>
+  }
+
+  export type SkillReviewScalarWhereInput = {
+    AND?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
+    OR?: SkillReviewScalarWhereInput[]
+    NOT?: SkillReviewScalarWhereInput | SkillReviewScalarWhereInput[]
+    id?: StringFilter<"SkillReview"> | string
+    skillId?: StringFilter<"SkillReview"> | string
+    reviewerId?: StringNullableFilter<"SkillReview"> | string | null
+    decision?: StringFilter<"SkillReview"> | string
+    comment?: StringFilter<"SkillReview"> | string
+    createdAt?: DateTimeFilter<"SkillReview"> | Date | string
+  }
+
   export type AgentSkillUpsertWithWhereUniqueWithoutSkillInput = {
     where: AgentSkillWhereUniqueInput
     update: XOR<AgentSkillUpdateWithoutSkillInput, AgentSkillUncheckedUpdateWithoutSkillInput>
@@ -23216,6 +25186,170 @@ export namespace Prisma {
   export type AgentSkillUpdateManyWithWhereWithoutSkillInput = {
     where: AgentSkillScalarWhereInput
     data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyWithoutSkillInput>
+  }
+
+  export type SkillCreateWithoutReviewsInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillUncheckedCreateWithoutReviewsInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillCreateOrConnectWithoutReviewsInput = {
+    where: SkillWhereUniqueInput
+    create: XOR<SkillCreateWithoutReviewsInput, SkillUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type UserCreateWithoutSkillReviewsInput = {
+    id: string
+    name: string
+    email: string
+    accessLevel?: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutSkillReviewsInput = {
+    id: string
+    name: string
+    email: string
+    accessLevel?: string
+    emailVerified?: boolean
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutSkillReviewsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSkillReviewsInput, UserUncheckedCreateWithoutSkillReviewsInput>
+  }
+
+  export type SkillUpsertWithoutReviewsInput = {
+    update: XOR<SkillUpdateWithoutReviewsInput, SkillUncheckedUpdateWithoutReviewsInput>
+    create: XOR<SkillCreateWithoutReviewsInput, SkillUncheckedCreateWithoutReviewsInput>
+    where?: SkillWhereInput
+  }
+
+  export type SkillUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: SkillWhereInput
+    data: XOR<SkillUpdateWithoutReviewsInput, SkillUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type SkillUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillUncheckedUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
+  }
+
+  export type UserUpsertWithoutSkillReviewsInput = {
+    update: XOR<UserUpdateWithoutSkillReviewsInput, UserUncheckedUpdateWithoutSkillReviewsInput>
+    create: XOR<UserCreateWithoutSkillReviewsInput, UserUncheckedCreateWithoutSkillReviewsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSkillReviewsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSkillReviewsInput, UserUncheckedUpdateWithoutSkillReviewsInput>
+  }
+
+  export type UserUpdateWithoutSkillReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSkillReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type AgentCreateWithoutSkillAssignmentsInput = {
@@ -23255,8 +25389,12 @@ export namespace Prisma {
     activationCriteria?: string
     version?: number
     isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    reviews?: SkillReviewCreateNestedManyWithoutSkillInput
   }
 
   export type SkillUncheckedCreateWithoutAgentAssignmentsInput = {
@@ -23269,8 +25407,12 @@ export namespace Prisma {
     activationCriteria?: string
     version?: number
     isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    approvedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
   }
 
   export type SkillCreateOrConnectWithoutAgentAssignmentsInput = {
@@ -23332,8 +25474,12 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
   }
 
   export type SkillUncheckedUpdateWithoutAgentAssignmentsInput = {
@@ -23346,8 +25492,12 @@ export namespace Prisma {
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
   }
 
   export type ProjectCreateWithoutWorkflowRunsInput = {
@@ -23779,6 +25929,76 @@ export namespace Prisma {
     data: ProjectCreateManyUserInput | ProjectCreateManyUserInput[]
   }
 
+  export type SkillCreateWithoutApprovedByInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviews?: SkillReviewCreateNestedManyWithoutSkillInput
+    agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillUncheckedCreateWithoutApprovedByInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
+    agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillCreateOrConnectWithoutApprovedByInput = {
+    where: SkillWhereUniqueInput
+    create: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type SkillCreateManyApprovedByInputEnvelope = {
+    data: SkillCreateManyApprovedByInput | SkillCreateManyApprovedByInput[]
+  }
+
+  export type SkillReviewCreateWithoutReviewerInput = {
+    id?: string
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+    skill: SkillCreateNestedOneWithoutReviewsInput
+  }
+
+  export type SkillReviewUncheckedCreateWithoutReviewerInput = {
+    id?: string
+    skillId: string
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+  }
+
+  export type SkillReviewCreateOrConnectWithoutReviewerInput = {
+    where: SkillReviewWhereUniqueInput
+    create: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type SkillReviewCreateManyReviewerInputEnvelope = {
+    data: SkillReviewCreateManyReviewerInput | SkillReviewCreateManyReviewerInput[]
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -23874,28 +26094,86 @@ export namespace Prisma {
     userId?: StringNullableFilter<"Project"> | string | null
   }
 
+  export type SkillUpsertWithWhereUniqueWithoutApprovedByInput = {
+    where: SkillWhereUniqueInput
+    update: XOR<SkillUpdateWithoutApprovedByInput, SkillUncheckedUpdateWithoutApprovedByInput>
+    create: XOR<SkillCreateWithoutApprovedByInput, SkillUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type SkillUpdateWithWhereUniqueWithoutApprovedByInput = {
+    where: SkillWhereUniqueInput
+    data: XOR<SkillUpdateWithoutApprovedByInput, SkillUncheckedUpdateWithoutApprovedByInput>
+  }
+
+  export type SkillUpdateManyWithWhereWithoutApprovedByInput = {
+    where: SkillScalarWhereInput
+    data: XOR<SkillUpdateManyMutationInput, SkillUncheckedUpdateManyWithoutApprovedByInput>
+  }
+
+  export type SkillScalarWhereInput = {
+    AND?: SkillScalarWhereInput | SkillScalarWhereInput[]
+    OR?: SkillScalarWhereInput[]
+    NOT?: SkillScalarWhereInput | SkillScalarWhereInput[]
+    id?: StringFilter<"Skill"> | string
+    key?: StringFilter<"Skill"> | string
+    name?: StringFilter<"Skill"> | string
+    description?: StringFilter<"Skill"> | string
+    category?: StringFilter<"Skill"> | string
+    instructions?: StringFilter<"Skill"> | string
+    activationCriteria?: StringFilter<"Skill"> | string
+    version?: IntFilter<"Skill"> | number
+    isActive?: BoolFilter<"Skill"> | boolean
+    reviewStatus?: StringFilter<"Skill"> | string
+    approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
+    approvedById?: StringNullableFilter<"Skill"> | string | null
+    createdAt?: DateTimeFilter<"Skill"> | Date | string
+    updatedAt?: DateTimeFilter<"Skill"> | Date | string
+  }
+
+  export type SkillReviewUpsertWithWhereUniqueWithoutReviewerInput = {
+    where: SkillReviewWhereUniqueInput
+    update: XOR<SkillReviewUpdateWithoutReviewerInput, SkillReviewUncheckedUpdateWithoutReviewerInput>
+    create: XOR<SkillReviewCreateWithoutReviewerInput, SkillReviewUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type SkillReviewUpdateWithWhereUniqueWithoutReviewerInput = {
+    where: SkillReviewWhereUniqueInput
+    data: XOR<SkillReviewUpdateWithoutReviewerInput, SkillReviewUncheckedUpdateWithoutReviewerInput>
+  }
+
+  export type SkillReviewUpdateManyWithWhereWithoutReviewerInput = {
+    where: SkillReviewScalarWhereInput
+    data: XOR<SkillReviewUpdateManyMutationInput, SkillReviewUncheckedUpdateManyWithoutReviewerInput>
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     projects?: ProjectCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillUncheckedCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -23918,48 +26196,60 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     projects?: ProjectUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUncheckedUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     projects?: ProjectCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewCreateNestedManyWithoutReviewerInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
     id: string
     name: string
     email: string
+    accessLevel?: string
     emailVerified?: boolean
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    approvedSkills?: SkillUncheckedCreateNestedManyWithoutApprovedByInput
+    skillReviews?: SkillReviewUncheckedCreateNestedManyWithoutReviewerInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -23982,24 +26272,30 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     projects?: ProjectUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUpdateManyWithoutReviewerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    accessLevel?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    approvedSkills?: SkillUncheckedUpdateManyWithoutApprovedByNestedInput
+    skillReviews?: SkillReviewUncheckedUpdateManyWithoutReviewerNestedInput
   }
 
   export type PromptTemplateCreateManyProjectInput = {
@@ -24274,12 +26570,44 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SkillReviewCreateManySkillInput = {
+    id?: string
+    reviewerId?: string | null
+    decision: string
+    comment?: string
+    createdAt?: Date | string
+  }
+
   export type AgentSkillCreateManySkillInput = {
     id?: string
     agentId: string
     priority?: number
     isRequired?: boolean
     createdAt?: Date | string
+  }
+
+  export type SkillReviewUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewer?: UserUpdateOneWithoutSkillReviewsNestedInput
+  }
+
+  export type SkillReviewUncheckedUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reviewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewUncheckedUpdateManyWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reviewerId?: NullableStringFieldUpdateOperationsInput | string | null
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AgentSkillUpdateWithoutSkillInput = {
@@ -24339,6 +26667,30 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type SkillCreateManyApprovedByInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillReviewCreateManyReviewerInput = {
+    id?: string
+    skillId: string
+    decision: string
+    comment?: string
+    createdAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -24456,6 +26808,82 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
+    agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillUncheckedUpdateWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
+    agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillUncheckedUpdateManyWithoutApprovedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewUpdateWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skill?: SkillUpdateOneRequiredWithoutReviewsNestedInput
+  }
+
+  export type SkillReviewUncheckedUpdateWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillReviewUncheckedUpdateManyWithoutReviewerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
