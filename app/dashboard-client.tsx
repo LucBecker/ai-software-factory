@@ -108,6 +108,20 @@ type Prompt = {
   description: string;
 };
 
+type Skill = {
+  id: string;
+  key: string;
+  name: string;
+  description: string;
+  category: string;
+  instructions: string;
+  activationCriteria: string;
+  version: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 const initialProjects: Project[] = []
 
 const prompts: Prompt[] = [
@@ -270,6 +284,9 @@ export default function DashboardClient() {
   const [projectDescription, setProjectDescription] = useState("");
   const [selectedStage, setSelectedStage] = useState("Brainstorming");
   const [copiedPrompt, setCopiedPrompt] = useState("");
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [skillsLoading, setSkillsLoading] = useState(false);
+  const [skillsError, setSkillsError] = useState("");
 
   const currentAnalysisReview = reviewHistory.find(
   (review) => review.sourceRunId === analysisRunId,
@@ -448,6 +465,48 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+useEffect(() => {
+  let cancelled = false;
+
+  async function loadSkills() {
+    setSkillsLoading(true);
+    setSkillsError("");
+
+    try {
+      const response = await fetch("/api/skills");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o catálogo de skills.",
+        );
+      }
+
+      if (!cancelled) {
+        setSkills(Array.isArray(data.skills) ? data.skills : []);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setSkillsError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar as skills.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setSkillsLoading(false);
+      }
+    }
+  }
+
+  void loadSkills();
+
+  return () => {
+    cancelled = true;
+  };
+}, []);
 
 useEffect(() => {
   if (!selectedProject) {
@@ -1842,12 +1901,13 @@ async function saveArchitectureEdit(
   }
 
   const menu = [
-    { name: "Visão geral", icon: "▦" },
-    { name: "Projetos", icon: "▣" },
-    { name: "Biblioteca de prompts", icon: "▤" },
-    { name: "Agentes de IA", icon: "✳" },
-    { name: "Fluxos de trabalho", icon: "⇄" },
-  ];
+  { name: "Visão geral", icon: "▦" },
+  { name: "Projetos", icon: "▣" },
+  { name: "Biblioteca de prompts", icon: "▤" },
+  { name: "Catálogo de skills", icon: "⌘" },
+  { name: "Agentes de IA", icon: "✳" },
+  { name: "Fluxos de trabalho", icon: "⇄" },
+];
 
   return (
     <main className="min-h-screen bg-[#0b1020] text-slate-100 md:flex">
@@ -3406,6 +3466,107 @@ async function saveArchitectureEdit(
               </div>
             </>
           )}
+
+          {page === "Catálogo de skills" && (
+  <>
+    <SectionTitle
+      title="Catálogo de skills"
+      description="Competências reutilizáveis para orientar agentes especializados em diferentes projetos."
+    />
+
+    <div className="mb-6 rounded-2xl border border-white/10 bg-[#11182b] p-5">
+      <h3 className="font-semibold">Como funcionam as skills</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-400">
+        Cada skill contém instruções, critérios de ativação e uma versão.
+        O catálogo permite consultar essas competências antes de associá-las
+        aos agentes.
+      </p>
+      <p className="mt-3 text-xs text-amber-300">
+        As skills ainda não executam agentes automaticamente.
+        A ativação dependerá de revisão e configuração controladas.
+      </p>
+    </div>
+
+    {skillsLoading && (
+      <p className="text-sm text-slate-400">
+        Carregando catálogo de skills...
+      </p>
+    )}
+
+    {skillsError && (
+      <p role="alert" className="mb-4 text-sm text-red-400">
+        {skillsError}
+      </p>
+    )}
+
+    {!skillsLoading && !skillsError && skills.length === 0 && (
+      <div className="rounded-2xl border border-dashed border-white/10 p-6">
+        <p className="text-sm text-slate-400">
+          Nenhuma skill cadastrada ainda.
+        </p>
+      </div>
+    )}
+
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {skills.map((skill) => (
+        <article
+          key={skill.id}
+          className="rounded-2xl border border-white/10 bg-[#11182b] p-5"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="rounded-lg bg-indigo-400/10 px-2.5 py-1.5 text-xs text-indigo-300">
+              {skill.category}
+            </span>
+
+            <span
+              className={`rounded-full px-3 py-1 text-xs ${
+                skill.isActive
+                  ? "bg-emerald-400/10 text-emerald-300"
+                  : "bg-amber-400/10 text-amber-300"
+              }`}
+            >
+              {skill.isActive ? "Ativa" : "Inativa"}
+            </span>
+          </div>
+
+          <h3 className="mt-4 font-semibold">{skill.name}</h3>
+
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            {skill.description}
+          </p>
+
+          <p className="mt-4 text-xs text-slate-500">
+            Chave: {skill.key}
+          </p>
+
+          <p className="mt-1 text-xs text-slate-500">
+            Versão: {skill.version}
+          </p>
+
+          <div className="mt-5 border-t border-white/10 pt-4">
+            <h4 className="text-sm font-medium">
+              Critérios de ativação
+            </h4>
+
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-400">
+              {skill.activationCriteria || "Nenhum critério informado."}
+            </p>
+          </div>
+
+          <details className="mt-4 rounded-xl border border-white/10 p-3">
+            <summary className="cursor-pointer text-sm font-medium text-indigo-300">
+              Consultar instruções da skill
+            </summary>
+
+            <pre className="mt-3 whitespace-pre-wrap break-words text-xs leading-5 text-slate-400">
+              {skill.instructions}
+            </pre>
+          </details>
+        </article>
+      ))}
+    </div>
+  </>
+)}
 
           {page === "Agentes de IA" && (
             <>
