@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
+import { requireSession } from "../../../src/lib/require-session";
 
 function readTaskField(block: string, label: string): string {
   const expression = new RegExp(
@@ -57,9 +59,15 @@ export async function GET(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(request, projectId);
+
+      if (!access.ok) {
+        return access.response;
+      }
+
     const tasks = await prisma.developmentTask.findMany({
       where: {
-        projectId,
+        projectId: access.project.id,
         ...(planRunId ? { sourcePlanRunId: planRunId } : {}),
       },
       orderBy: { createdAt: "asc" },
@@ -78,6 +86,12 @@ export async function GET(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
+
     const body = await request.json();
 
     if (
@@ -99,7 +113,10 @@ export async function PATCH(request: Request) {
 
     const existingTask = await prisma.developmentTask.findUnique({
       where: { id: taskId },
-      select: { id: true },
+      select: {
+        id: true,
+        projectId: true,
+      },
     });
 
     if (!existingTask) {
@@ -107,6 +124,15 @@ export async function PATCH(request: Request) {
         { error: "Tarefa não encontrada." },
         { status: 404 },
       );
+    }
+
+    const access = await requireProjectAccess(
+      request,
+      existingTask.projectId,
+    );
+
+    if (!access.ok) {
+      return access.response;
     }
 
     const updatedTask = await prisma.developmentTask.update({
@@ -147,6 +173,15 @@ export async function POST(request: Request) {
 
     const projectId = body.projectId.trim();
     const planRunId = body.planRunId.trim();
+
+    const access = await requireProjectAccess(
+      request,
+      projectId,
+    );
+
+    if (!access.ok) {
+      return access.response;
+    }
 
     const plan = await prisma.workflowRun.findFirst({
       where: {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
 
 
 export async function GET(request: Request) {
@@ -14,16 +15,10 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
-      );
+    if (!access.ok) {
+    return access.response;
     }
 
     const requirements = await prisma.requirement.findMany({
@@ -67,6 +62,15 @@ export async function POST(request: Request) {
         { error: "O título ou a descrição ultrapassa o limite permitido." },
         { status: 400 },
       );
+    }
+
+    const access = await requireProjectAccess(
+        request,
+        body.projectId,
+        );
+
+    if (!access.ok) {
+    return access.response;
     }
 
     const project = await prisma.project.findUnique({
@@ -125,6 +129,15 @@ export async function DELETE(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+        request,
+        body.projectId,
+        );
+
+    if (!access.ok) {
+    return access.response;
+    }
+
     const requirement = await prisma.requirement.findFirst({
       where: {
         id: body.id,
@@ -174,7 +187,7 @@ export async function PATCH(request: Request) {
 
     if (
       body.title.trim().length > 120 ||
-      
+
       (typeof body.description === "string" &&
         body.description.length > 2000)
     ) {
@@ -191,6 +204,15 @@ export async function PATCH(request: Request) {
         { error: "Selecione uma prioridade válida." },
         { status: 400 },
       );
+    }
+
+    const access = await requireProjectAccess(
+    request,
+    body.projectId,
+    );
+
+    if (!access.ok) {
+    return access.response;
     }
 
     const existing = await prisma.requirement.findFirst({

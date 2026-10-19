@@ -63,6 +63,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+    request,
+    body.projectId,
+    );
+
+    if (!access.ok) {
+    return access.response;
+    }
+
     const allowedCategories = [
       "GENERAL",
       "TECHNOLOGY",
@@ -115,6 +124,15 @@ export async function DELETE(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+        request,
+        body.projectId,
+        );
+
+    if (!access.ok) {
+    return access.response;
+    }
+
     const decision = await prisma.architectureDecision.findFirst({
       where: {
         id: body.id,
@@ -146,9 +164,19 @@ export async function DELETE(request: Request) {
 }
 export async function PATCH(request: Request) {
   try {
-    const body = await request.json();
 
-        // Aprovação explícita de uma decisão de arquitetura.
+  const body = await request.json();
+
+  const access = await requireProjectAccess(
+    request,
+    typeof body.projectId === "string" ? body.projectId : null,
+  );
+
+  if (!access.ok) {
+    return access.response;
+  }
+
+    // Aprovação explícita de uma decisão de arquitetura.
     if (body.action === "APPROVE") {
       if (
         typeof body.id !== "string" ||

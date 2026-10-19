@@ -2,9 +2,17 @@ import { NextResponse } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
+import { requireSession } from "../../../src/lib/require-session";
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
+
     const body = await request.json();
 
     if (
@@ -17,6 +25,15 @@ export async function POST(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+      request,
+      body.projectId.trim(),
+    );
+
+    if (!access.ok) {
+      return access.response;
+    }
+
     // Carrega a definição do agente criada na pasta agents.
     const agentInstructions = await readFile(
       path.join(process.cwd(), "agents", "analista-requisitos.md"),
@@ -24,7 +41,7 @@ export async function POST(request: Request) {
     );
 
     const project = await prisma.project.findUnique({
-      where: { id: body.projectId.trim() },
+      where: { id: access.project.id },
       include: {
         requirements: {
           orderBy: { createdAt: "asc" },
@@ -153,21 +170,15 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
-      );
-    }
+      if (!access.ok) {
+        return access.response;
+      }
 
     const runs = await prisma.workflowRun.findMany({
       where: {
-        projectId,
+        projectId: access.project.id,
         stage: "REQUIREMENTS_ANALYSIS",
       },
       orderBy: {

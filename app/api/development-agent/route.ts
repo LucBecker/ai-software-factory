@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
+
 
 type RequestBody = {
   projectId?: unknown;
@@ -58,6 +60,15 @@ export async function POST(request: Request) {
 
     const projectId = body.projectId.trim();
     const taskId = body.taskId.trim();
+
+    const access = await requireProjectAccess(
+      request,
+      projectId,
+    );
+
+    if (!access.ok) {
+      return access.response;
+    }
 
     // 1. Confirma que a tarefa pertence ao projeto informado.
     const task = await prisma.developmentTask.findFirst({
@@ -444,6 +455,15 @@ export async function PATCH(request: Request) {
         { status: 400 },
       );
     }
+
+    const access = await requireProjectAccess(
+        request,
+        body.projectId,
+      );
+
+      if (!access.ok) {
+        return access.response;
+      }
 
     const run = await prisma.workflowRun.findFirst({
       where: {

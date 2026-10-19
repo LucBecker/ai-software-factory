@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../src/lib/require-project-access";
+import { requireSession } from "../../../src/lib/require-session";
 
 export async function GET(request: Request) {
   try {
@@ -15,21 +17,15 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
-      );
+    if (!access.ok) {
+      return access.response;
     }
 
     const runs = await prisma.workflowRun.findMany({
       where: {
-        projectId: project.id,
+        projectId: access.project.id,
         stage: "TECHNICAL_PLANNING",
       },
       orderBy: {
@@ -76,6 +72,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
+
     const body = await request.json();
 
     if (
@@ -110,6 +112,15 @@ if (!analysis) {
     { error: "A análise selecionada não foi encontrada." },
     { status: 404 },
   );
+}
+
+const projectAccess = await requireProjectAccess(
+  request,
+  analysis.projectId,
+);
+
+if (!projectAccess.ok) {
+  return projectAccess.response;
 }
 
 // O ID é obtido do registro da análise, evitando erros de cópia.
