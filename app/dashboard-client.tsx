@@ -11,6 +11,36 @@ type Project = {
   progress: number;
 };
 
+type ProjectProfileForm = {
+  softwareType: string;
+  targetPlatform: string;
+  preferredLanguages: string;
+  preferredFrameworks: string;
+  databasePreference: string;
+  deploymentTarget: string;
+  integrations: string;
+  securityRequirements: string;
+  performanceRequirements: string;
+  budgetConstraints: string;
+  otherConstraints: string;
+  additionalContext: string;
+};
+
+const emptyProjectProfileForm: ProjectProfileForm = {
+  softwareType: "UNDECIDED",
+  targetPlatform: "UNDECIDED",
+  preferredLanguages: "",
+  preferredFrameworks: "",
+  databasePreference: "UNDECIDED",
+  deploymentTarget: "UNDECIDED",
+  integrations: "",
+  securityRequirements: "",
+  performanceRequirements: "",
+  budgetConstraints: "",
+  otherConstraints: "",
+  additionalContext: "",
+};
+
 type Requirement = {
   id: string;
   title: string;
@@ -140,10 +170,16 @@ const stages = [
   },
 ];
 
-export default function Home() {
+export default function DashboardClient() {
   const [page, setPage] = useState("Visão geral");
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projectProfileForm, setProjectProfileForm] =
+  useState<ProjectProfileForm>(emptyProjectProfileForm);
+  const [projectProfileLoading, setProjectProfileLoading] = useState(false);
+  const [projectProfileSaving, setProjectProfileSaving] = useState(false);
+  const [projectProfileError, setProjectProfileError] = useState("");
+  const [projectProfileMessage, setProjectProfileMessage] = useState("");
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [requirementTitle, setRequirementTitle] = useState("");
   const [architectureDecisions, setArchitectureDecisions] = useState<ArchitectureDecision[]>([]);
@@ -339,6 +375,81 @@ export default function Home() {
 }, []);
 
 useEffect(() => {
+  if (!selectedProject) return;
+
+  const projectId = selectedProject.id;
+  let cancelled = false;
+
+  async function loadProjectProfile() {
+    setProjectProfileLoading(true);
+    setProjectProfileError("");
+    setProjectProfileMessage("");
+
+    try {
+      const response = await fetch(
+        `/api/project-profile?projectId=${encodeURIComponent(projectId)}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o perfil do projeto."
+        );
+      }
+
+      if (cancelled) return;
+
+      const profile = data.profile;
+
+      if (!profile) {
+        setProjectProfileForm(emptyProjectProfileForm);
+        return;
+      }
+
+      setProjectProfileForm({
+        softwareType: profile.softwareType ?? "UNDECIDED",
+        targetPlatform: profile.targetPlatform ?? "UNDECIDED",
+        preferredLanguages: Array.isArray(profile.preferredLanguages)
+          ? profile.preferredLanguages.join(", ")
+          : "",
+        preferredFrameworks: Array.isArray(profile.preferredFrameworks)
+          ? profile.preferredFrameworks.join(", ")
+          : "",
+        databasePreference: profile.databasePreference ?? "UNDECIDED",
+        deploymentTarget: profile.deploymentTarget ?? "UNDECIDED",
+        integrations: Array.isArray(profile.integrations)
+          ? profile.integrations.join(", ")
+          : "",
+        securityRequirements: profile.securityRequirements ?? "",
+        performanceRequirements: profile.performanceRequirements ?? "",
+        budgetConstraints: profile.budgetConstraints ?? "",
+        otherConstraints: profile.otherConstraints ?? "",
+        additionalContext: profile.additionalContext ?? "",
+      });
+    } catch (error) {
+      if (!cancelled) {
+        setProjectProfileError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar o perfil."
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setProjectProfileLoading(false);
+      }
+    }
+  }
+
+  loadProjectProfile();
+
+  return () => {
+    cancelled = true;
+  };
+}, [selectedProject]);
+
+useEffect(() => {
   if (!selectedProject) {
     setRequirements([]);
     return;
@@ -487,6 +598,76 @@ useEffect(() => {
     cancelled = true;
   };
 }, [selectedProject]);
+
+async function saveProjectProfile(
+  event: React.FormEvent<HTMLFormElement>,
+) {
+  event.preventDefault();
+
+  if (!selectedProject) {
+    setProjectProfileError("Selecione um projeto primeiro.");
+    return;
+  }
+
+  setProjectProfileSaving(true);
+  setProjectProfileError("");
+  setProjectProfileMessage("");
+
+  const toList = (value: string) =>
+    value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+  try {
+    const response = await fetch("/api/project-profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId: selectedProject.id,
+        softwareType: projectProfileForm.softwareType,
+        targetPlatform: projectProfileForm.targetPlatform,
+        preferredLanguages: toList(
+          projectProfileForm.preferredLanguages,
+        ),
+        preferredFrameworks: toList(
+          projectProfileForm.preferredFrameworks,
+        ),
+        databasePreference: projectProfileForm.databasePreference,
+        deploymentTarget: projectProfileForm.deploymentTarget,
+        integrations: toList(projectProfileForm.integrations),
+        securityRequirements: projectProfileForm.securityRequirements,
+        performanceRequirements:
+          projectProfileForm.performanceRequirements,
+        budgetConstraints: projectProfileForm.budgetConstraints,
+        otherConstraints: projectProfileForm.otherConstraints,
+        additionalContext: projectProfileForm.additionalContext,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível salvar o perfil do projeto.",
+      );
+    }
+
+    setProjectProfileMessage(
+      data.message || "Perfil do projeto salvo com sucesso.",
+    );
+  } catch (error) {
+    setProjectProfileError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao salvar o perfil.",
+    );
+  } finally {
+    setProjectProfileSaving(false);
+  }
+}
 
 async function submitRequirementsReview(
   decision: "APPROVED" | "CHANGES_REQUESTED",
@@ -1937,9 +2118,12 @@ async function saveArchitectureEdit(
                 projects={projects.slice(0, 3)}
                 onView={() => setPage("Projetos")}
                 onSelectProject={(project) => {
-                  setSelectedProject(project);
-                  setPage("Detalhes do projeto");
-                }}
+                setProjectProfileForm(emptyProjectProfileForm);
+                setProjectProfileError("");
+                setProjectProfileMessage("");
+                setSelectedProject(project);
+                setPage("Detalhes do projeto");
+              }}
               />
             </>
           )}
@@ -1978,6 +2162,358 @@ async function saveArchitectureEdit(
                   selectedProject.description || "Nenhuma descrição cadastrada."
                 }
               />
+
+        <div className="mb-6 rounded-2xl border border-white/10 bg-[#11182b] p-5">
+  <div className="mb-5">
+    <h3 className="text-lg font-semibold">Perfil do Projeto</h3>
+    <p className="mt-2 text-sm leading-6 text-slate-400">
+      Defina o contexto técnico para orientar os agentes de requisitos e
+      arquitetura. As informações são específicas deste projeto.
+    </p>
+  </div>
+
+  {projectProfileLoading && (
+    <p className="mb-4 text-sm text-slate-400">
+      Carregando perfil do projeto...
+    </p>
+  )}
+
+  <form onSubmit={saveProjectProfile}>
+    <fieldset
+      disabled={projectProfileLoading || projectProfileSaving}
+      className="space-y-5 disabled:opacity-70"
+    >
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label
+            htmlFor="profile-software-type"
+            className="mb-1 block text-sm font-medium"
+          >
+            Tipo de software
+          </label>
+          <select
+            id="profile-software-type"
+            value={projectProfileForm.softwareType}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                softwareType: event.target.value,
+              }))
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          >
+            <option value="UNDECIDED">Ainda não definido</option>
+            <option value="WEB_APP">Aplicação web</option>
+            <option value="API">API ou serviço backend</option>
+            <option value="SAAS">SaaS</option>
+            <option value="MOBILE_APP">Aplicativo mobile</option>
+            <option value="DESKTOP_APP">Aplicação desktop</option>
+            <option value="LEGACY_MODERNIZATION">
+              Modernização de sistema existente
+            </option>
+            <option value="OTHER">Outro</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-target-platform"
+            className="mb-1 block text-sm font-medium"
+          >
+            Plataforma-alvo
+          </label>
+          <select
+            id="profile-target-platform"
+            value={projectProfileForm.targetPlatform}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                targetPlatform: event.target.value,
+              }))
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          >
+            <option value="UNDECIDED">Ainda não definida</option>
+            <option value="WEB">Web</option>
+            <option value="MOBILE">Mobile</option>
+            <option value="WEB_AND_MOBILE">Web e mobile</option>
+            <option value="DESKTOP">Desktop</option>
+            <option value="BACKEND">Backend</option>
+            <option value="OTHER">Outra</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-languages"
+            className="mb-1 block text-sm font-medium"
+          >
+            Linguagens preferidas
+          </label>
+          <input
+            id="profile-languages"
+            value={projectProfileForm.preferredLanguages}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                preferredLanguages: event.target.value,
+              }))
+            }
+            maxLength={1000}
+            placeholder="Ex.: TypeScript, Java, Python"
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-frameworks"
+            className="mb-1 block text-sm font-medium"
+          >
+            Frameworks preferidos
+          </label>
+          <input
+            id="profile-frameworks"
+            value={projectProfileForm.preferredFrameworks}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                preferredFrameworks: event.target.value,
+              }))
+            }
+            maxLength={1000}
+            placeholder="Ex.: Next.js, Spring Boot"
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-database"
+            className="mb-1 block text-sm font-medium"
+          >
+            Banco de dados
+          </label>
+          <select
+            id="profile-database"
+            value={projectProfileForm.databasePreference}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                databasePreference: event.target.value,
+              }))
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          >
+            <option value="UNDECIDED">Ainda não definido</option>
+            <option value="POSTGRESQL">PostgreSQL</option>
+            <option value="MYSQL">MySQL</option>
+            <option value="SQLITE">SQLite</option>
+            <option value="SQL_SERVER">SQL Server</option>
+            <option value="MONGODB">MongoDB</option>
+            <option value="OTHER">Outro</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-deployment"
+            className="mb-1 block text-sm font-medium"
+          >
+            Ambiente de implantação
+          </label>
+          <select
+            id="profile-deployment"
+            value={projectProfileForm.deploymentTarget}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                deploymentTarget: event.target.value,
+              }))
+            }
+            className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          >
+            <option value="UNDECIDED">Ainda não definido</option>
+            <option value="LOCAL">Local</option>
+            <option value="AWS">AWS</option>
+            <option value="AZURE">Microsoft Azure</option>
+            <option value="GCP">Google Cloud</option>
+            <option value="ON_PREMISES">Infraestrutura própria</option>
+            <option value="OTHER">Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="profile-integrations"
+          className="mb-1 block text-sm font-medium"
+        >
+          Integrações necessárias
+        </label>
+        <input
+          id="profile-integrations"
+          value={projectProfileForm.integrations}
+          onChange={(event) =>
+            setProjectProfileForm((current) => ({
+              ...current,
+              integrations: event.target.value,
+            }))
+          }
+          maxLength={3000}
+          placeholder="Ex.: gateway de pagamento, ERP, APIs externas"
+          className="w-full rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+        />
+        <p className="mt-1 text-xs text-slate-500">
+          Separe as integrações por vírgulas.
+        </p>
+      </div>
+
+      <div>
+        <label
+          htmlFor="profile-security"
+          className="mb-1 block text-sm font-medium"
+        >
+          Requisitos de segurança
+        </label>
+        <textarea
+          id="profile-security"
+          value={projectProfileForm.securityRequirements}
+          onChange={(event) =>
+            setProjectProfileForm((current) => ({
+              ...current,
+              securityRequirements: event.target.value,
+            }))
+          }
+          maxLength={5000}
+          rows={2}
+          placeholder="Ex.: autenticação, autorização, auditoria e proteção de dados"
+          className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="profile-performance"
+          className="mb-1 block text-sm font-medium"
+        >
+          Requisitos de desempenho
+        </label>
+        <textarea
+          id="profile-performance"
+          value={projectProfileForm.performanceRequirements}
+          onChange={(event) =>
+            setProjectProfileForm((current) => ({
+              ...current,
+              performanceRequirements: event.target.value,
+            }))
+          }
+          maxLength={5000}
+          rows={2}
+          placeholder="Ex.: volume de usuários, latência e disponibilidade"
+          className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label
+            htmlFor="profile-budget"
+            className="mb-1 block text-sm font-medium"
+          >
+            Restrições de orçamento
+          </label>
+          <textarea
+            id="profile-budget"
+            value={projectProfileForm.budgetConstraints}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                budgetConstraints: event.target.value,
+              }))
+            }
+            maxLength={5000}
+            rows={3}
+            placeholder="Limites de custo ou licenciamento"
+            className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="profile-constraints"
+            className="mb-1 block text-sm font-medium"
+          >
+            Outras restrições
+          </label>
+          <textarea
+            id="profile-constraints"
+            value={projectProfileForm.otherConstraints}
+            onChange={(event) =>
+              setProjectProfileForm((current) => ({
+                ...current,
+                otherConstraints: event.target.value,
+              }))
+            }
+            maxLength={5000}
+            rows={3}
+            placeholder="Prazos, padrões corporativos ou limitações"
+            className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="profile-context"
+          className="mb-1 block text-sm font-medium"
+        >
+          Contexto adicional do projeto
+        </label>
+        <textarea
+          id="profile-context"
+          value={projectProfileForm.additionalContext}
+          onChange={(event) =>
+            setProjectProfileForm((current) => ({
+              ...current,
+              additionalContext: event.target.value,
+            }))
+          }
+          maxLength={5000}
+          rows={4}
+          placeholder="Objetivos, arquitetura existente, regras organizacionais e outras informações importantes"
+          className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+        />
+      </div>
+
+      {projectProfileError && (
+        <p role="alert" className="text-sm text-red-400">
+          {projectProfileError}
+        </p>
+      )}
+
+      {projectProfileMessage && (
+        <p role="status" className="text-sm text-emerald-400">
+          {projectProfileMessage}
+        </p>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
+        <p className="text-xs text-slate-500">
+          Campos não definidos não serão tratados como decisões aprovadas.
+        </p>
+
+        <button
+          type="submit"
+          disabled={projectProfileLoading || projectProfileSaving}
+          className="rounded-xl bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {projectProfileSaving ? "Salvando perfil..." : "Salvar perfil"}
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-white/10 bg-[#11182b] p-5">
