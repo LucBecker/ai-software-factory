@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../../src/lib/require-project-access";
+import { requireSession } from "../../../../src/lib/require-session";
 
 export async function GET(request: Request) {
   try {
@@ -13,21 +15,15 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Projeto não encontrado." },
-        { status: 404 },
-      );
-    }
+      if (!access.ok) {
+        return access.response;
+      }
 
     const runs = await prisma.workflowRun.findMany({
       where: {
-        projectId: project.id,
+        projectId: access.project.id,
         stage: "TECHNICAL_PLANNING_REVIEW",
       },
       orderBy: {
@@ -81,6 +77,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
+
     const body = await request.json();
 
     if (
@@ -117,10 +119,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+      request,
+      projectId,
+    );
+
+    if (!access.ok) {
+      return access.response;
+    }
+
     const plan = await prisma.workflowRun.findFirst({
       where: {
         id: planRunId,
-        projectId,
+        projectId: access.project.id,
         stage: "TECHNICAL_PLANNING",
         status: "COMPLETED",
       },

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../src/lib/prisma";
+import { requireProjectAccess } from "../../../../src/lib/require-project-access";
+import { requireSession } from "../../../../src/lib/require-session";
 
 export async function GET(request: Request) {
   try {
@@ -13,32 +15,15 @@ export async function GET(request: Request) {
       );
     }
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
-      select: { id: true },
-    });
+    const access = await requireProjectAccess(request, projectId);
 
-   if (!project) {
-  const availableProjects = await prisma.project.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-
-  return NextResponse.json(
-    {
-      error: "Projeto não encontrado.",
-      receivedProjectId: projectId,
-      availableProjects,
-    },
-    { status: 404 },
-  );
-}
+      if (!access.ok) {
+        return access.response;
+      }
 
     const runs = await prisma.workflowRun.findMany({
       where: {
-        projectId,
+        projectId: access.project.id,
         stage: "REQUIREMENTS_REVIEW",
       },
       orderBy: { createdAt: "desc" },
@@ -86,6 +71,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireSession(request);
+
+    if (!authResult.ok) {
+      return authResult.response;
+    }
+
     const body = await request.json();
 
     if (
@@ -114,10 +105,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const access = await requireProjectAccess(
+      request,
+      body.projectId.trim(),
+    );
+
+    if (!access.ok) {
+      return access.response;
+    }
+
     const sourceRun = await prisma.workflowRun.findFirst({
       where: {
         id: body.runId,
-        projectId: body.projectId,
+        projectId: access.project.id,
         stage: "REQUIREMENTS_ANALYSIS",
         status: "COMPLETED",
       },
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
 
     const review = await prisma.workflowRun.create({
       data: {
-        projectId: body.projectId,
+        projectId: access.project.id,
         stage: "REQUIREMENTS_REVIEW",
         status: body.decision,
         input: JSON.stringify({
