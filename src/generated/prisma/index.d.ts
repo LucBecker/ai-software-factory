@@ -34,6 +34,16 @@ export type PromptTemplate = $Result.DefaultSelection<Prisma.$PromptTemplatePayl
  */
 export type Agent = $Result.DefaultSelection<Prisma.$AgentPayload>
 /**
+ * Model Skill
+ * 
+ */
+export type Skill = $Result.DefaultSelection<Prisma.$SkillPayload>
+/**
+ * Model AgentSkill
+ * 
+ */
+export type AgentSkill = $Result.DefaultSelection<Prisma.$AgentSkillPayload>
+/**
  * Model WorkflowRun
  * 
  */
@@ -231,6 +241,26 @@ export class PrismaClient<
     * ```
     */
   get agent(): Prisma.AgentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.skill`: Exposes CRUD operations for the **Skill** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Skills
+    * const skills = await prisma.skill.findMany()
+    * ```
+    */
+  get skill(): Prisma.SkillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.agentSkill`: Exposes CRUD operations for the **AgentSkill** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AgentSkills
+    * const agentSkills = await prisma.agentSkill.findMany()
+    * ```
+    */
+  get agentSkill(): Prisma.AgentSkillDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.workflowRun`: Exposes CRUD operations for the **WorkflowRun** model.
@@ -756,6 +786,8 @@ export namespace Prisma {
     ProjectProfile: 'ProjectProfile',
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
+    Skill: 'Skill',
+    AgentSkill: 'AgentSkill',
     WorkflowRun: 'WorkflowRun',
     Requirement: 'Requirement',
     ArchitectureDecision: 'ArchitectureDecision',
@@ -782,7 +814,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
+      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "skill" | "agentSkill" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1079,6 +1111,154 @@ export namespace Prisma {
           count: {
             args: Prisma.AgentCountArgs<ExtArgs>
             result: $Utils.Optional<AgentCountAggregateOutputType> | number
+          }
+        }
+      }
+      Skill: {
+        payload: Prisma.$SkillPayload<ExtArgs>
+        fields: Prisma.SkillFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SkillFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SkillFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          findFirst: {
+            args: Prisma.SkillFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SkillFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          findMany: {
+            args: Prisma.SkillFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>[]
+          }
+          create: {
+            args: Prisma.SkillCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          createMany: {
+            args: Prisma.SkillCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SkillCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>[]
+          }
+          delete: {
+            args: Prisma.SkillDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          update: {
+            args: Prisma.SkillUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          deleteMany: {
+            args: Prisma.SkillDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SkillUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SkillUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>[]
+          }
+          upsert: {
+            args: Prisma.SkillUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillPayload>
+          }
+          aggregate: {
+            args: Prisma.SkillAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSkill>
+          }
+          groupBy: {
+            args: Prisma.SkillGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SkillGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SkillCountArgs<ExtArgs>
+            result: $Utils.Optional<SkillCountAggregateOutputType> | number
+          }
+        }
+      }
+      AgentSkill: {
+        payload: Prisma.$AgentSkillPayload<ExtArgs>
+        fields: Prisma.AgentSkillFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AgentSkillFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AgentSkillFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          findFirst: {
+            args: Prisma.AgentSkillFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AgentSkillFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          findMany: {
+            args: Prisma.AgentSkillFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>[]
+          }
+          create: {
+            args: Prisma.AgentSkillCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          createMany: {
+            args: Prisma.AgentSkillCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AgentSkillCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>[]
+          }
+          delete: {
+            args: Prisma.AgentSkillDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          update: {
+            args: Prisma.AgentSkillUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          deleteMany: {
+            args: Prisma.AgentSkillDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AgentSkillUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AgentSkillUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>[]
+          }
+          upsert: {
+            args: Prisma.AgentSkillUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgentSkillPayload>
+          }
+          aggregate: {
+            args: Prisma.AgentSkillAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAgentSkill>
+          }
+          groupBy: {
+            args: Prisma.AgentSkillGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AgentSkillGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AgentSkillCountArgs<ExtArgs>
+            result: $Utils.Optional<AgentSkillCountAggregateOutputType> | number
           }
         }
       }
@@ -1774,6 +1954,8 @@ export namespace Prisma {
     projectProfile?: ProjectProfileOmit
     promptTemplate?: PromptTemplateOmit
     agent?: AgentOmit
+    skill?: SkillOmit
+    agentSkill?: AgentSkillOmit
     workflowRun?: WorkflowRunOmit
     requirement?: RequirementOmit
     architectureDecision?: ArchitectureDecisionOmit
@@ -1921,6 +2103,68 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountDevelopmentTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DevelopmentTaskWhereInput
+  }
+
+
+  /**
+   * Count Type AgentCountOutputType
+   */
+
+  export type AgentCountOutputType = {
+    skillAssignments: number
+  }
+
+  export type AgentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skillAssignments?: boolean | AgentCountOutputTypeCountSkillAssignmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AgentCountOutputType without action
+   */
+  export type AgentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentCountOutputType
+     */
+    select?: AgentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AgentCountOutputType without action
+   */
+  export type AgentCountOutputTypeCountSkillAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentSkillWhereInput
+  }
+
+
+  /**
+   * Count Type SkillCountOutputType
+   */
+
+  export type SkillCountOutputType = {
+    agentAssignments: number
+  }
+
+  export type SkillCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agentAssignments?: boolean | SkillCountOutputTypeCountAgentAssignmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SkillCountOutputType without action
+   */
+  export type SkillCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillCountOutputType
+     */
+    select?: SkillCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SkillCountOutputType without action
+   */
+  export type SkillCountOutputTypeCountAgentAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentSkillWhereInput
   }
 
 
@@ -5817,6 +6061,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    skillAssignments?: boolean | Agent$skillAssignmentsArgs<ExtArgs>
+    _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agent"]>
 
   export type AgentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5853,10 +6099,18 @@ export namespace Prisma {
   }
 
   export type AgentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "role" | "instructions" | "model" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["agent"]>
+  export type AgentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skillAssignments?: boolean | Agent$skillAssignmentsArgs<ExtArgs>
+    _count?: boolean | AgentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AgentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AgentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $AgentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Agent"
-    objects: {}
+    objects: {
+      skillAssignments: Prisma.$AgentSkillPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
@@ -6260,6 +6514,7 @@ export namespace Prisma {
    */
   export interface Prisma__AgentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    skillAssignments<T extends Agent$skillAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Agent$skillAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6314,6 +6569,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * Filter, which Agent to fetch.
      */
     where: AgentWhereUniqueInput
@@ -6332,6 +6591,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * Filter, which Agent to fetch.
      */
     where: AgentWhereUniqueInput
@@ -6349,6 +6612,10 @@ export namespace Prisma {
      * Omit specific fields from the Agent
      */
     omit?: AgentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
     /**
      * Filter, which Agent to fetch.
      */
@@ -6398,6 +6665,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * Filter, which Agent to fetch.
      */
     where?: AgentWhereInput
@@ -6446,6 +6717,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * Filter, which Agents to fetch.
      */
     where?: AgentWhereInput
@@ -6488,6 +6763,10 @@ export namespace Prisma {
      * Omit specific fields from the Agent
      */
     omit?: AgentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
     /**
      * The data needed to create a Agent.
      */
@@ -6534,6 +6813,10 @@ export namespace Prisma {
      * Omit specific fields from the Agent
      */
     omit?: AgentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
     /**
      * The data needed to update a Agent.
      */
@@ -6601,6 +6884,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * The filter to search for the Agent to update in case it exists.
      */
     where: AgentWhereUniqueInput
@@ -6627,6 +6914,10 @@ export namespace Prisma {
      */
     omit?: AgentOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+    /**
      * Filter which Agent to delete.
      */
     where: AgentWhereUniqueInput
@@ -6647,6 +6938,30 @@ export namespace Prisma {
   }
 
   /**
+   * Agent.skillAssignments
+   */
+  export type Agent$skillAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    where?: AgentSkillWhereInput
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    cursor?: AgentSkillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AgentSkillScalarFieldEnum | AgentSkillScalarFieldEnum[]
+  }
+
+  /**
    * Agent without action
    */
   export type AgentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6658,6 +6973,2301 @@ export namespace Prisma {
      * Omit specific fields from the Agent
      */
     omit?: AgentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Skill
+   */
+
+  export type AggregateSkill = {
+    _count: SkillCountAggregateOutputType | null
+    _avg: SkillAvgAggregateOutputType | null
+    _sum: SkillSumAggregateOutputType | null
+    _min: SkillMinAggregateOutputType | null
+    _max: SkillMaxAggregateOutputType | null
+  }
+
+  export type SkillAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type SkillSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type SkillMinAggregateOutputType = {
+    id: string | null
+    key: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    instructions: string | null
+    activationCriteria: string | null
+    version: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SkillMaxAggregateOutputType = {
+    id: string | null
+    key: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    instructions: string | null
+    activationCriteria: string | null
+    version: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SkillCountAggregateOutputType = {
+    id: number
+    key: number
+    name: number
+    description: number
+    category: number
+    instructions: number
+    activationCriteria: number
+    version: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SkillAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type SkillSumAggregateInputType = {
+    version?: true
+  }
+
+  export type SkillMinAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    description?: true
+    category?: true
+    instructions?: true
+    activationCriteria?: true
+    version?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SkillMaxAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    description?: true
+    category?: true
+    instructions?: true
+    activationCriteria?: true
+    version?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SkillCountAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    description?: true
+    category?: true
+    instructions?: true
+    activationCriteria?: true
+    version?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SkillAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Skill to aggregate.
+     */
+    where?: SkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Skills to fetch.
+     */
+    orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Skills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Skills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Skills
+    **/
+    _count?: true | SkillCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SkillAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SkillSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SkillMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SkillMaxAggregateInputType
+  }
+
+  export type GetSkillAggregateType<T extends SkillAggregateArgs> = {
+        [P in keyof T & keyof AggregateSkill]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSkill[P]>
+      : GetScalarType<T[P], AggregateSkill[P]>
+  }
+
+
+
+
+  export type SkillGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillWhereInput
+    orderBy?: SkillOrderByWithAggregationInput | SkillOrderByWithAggregationInput[]
+    by: SkillScalarFieldEnum[] | SkillScalarFieldEnum
+    having?: SkillScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SkillCountAggregateInputType | true
+    _avg?: SkillAvgAggregateInputType
+    _sum?: SkillSumAggregateInputType
+    _min?: SkillMinAggregateInputType
+    _max?: SkillMaxAggregateInputType
+  }
+
+  export type SkillGroupByOutputType = {
+    id: string
+    key: string
+    name: string
+    description: string
+    category: string
+    instructions: string
+    activationCriteria: string
+    version: number
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: SkillCountAggregateOutputType | null
+    _avg: SkillAvgAggregateOutputType | null
+    _sum: SkillSumAggregateOutputType | null
+    _min: SkillMinAggregateOutputType | null
+    _max: SkillMaxAggregateOutputType | null
+  }
+
+  type GetSkillGroupByPayload<T extends SkillGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SkillGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SkillGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SkillGroupByOutputType[P]>
+            : GetScalarType<T[P], SkillGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SkillSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    instructions?: boolean
+    activationCriteria?: boolean
+    version?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
+    _count?: boolean | SkillCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["skill"]>
+
+  export type SkillSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    instructions?: boolean
+    activationCriteria?: boolean
+    version?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["skill"]>
+
+  export type SkillSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    instructions?: boolean
+    activationCriteria?: boolean
+    version?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["skill"]>
+
+  export type SkillSelectScalar = {
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    instructions?: boolean
+    activationCriteria?: boolean
+    version?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "activationCriteria" | "version" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
+  export type SkillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
+    _count?: boolean | SkillCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SkillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SkillIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SkillPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Skill"
+    objects: {
+      agentAssignments: Prisma.$AgentSkillPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      key: string
+      name: string
+      description: string
+      category: string
+      instructions: string
+      activationCriteria: string
+      version: number
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["skill"]>
+    composites: {}
+  }
+
+  type SkillGetPayload<S extends boolean | null | undefined | SkillDefaultArgs> = $Result.GetResult<Prisma.$SkillPayload, S>
+
+  type SkillCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SkillCountAggregateInputType | true
+    }
+
+  export interface SkillDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Skill'], meta: { name: 'Skill' } }
+    /**
+     * Find zero or one Skill that matches the filter.
+     * @param {SkillFindUniqueArgs} args - Arguments to find a Skill
+     * @example
+     * // Get one Skill
+     * const skill = await prisma.skill.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SkillFindUniqueArgs>(args: SelectSubset<T, SkillFindUniqueArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Skill that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SkillFindUniqueOrThrowArgs} args - Arguments to find a Skill
+     * @example
+     * // Get one Skill
+     * const skill = await prisma.skill.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SkillFindUniqueOrThrowArgs>(args: SelectSubset<T, SkillFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Skill that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillFindFirstArgs} args - Arguments to find a Skill
+     * @example
+     * // Get one Skill
+     * const skill = await prisma.skill.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SkillFindFirstArgs>(args?: SelectSubset<T, SkillFindFirstArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Skill that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillFindFirstOrThrowArgs} args - Arguments to find a Skill
+     * @example
+     * // Get one Skill
+     * const skill = await prisma.skill.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SkillFindFirstOrThrowArgs>(args?: SelectSubset<T, SkillFindFirstOrThrowArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Skills that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Skills
+     * const skills = await prisma.skill.findMany()
+     * 
+     * // Get first 10 Skills
+     * const skills = await prisma.skill.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const skillWithIdOnly = await prisma.skill.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SkillFindManyArgs>(args?: SelectSubset<T, SkillFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Skill.
+     * @param {SkillCreateArgs} args - Arguments to create a Skill.
+     * @example
+     * // Create one Skill
+     * const Skill = await prisma.skill.create({
+     *   data: {
+     *     // ... data to create a Skill
+     *   }
+     * })
+     * 
+     */
+    create<T extends SkillCreateArgs>(args: SelectSubset<T, SkillCreateArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Skills.
+     * @param {SkillCreateManyArgs} args - Arguments to create many Skills.
+     * @example
+     * // Create many Skills
+     * const skill = await prisma.skill.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SkillCreateManyArgs>(args?: SelectSubset<T, SkillCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Skills and returns the data saved in the database.
+     * @param {SkillCreateManyAndReturnArgs} args - Arguments to create many Skills.
+     * @example
+     * // Create many Skills
+     * const skill = await prisma.skill.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Skills and only return the `id`
+     * const skillWithIdOnly = await prisma.skill.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SkillCreateManyAndReturnArgs>(args?: SelectSubset<T, SkillCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Skill.
+     * @param {SkillDeleteArgs} args - Arguments to delete one Skill.
+     * @example
+     * // Delete one Skill
+     * const Skill = await prisma.skill.delete({
+     *   where: {
+     *     // ... filter to delete one Skill
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SkillDeleteArgs>(args: SelectSubset<T, SkillDeleteArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Skill.
+     * @param {SkillUpdateArgs} args - Arguments to update one Skill.
+     * @example
+     * // Update one Skill
+     * const skill = await prisma.skill.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SkillUpdateArgs>(args: SelectSubset<T, SkillUpdateArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Skills.
+     * @param {SkillDeleteManyArgs} args - Arguments to filter Skills to delete.
+     * @example
+     * // Delete a few Skills
+     * const { count } = await prisma.skill.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SkillDeleteManyArgs>(args?: SelectSubset<T, SkillDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Skills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Skills
+     * const skill = await prisma.skill.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SkillUpdateManyArgs>(args: SelectSubset<T, SkillUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Skills and returns the data updated in the database.
+     * @param {SkillUpdateManyAndReturnArgs} args - Arguments to update many Skills.
+     * @example
+     * // Update many Skills
+     * const skill = await prisma.skill.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Skills and only return the `id`
+     * const skillWithIdOnly = await prisma.skill.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SkillUpdateManyAndReturnArgs>(args: SelectSubset<T, SkillUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Skill.
+     * @param {SkillUpsertArgs} args - Arguments to update or create a Skill.
+     * @example
+     * // Update or create a Skill
+     * const skill = await prisma.skill.upsert({
+     *   create: {
+     *     // ... data to create a Skill
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Skill we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SkillUpsertArgs>(args: SelectSubset<T, SkillUpsertArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Skills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillCountArgs} args - Arguments to filter Skills to count.
+     * @example
+     * // Count the number of Skills
+     * const count = await prisma.skill.count({
+     *   where: {
+     *     // ... the filter for the Skills we want to count
+     *   }
+     * })
+    **/
+    count<T extends SkillCountArgs>(
+      args?: Subset<T, SkillCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SkillCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Skill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SkillAggregateArgs>(args: Subset<T, SkillAggregateArgs>): Prisma.PrismaPromise<GetSkillAggregateType<T>>
+
+    /**
+     * Group by Skill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SkillGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SkillGroupByArgs['orderBy'] }
+        : { orderBy?: SkillGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SkillGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSkillGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Skill model
+   */
+  readonly fields: SkillFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Skill.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SkillClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    agentAssignments<T extends Skill$agentAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$agentAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Skill model
+   */
+  interface SkillFieldRefs {
+    readonly id: FieldRef<"Skill", 'String'>
+    readonly key: FieldRef<"Skill", 'String'>
+    readonly name: FieldRef<"Skill", 'String'>
+    readonly description: FieldRef<"Skill", 'String'>
+    readonly category: FieldRef<"Skill", 'String'>
+    readonly instructions: FieldRef<"Skill", 'String'>
+    readonly activationCriteria: FieldRef<"Skill", 'String'>
+    readonly version: FieldRef<"Skill", 'Int'>
+    readonly isActive: FieldRef<"Skill", 'Boolean'>
+    readonly createdAt: FieldRef<"Skill", 'DateTime'>
+    readonly updatedAt: FieldRef<"Skill", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Skill findUnique
+   */
+  export type SkillFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter, which Skill to fetch.
+     */
+    where: SkillWhereUniqueInput
+  }
+
+  /**
+   * Skill findUniqueOrThrow
+   */
+  export type SkillFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter, which Skill to fetch.
+     */
+    where: SkillWhereUniqueInput
+  }
+
+  /**
+   * Skill findFirst
+   */
+  export type SkillFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter, which Skill to fetch.
+     */
+    where?: SkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Skills to fetch.
+     */
+    orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Skills.
+     */
+    cursor?: SkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Skills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Skills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Skills.
+     */
+    distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
+  }
+
+  /**
+   * Skill findFirstOrThrow
+   */
+  export type SkillFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter, which Skill to fetch.
+     */
+    where?: SkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Skills to fetch.
+     */
+    orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Skills.
+     */
+    cursor?: SkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Skills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Skills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Skills.
+     */
+    distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
+  }
+
+  /**
+   * Skill findMany
+   */
+  export type SkillFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter, which Skills to fetch.
+     */
+    where?: SkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Skills to fetch.
+     */
+    orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Skills.
+     */
+    cursor?: SkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Skills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Skills.
+     */
+    skip?: number
+    distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
+  }
+
+  /**
+   * Skill create
+   */
+  export type SkillCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Skill.
+     */
+    data: XOR<SkillCreateInput, SkillUncheckedCreateInput>
+  }
+
+  /**
+   * Skill createMany
+   */
+  export type SkillCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Skills.
+     */
+    data: SkillCreateManyInput | SkillCreateManyInput[]
+  }
+
+  /**
+   * Skill createManyAndReturn
+   */
+  export type SkillCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * The data used to create many Skills.
+     */
+    data: SkillCreateManyInput | SkillCreateManyInput[]
+  }
+
+  /**
+   * Skill update
+   */
+  export type SkillUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Skill.
+     */
+    data: XOR<SkillUpdateInput, SkillUncheckedUpdateInput>
+    /**
+     * Choose, which Skill to update.
+     */
+    where: SkillWhereUniqueInput
+  }
+
+  /**
+   * Skill updateMany
+   */
+  export type SkillUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Skills.
+     */
+    data: XOR<SkillUpdateManyMutationInput, SkillUncheckedUpdateManyInput>
+    /**
+     * Filter which Skills to update
+     */
+    where?: SkillWhereInput
+    /**
+     * Limit how many Skills to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Skill updateManyAndReturn
+   */
+  export type SkillUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * The data used to update Skills.
+     */
+    data: XOR<SkillUpdateManyMutationInput, SkillUncheckedUpdateManyInput>
+    /**
+     * Filter which Skills to update
+     */
+    where?: SkillWhereInput
+    /**
+     * Limit how many Skills to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Skill upsert
+   */
+  export type SkillUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Skill to update in case it exists.
+     */
+    where: SkillWhereUniqueInput
+    /**
+     * In case the Skill found by the `where` argument doesn't exist, create a new Skill with this data.
+     */
+    create: XOR<SkillCreateInput, SkillUncheckedCreateInput>
+    /**
+     * In case the Skill was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SkillUpdateInput, SkillUncheckedUpdateInput>
+  }
+
+  /**
+   * Skill delete
+   */
+  export type SkillDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+    /**
+     * Filter which Skill to delete.
+     */
+    where: SkillWhereUniqueInput
+  }
+
+  /**
+   * Skill deleteMany
+   */
+  export type SkillDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Skills to delete
+     */
+    where?: SkillWhereInput
+    /**
+     * Limit how many Skills to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Skill.agentAssignments
+   */
+  export type Skill$agentAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    where?: AgentSkillWhereInput
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    cursor?: AgentSkillWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AgentSkillScalarFieldEnum | AgentSkillScalarFieldEnum[]
+  }
+
+  /**
+   * Skill without action
+   */
+  export type SkillDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Skill
+     */
+    select?: SkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Skill
+     */
+    omit?: SkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AgentSkill
+   */
+
+  export type AggregateAgentSkill = {
+    _count: AgentSkillCountAggregateOutputType | null
+    _avg: AgentSkillAvgAggregateOutputType | null
+    _sum: AgentSkillSumAggregateOutputType | null
+    _min: AgentSkillMinAggregateOutputType | null
+    _max: AgentSkillMaxAggregateOutputType | null
+  }
+
+  export type AgentSkillAvgAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type AgentSkillSumAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type AgentSkillMinAggregateOutputType = {
+    id: string | null
+    agentId: string | null
+    skillId: string | null
+    priority: number | null
+    isRequired: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AgentSkillMaxAggregateOutputType = {
+    id: string | null
+    agentId: string | null
+    skillId: string | null
+    priority: number | null
+    isRequired: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AgentSkillCountAggregateOutputType = {
+    id: number
+    agentId: number
+    skillId: number
+    priority: number
+    isRequired: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AgentSkillAvgAggregateInputType = {
+    priority?: true
+  }
+
+  export type AgentSkillSumAggregateInputType = {
+    priority?: true
+  }
+
+  export type AgentSkillMinAggregateInputType = {
+    id?: true
+    agentId?: true
+    skillId?: true
+    priority?: true
+    isRequired?: true
+    createdAt?: true
+  }
+
+  export type AgentSkillMaxAggregateInputType = {
+    id?: true
+    agentId?: true
+    skillId?: true
+    priority?: true
+    isRequired?: true
+    createdAt?: true
+  }
+
+  export type AgentSkillCountAggregateInputType = {
+    id?: true
+    agentId?: true
+    skillId?: true
+    priority?: true
+    isRequired?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AgentSkillAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgentSkill to aggregate.
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentSkills to fetch.
+     */
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AgentSkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentSkills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentSkills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AgentSkills
+    **/
+    _count?: true | AgentSkillCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AgentSkillAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AgentSkillSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AgentSkillMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AgentSkillMaxAggregateInputType
+  }
+
+  export type GetAgentSkillAggregateType<T extends AgentSkillAggregateArgs> = {
+        [P in keyof T & keyof AggregateAgentSkill]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAgentSkill[P]>
+      : GetScalarType<T[P], AggregateAgentSkill[P]>
+  }
+
+
+
+
+  export type AgentSkillGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgentSkillWhereInput
+    orderBy?: AgentSkillOrderByWithAggregationInput | AgentSkillOrderByWithAggregationInput[]
+    by: AgentSkillScalarFieldEnum[] | AgentSkillScalarFieldEnum
+    having?: AgentSkillScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AgentSkillCountAggregateInputType | true
+    _avg?: AgentSkillAvgAggregateInputType
+    _sum?: AgentSkillSumAggregateInputType
+    _min?: AgentSkillMinAggregateInputType
+    _max?: AgentSkillMaxAggregateInputType
+  }
+
+  export type AgentSkillGroupByOutputType = {
+    id: string
+    agentId: string
+    skillId: string
+    priority: number
+    isRequired: boolean
+    createdAt: Date
+    _count: AgentSkillCountAggregateOutputType | null
+    _avg: AgentSkillAvgAggregateOutputType | null
+    _sum: AgentSkillSumAggregateOutputType | null
+    _min: AgentSkillMinAggregateOutputType | null
+    _max: AgentSkillMaxAggregateOutputType | null
+  }
+
+  type GetAgentSkillGroupByPayload<T extends AgentSkillGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AgentSkillGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AgentSkillGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AgentSkillGroupByOutputType[P]>
+            : GetScalarType<T[P], AgentSkillGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AgentSkillSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    skillId?: boolean
+    priority?: boolean
+    isRequired?: boolean
+    createdAt?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentSkill"]>
+
+  export type AgentSkillSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    skillId?: boolean
+    priority?: boolean
+    isRequired?: boolean
+    createdAt?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentSkill"]>
+
+  export type AgentSkillSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    skillId?: boolean
+    priority?: boolean
+    isRequired?: boolean
+    createdAt?: boolean
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agentSkill"]>
+
+  export type AgentSkillSelectScalar = {
+    id?: boolean
+    agentId?: boolean
+    skillId?: boolean
+    priority?: boolean
+    isRequired?: boolean
+    createdAt?: boolean
+  }
+
+  export type AgentSkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agentId" | "skillId" | "priority" | "isRequired" | "createdAt", ExtArgs["result"]["agentSkill"]>
+  export type AgentSkillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+  export type AgentSkillIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+  export type AgentSkillIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AgentDefaultArgs<ExtArgs>
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+
+  export type $AgentSkillPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AgentSkill"
+    objects: {
+      agent: Prisma.$AgentPayload<ExtArgs>
+      skill: Prisma.$SkillPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      agentId: string
+      skillId: string
+      priority: number
+      isRequired: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["agentSkill"]>
+    composites: {}
+  }
+
+  type AgentSkillGetPayload<S extends boolean | null | undefined | AgentSkillDefaultArgs> = $Result.GetResult<Prisma.$AgentSkillPayload, S>
+
+  type AgentSkillCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AgentSkillFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AgentSkillCountAggregateInputType | true
+    }
+
+  export interface AgentSkillDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AgentSkill'], meta: { name: 'AgentSkill' } }
+    /**
+     * Find zero or one AgentSkill that matches the filter.
+     * @param {AgentSkillFindUniqueArgs} args - Arguments to find a AgentSkill
+     * @example
+     * // Get one AgentSkill
+     * const agentSkill = await prisma.agentSkill.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AgentSkillFindUniqueArgs>(args: SelectSubset<T, AgentSkillFindUniqueArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AgentSkill that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AgentSkillFindUniqueOrThrowArgs} args - Arguments to find a AgentSkill
+     * @example
+     * // Get one AgentSkill
+     * const agentSkill = await prisma.agentSkill.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AgentSkillFindUniqueOrThrowArgs>(args: SelectSubset<T, AgentSkillFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AgentSkill that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillFindFirstArgs} args - Arguments to find a AgentSkill
+     * @example
+     * // Get one AgentSkill
+     * const agentSkill = await prisma.agentSkill.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AgentSkillFindFirstArgs>(args?: SelectSubset<T, AgentSkillFindFirstArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AgentSkill that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillFindFirstOrThrowArgs} args - Arguments to find a AgentSkill
+     * @example
+     * // Get one AgentSkill
+     * const agentSkill = await prisma.agentSkill.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AgentSkillFindFirstOrThrowArgs>(args?: SelectSubset<T, AgentSkillFindFirstOrThrowArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AgentSkills that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AgentSkills
+     * const agentSkills = await prisma.agentSkill.findMany()
+     * 
+     * // Get first 10 AgentSkills
+     * const agentSkills = await prisma.agentSkill.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const agentSkillWithIdOnly = await prisma.agentSkill.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AgentSkillFindManyArgs>(args?: SelectSubset<T, AgentSkillFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AgentSkill.
+     * @param {AgentSkillCreateArgs} args - Arguments to create a AgentSkill.
+     * @example
+     * // Create one AgentSkill
+     * const AgentSkill = await prisma.agentSkill.create({
+     *   data: {
+     *     // ... data to create a AgentSkill
+     *   }
+     * })
+     * 
+     */
+    create<T extends AgentSkillCreateArgs>(args: SelectSubset<T, AgentSkillCreateArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AgentSkills.
+     * @param {AgentSkillCreateManyArgs} args - Arguments to create many AgentSkills.
+     * @example
+     * // Create many AgentSkills
+     * const agentSkill = await prisma.agentSkill.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AgentSkillCreateManyArgs>(args?: SelectSubset<T, AgentSkillCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AgentSkills and returns the data saved in the database.
+     * @param {AgentSkillCreateManyAndReturnArgs} args - Arguments to create many AgentSkills.
+     * @example
+     * // Create many AgentSkills
+     * const agentSkill = await prisma.agentSkill.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AgentSkills and only return the `id`
+     * const agentSkillWithIdOnly = await prisma.agentSkill.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AgentSkillCreateManyAndReturnArgs>(args?: SelectSubset<T, AgentSkillCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AgentSkill.
+     * @param {AgentSkillDeleteArgs} args - Arguments to delete one AgentSkill.
+     * @example
+     * // Delete one AgentSkill
+     * const AgentSkill = await prisma.agentSkill.delete({
+     *   where: {
+     *     // ... filter to delete one AgentSkill
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AgentSkillDeleteArgs>(args: SelectSubset<T, AgentSkillDeleteArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AgentSkill.
+     * @param {AgentSkillUpdateArgs} args - Arguments to update one AgentSkill.
+     * @example
+     * // Update one AgentSkill
+     * const agentSkill = await prisma.agentSkill.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AgentSkillUpdateArgs>(args: SelectSubset<T, AgentSkillUpdateArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AgentSkills.
+     * @param {AgentSkillDeleteManyArgs} args - Arguments to filter AgentSkills to delete.
+     * @example
+     * // Delete a few AgentSkills
+     * const { count } = await prisma.agentSkill.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AgentSkillDeleteManyArgs>(args?: SelectSubset<T, AgentSkillDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgentSkills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AgentSkills
+     * const agentSkill = await prisma.agentSkill.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AgentSkillUpdateManyArgs>(args: SelectSubset<T, AgentSkillUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgentSkills and returns the data updated in the database.
+     * @param {AgentSkillUpdateManyAndReturnArgs} args - Arguments to update many AgentSkills.
+     * @example
+     * // Update many AgentSkills
+     * const agentSkill = await prisma.agentSkill.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AgentSkills and only return the `id`
+     * const agentSkillWithIdOnly = await prisma.agentSkill.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AgentSkillUpdateManyAndReturnArgs>(args: SelectSubset<T, AgentSkillUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AgentSkill.
+     * @param {AgentSkillUpsertArgs} args - Arguments to update or create a AgentSkill.
+     * @example
+     * // Update or create a AgentSkill
+     * const agentSkill = await prisma.agentSkill.upsert({
+     *   create: {
+     *     // ... data to create a AgentSkill
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AgentSkill we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AgentSkillUpsertArgs>(args: SelectSubset<T, AgentSkillUpsertArgs<ExtArgs>>): Prisma__AgentSkillClient<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AgentSkills.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillCountArgs} args - Arguments to filter AgentSkills to count.
+     * @example
+     * // Count the number of AgentSkills
+     * const count = await prisma.agentSkill.count({
+     *   where: {
+     *     // ... the filter for the AgentSkills we want to count
+     *   }
+     * })
+    **/
+    count<T extends AgentSkillCountArgs>(
+      args?: Subset<T, AgentSkillCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AgentSkillCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AgentSkill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AgentSkillAggregateArgs>(args: Subset<T, AgentSkillAggregateArgs>): Prisma.PrismaPromise<GetAgentSkillAggregateType<T>>
+
+    /**
+     * Group by AgentSkill.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgentSkillGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AgentSkillGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AgentSkillGroupByArgs['orderBy'] }
+        : { orderBy?: AgentSkillGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AgentSkillGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgentSkillGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AgentSkill model
+   */
+  readonly fields: AgentSkillFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AgentSkill.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AgentSkillClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    agent<T extends AgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AgentDefaultArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    skill<T extends SkillDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SkillDefaultArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AgentSkill model
+   */
+  interface AgentSkillFieldRefs {
+    readonly id: FieldRef<"AgentSkill", 'String'>
+    readonly agentId: FieldRef<"AgentSkill", 'String'>
+    readonly skillId: FieldRef<"AgentSkill", 'String'>
+    readonly priority: FieldRef<"AgentSkill", 'Int'>
+    readonly isRequired: FieldRef<"AgentSkill", 'Boolean'>
+    readonly createdAt: FieldRef<"AgentSkill", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AgentSkill findUnique
+   */
+  export type AgentSkillFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentSkill to fetch.
+     */
+    where: AgentSkillWhereUniqueInput
+  }
+
+  /**
+   * AgentSkill findUniqueOrThrow
+   */
+  export type AgentSkillFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentSkill to fetch.
+     */
+    where: AgentSkillWhereUniqueInput
+  }
+
+  /**
+   * AgentSkill findFirst
+   */
+  export type AgentSkillFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentSkill to fetch.
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentSkills to fetch.
+     */
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgentSkills.
+     */
+    cursor?: AgentSkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentSkills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentSkills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgentSkills.
+     */
+    distinct?: AgentSkillScalarFieldEnum | AgentSkillScalarFieldEnum[]
+  }
+
+  /**
+   * AgentSkill findFirstOrThrow
+   */
+  export type AgentSkillFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentSkill to fetch.
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentSkills to fetch.
+     */
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgentSkills.
+     */
+    cursor?: AgentSkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentSkills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentSkills.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgentSkills.
+     */
+    distinct?: AgentSkillScalarFieldEnum | AgentSkillScalarFieldEnum[]
+  }
+
+  /**
+   * AgentSkill findMany
+   */
+  export type AgentSkillFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter, which AgentSkills to fetch.
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgentSkills to fetch.
+     */
+    orderBy?: AgentSkillOrderByWithRelationInput | AgentSkillOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AgentSkills.
+     */
+    cursor?: AgentSkillWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgentSkills from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgentSkills.
+     */
+    skip?: number
+    distinct?: AgentSkillScalarFieldEnum | AgentSkillScalarFieldEnum[]
+  }
+
+  /**
+   * AgentSkill create
+   */
+  export type AgentSkillCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AgentSkill.
+     */
+    data: XOR<AgentSkillCreateInput, AgentSkillUncheckedCreateInput>
+  }
+
+  /**
+   * AgentSkill createMany
+   */
+  export type AgentSkillCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AgentSkills.
+     */
+    data: AgentSkillCreateManyInput | AgentSkillCreateManyInput[]
+  }
+
+  /**
+   * AgentSkill createManyAndReturn
+   */
+  export type AgentSkillCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * The data used to create many AgentSkills.
+     */
+    data: AgentSkillCreateManyInput | AgentSkillCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgentSkill update
+   */
+  export type AgentSkillUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AgentSkill.
+     */
+    data: XOR<AgentSkillUpdateInput, AgentSkillUncheckedUpdateInput>
+    /**
+     * Choose, which AgentSkill to update.
+     */
+    where: AgentSkillWhereUniqueInput
+  }
+
+  /**
+   * AgentSkill updateMany
+   */
+  export type AgentSkillUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AgentSkills.
+     */
+    data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyInput>
+    /**
+     * Filter which AgentSkills to update
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * Limit how many AgentSkills to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgentSkill updateManyAndReturn
+   */
+  export type AgentSkillUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * The data used to update AgentSkills.
+     */
+    data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyInput>
+    /**
+     * Filter which AgentSkills to update
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * Limit how many AgentSkills to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgentSkill upsert
+   */
+  export type AgentSkillUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AgentSkill to update in case it exists.
+     */
+    where: AgentSkillWhereUniqueInput
+    /**
+     * In case the AgentSkill found by the `where` argument doesn't exist, create a new AgentSkill with this data.
+     */
+    create: XOR<AgentSkillCreateInput, AgentSkillUncheckedCreateInput>
+    /**
+     * In case the AgentSkill was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AgentSkillUpdateInput, AgentSkillUncheckedUpdateInput>
+  }
+
+  /**
+   * AgentSkill delete
+   */
+  export type AgentSkillDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
+    /**
+     * Filter which AgentSkill to delete.
+     */
+    where: AgentSkillWhereUniqueInput
+  }
+
+  /**
+   * AgentSkill deleteMany
+   */
+  export type AgentSkillDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgentSkills to delete
+     */
+    where?: AgentSkillWhereInput
+    /**
+     * Limit how many AgentSkills to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgentSkill without action
+   */
+  export type AgentSkillDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgentSkill
+     */
+    select?: AgentSkillSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgentSkill
+     */
+    omit?: AgentSkillOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgentSkillInclude<ExtArgs> | null
   }
 
 
@@ -15633,6 +18243,35 @@ export namespace Prisma {
   export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
 
 
+  export const SkillScalarFieldEnum: {
+    id: 'id',
+    key: 'key',
+    name: 'name',
+    description: 'description',
+    category: 'category',
+    instructions: 'instructions',
+    activationCriteria: 'activationCriteria',
+    version: 'version',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SkillScalarFieldEnum = (typeof SkillScalarFieldEnum)[keyof typeof SkillScalarFieldEnum]
+
+
+  export const AgentSkillScalarFieldEnum: {
+    id: 'id',
+    agentId: 'agentId',
+    skillId: 'skillId',
+    priority: 'priority',
+    isRequired: 'isRequired',
+    createdAt: 'createdAt'
+  };
+
+  export type AgentSkillScalarFieldEnum = (typeof AgentSkillScalarFieldEnum)[keyof typeof AgentSkillScalarFieldEnum]
+
+
   export const WorkflowRunScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
@@ -16106,6 +18745,7 @@ export namespace Prisma {
     isActive?: BoolFilter<"Agent"> | boolean
     createdAt?: DateTimeFilter<"Agent"> | Date | string
     updatedAt?: DateTimeFilter<"Agent"> | Date | string
+    skillAssignments?: AgentSkillListRelationFilter
   }
 
   export type AgentOrderByWithRelationInput = {
@@ -16117,6 +18757,7 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    skillAssignments?: AgentSkillOrderByRelationAggregateInput
   }
 
   export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -16131,6 +18772,7 @@ export namespace Prisma {
     isActive?: BoolFilter<"Agent"> | boolean
     createdAt?: DateTimeFilter<"Agent"> | Date | string
     updatedAt?: DateTimeFilter<"Agent"> | Date | string
+    skillAssignments?: AgentSkillListRelationFilter
   }, "id" | "name">
 
   export type AgentOrderByWithAggregationInput = {
@@ -16159,6 +18801,160 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"Agent"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Agent"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Agent"> | Date | string
+  }
+
+  export type SkillWhereInput = {
+    AND?: SkillWhereInput | SkillWhereInput[]
+    OR?: SkillWhereInput[]
+    NOT?: SkillWhereInput | SkillWhereInput[]
+    id?: StringFilter<"Skill"> | string
+    key?: StringFilter<"Skill"> | string
+    name?: StringFilter<"Skill"> | string
+    description?: StringFilter<"Skill"> | string
+    category?: StringFilter<"Skill"> | string
+    instructions?: StringFilter<"Skill"> | string
+    activationCriteria?: StringFilter<"Skill"> | string
+    version?: IntFilter<"Skill"> | number
+    isActive?: BoolFilter<"Skill"> | boolean
+    createdAt?: DateTimeFilter<"Skill"> | Date | string
+    updatedAt?: DateTimeFilter<"Skill"> | Date | string
+    agentAssignments?: AgentSkillListRelationFilter
+  }
+
+  export type SkillOrderByWithRelationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    instructions?: SortOrder
+    activationCriteria?: SortOrder
+    version?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    agentAssignments?: AgentSkillOrderByRelationAggregateInput
+  }
+
+  export type SkillWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    key_version?: SkillKeyVersionCompoundUniqueInput
+    AND?: SkillWhereInput | SkillWhereInput[]
+    OR?: SkillWhereInput[]
+    NOT?: SkillWhereInput | SkillWhereInput[]
+    key?: StringFilter<"Skill"> | string
+    name?: StringFilter<"Skill"> | string
+    description?: StringFilter<"Skill"> | string
+    category?: StringFilter<"Skill"> | string
+    instructions?: StringFilter<"Skill"> | string
+    activationCriteria?: StringFilter<"Skill"> | string
+    version?: IntFilter<"Skill"> | number
+    isActive?: BoolFilter<"Skill"> | boolean
+    createdAt?: DateTimeFilter<"Skill"> | Date | string
+    updatedAt?: DateTimeFilter<"Skill"> | Date | string
+    agentAssignments?: AgentSkillListRelationFilter
+  }, "id" | "key_version">
+
+  export type SkillOrderByWithAggregationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    instructions?: SortOrder
+    activationCriteria?: SortOrder
+    version?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SkillCountOrderByAggregateInput
+    _avg?: SkillAvgOrderByAggregateInput
+    _max?: SkillMaxOrderByAggregateInput
+    _min?: SkillMinOrderByAggregateInput
+    _sum?: SkillSumOrderByAggregateInput
+  }
+
+  export type SkillScalarWhereWithAggregatesInput = {
+    AND?: SkillScalarWhereWithAggregatesInput | SkillScalarWhereWithAggregatesInput[]
+    OR?: SkillScalarWhereWithAggregatesInput[]
+    NOT?: SkillScalarWhereWithAggregatesInput | SkillScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Skill"> | string
+    key?: StringWithAggregatesFilter<"Skill"> | string
+    name?: StringWithAggregatesFilter<"Skill"> | string
+    description?: StringWithAggregatesFilter<"Skill"> | string
+    category?: StringWithAggregatesFilter<"Skill"> | string
+    instructions?: StringWithAggregatesFilter<"Skill"> | string
+    activationCriteria?: StringWithAggregatesFilter<"Skill"> | string
+    version?: IntWithAggregatesFilter<"Skill"> | number
+    isActive?: BoolWithAggregatesFilter<"Skill"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
+  }
+
+  export type AgentSkillWhereInput = {
+    AND?: AgentSkillWhereInput | AgentSkillWhereInput[]
+    OR?: AgentSkillWhereInput[]
+    NOT?: AgentSkillWhereInput | AgentSkillWhereInput[]
+    id?: StringFilter<"AgentSkill"> | string
+    agentId?: StringFilter<"AgentSkill"> | string
+    skillId?: StringFilter<"AgentSkill"> | string
+    priority?: IntFilter<"AgentSkill"> | number
+    isRequired?: BoolFilter<"AgentSkill"> | boolean
+    createdAt?: DateTimeFilter<"AgentSkill"> | Date | string
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+  }
+
+  export type AgentSkillOrderByWithRelationInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    skillId?: SortOrder
+    priority?: SortOrder
+    isRequired?: SortOrder
+    createdAt?: SortOrder
+    agent?: AgentOrderByWithRelationInput
+    skill?: SkillOrderByWithRelationInput
+  }
+
+  export type AgentSkillWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    agentId_skillId?: AgentSkillAgentIdSkillIdCompoundUniqueInput
+    AND?: AgentSkillWhereInput | AgentSkillWhereInput[]
+    OR?: AgentSkillWhereInput[]
+    NOT?: AgentSkillWhereInput | AgentSkillWhereInput[]
+    agentId?: StringFilter<"AgentSkill"> | string
+    skillId?: StringFilter<"AgentSkill"> | string
+    priority?: IntFilter<"AgentSkill"> | number
+    isRequired?: BoolFilter<"AgentSkill"> | boolean
+    createdAt?: DateTimeFilter<"AgentSkill"> | Date | string
+    agent?: XOR<AgentScalarRelationFilter, AgentWhereInput>
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+  }, "id" | "agentId_skillId">
+
+  export type AgentSkillOrderByWithAggregationInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    skillId?: SortOrder
+    priority?: SortOrder
+    isRequired?: SortOrder
+    createdAt?: SortOrder
+    _count?: AgentSkillCountOrderByAggregateInput
+    _avg?: AgentSkillAvgOrderByAggregateInput
+    _max?: AgentSkillMaxOrderByAggregateInput
+    _min?: AgentSkillMinOrderByAggregateInput
+    _sum?: AgentSkillSumOrderByAggregateInput
+  }
+
+  export type AgentSkillScalarWhereWithAggregatesInput = {
+    AND?: AgentSkillScalarWhereWithAggregatesInput | AgentSkillScalarWhereWithAggregatesInput[]
+    OR?: AgentSkillScalarWhereWithAggregatesInput[]
+    NOT?: AgentSkillScalarWhereWithAggregatesInput | AgentSkillScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AgentSkill"> | string
+    agentId?: StringWithAggregatesFilter<"AgentSkill"> | string
+    skillId?: StringWithAggregatesFilter<"AgentSkill"> | string
+    priority?: IntWithAggregatesFilter<"AgentSkill"> | number
+    isRequired?: BoolWithAggregatesFilter<"AgentSkill"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AgentSkill"> | Date | string
   }
 
   export type WorkflowRunWhereInput = {
@@ -17106,6 +19902,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    skillAssignments?: AgentSkillCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUncheckedCreateInput = {
@@ -17117,6 +19914,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    skillAssignments?: AgentSkillUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AgentUpdateInput = {
@@ -17128,6 +19926,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skillAssignments?: AgentSkillUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentUncheckedUpdateInput = {
@@ -17139,6 +19938,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skillAssignments?: AgentSkillUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AgentCreateManyInput = {
@@ -17172,6 +19972,169 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillCreateInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillUncheckedCreateInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillCreateManyInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillCreateInput = {
+    id?: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+    agent: AgentCreateNestedOneWithoutSkillAssignmentsInput
+    skill: SkillCreateNestedOneWithoutAgentAssignmentsInput
+  }
+
+  export type AgentSkillUncheckedCreateInput = {
+    id?: string
+    agentId: string
+    skillId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agent?: AgentUpdateOneRequiredWithoutSkillAssignmentsNestedInput
+    skill?: SkillUpdateOneRequiredWithoutAgentAssignmentsNestedInput
+  }
+
+  export type AgentSkillUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillCreateManyInput = {
+    id?: string
+    agentId: string
+    skillId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkflowRunCreateInput = {
@@ -18205,6 +21168,16 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type AgentSkillListRelationFilter = {
+    every?: AgentSkillWhereInput
+    some?: AgentSkillWhereInput
+    none?: AgentSkillWhereInput
+  }
+
+  export type AgentSkillOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type AgentCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -18236,6 +21209,111 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type SkillKeyVersionCompoundUniqueInput = {
+    key: string
+    version: number
+  }
+
+  export type SkillCountOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    instructions?: SortOrder
+    activationCriteria?: SortOrder
+    version?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type SkillMaxOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    instructions?: SortOrder
+    activationCriteria?: SortOrder
+    version?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillMinOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    instructions?: SortOrder
+    activationCriteria?: SortOrder
+    version?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type AgentScalarRelationFilter = {
+    is?: AgentWhereInput
+    isNot?: AgentWhereInput
+  }
+
+  export type SkillScalarRelationFilter = {
+    is?: SkillWhereInput
+    isNot?: SkillWhereInput
+  }
+
+  export type AgentSkillAgentIdSkillIdCompoundUniqueInput = {
+    agentId: string
+    skillId: string
+  }
+
+  export type AgentSkillCountOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    skillId?: SortOrder
+    priority?: SortOrder
+    isRequired?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AgentSkillAvgOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type AgentSkillMaxOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    skillId?: SortOrder
+    priority?: SortOrder
+    isRequired?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AgentSkillMinOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    skillId?: SortOrder
+    priority?: SortOrder
+    isRequired?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AgentSkillSumOrderByAggregateInput = {
+    priority?: SortOrder
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -18907,6 +21985,118 @@ export namespace Prisma {
     delete?: ProjectWhereInput | boolean
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutPromptsInput, ProjectUpdateWithoutPromptsInput>, ProjectUncheckedUpdateWithoutPromptsInput>
+  }
+
+  export type AgentSkillCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput> | AgentSkillCreateWithoutAgentInput[] | AgentSkillUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutAgentInput | AgentSkillCreateOrConnectWithoutAgentInput[]
+    createMany?: AgentSkillCreateManyAgentInputEnvelope
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type AgentSkillUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput> | AgentSkillCreateWithoutAgentInput[] | AgentSkillUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutAgentInput | AgentSkillCreateOrConnectWithoutAgentInput[]
+    createMany?: AgentSkillCreateManyAgentInputEnvelope
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type AgentSkillUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput> | AgentSkillCreateWithoutAgentInput[] | AgentSkillUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutAgentInput | AgentSkillCreateOrConnectWithoutAgentInput[]
+    upsert?: AgentSkillUpsertWithWhereUniqueWithoutAgentInput | AgentSkillUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AgentSkillCreateManyAgentInputEnvelope
+    set?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    disconnect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    delete?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    update?: AgentSkillUpdateWithWhereUniqueWithoutAgentInput | AgentSkillUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AgentSkillUpdateManyWithWhereWithoutAgentInput | AgentSkillUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type AgentSkillUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput> | AgentSkillCreateWithoutAgentInput[] | AgentSkillUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutAgentInput | AgentSkillCreateOrConnectWithoutAgentInput[]
+    upsert?: AgentSkillUpsertWithWhereUniqueWithoutAgentInput | AgentSkillUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AgentSkillCreateManyAgentInputEnvelope
+    set?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    disconnect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    delete?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    update?: AgentSkillUpdateWithWhereUniqueWithoutAgentInput | AgentSkillUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AgentSkillUpdateManyWithWhereWithoutAgentInput | AgentSkillUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type AgentSkillCreateNestedManyWithoutSkillInput = {
+    create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
+    createMany?: AgentSkillCreateManySkillInputEnvelope
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type AgentSkillUncheckedCreateNestedManyWithoutSkillInput = {
+    create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
+    createMany?: AgentSkillCreateManySkillInputEnvelope
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type AgentSkillUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
+    upsert?: AgentSkillUpsertWithWhereUniqueWithoutSkillInput | AgentSkillUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: AgentSkillCreateManySkillInputEnvelope
+    set?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    disconnect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    delete?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    update?: AgentSkillUpdateWithWhereUniqueWithoutSkillInput | AgentSkillUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: AgentSkillUpdateManyWithWhereWithoutSkillInput | AgentSkillUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type AgentSkillUncheckedUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput> | AgentSkillCreateWithoutSkillInput[] | AgentSkillUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
+    upsert?: AgentSkillUpsertWithWhereUniqueWithoutSkillInput | AgentSkillUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: AgentSkillCreateManySkillInputEnvelope
+    set?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    disconnect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    delete?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+    update?: AgentSkillUpdateWithWhereUniqueWithoutSkillInput | AgentSkillUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: AgentSkillUpdateManyWithWhereWithoutSkillInput | AgentSkillUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type AgentCreateNestedOneWithoutSkillAssignmentsInput = {
+    create?: XOR<AgentCreateWithoutSkillAssignmentsInput, AgentUncheckedCreateWithoutSkillAssignmentsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutSkillAssignmentsInput
+    connect?: AgentWhereUniqueInput
+  }
+
+  export type SkillCreateNestedOneWithoutAgentAssignmentsInput = {
+    create?: XOR<SkillCreateWithoutAgentAssignmentsInput, SkillUncheckedCreateWithoutAgentAssignmentsInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutAgentAssignmentsInput
+    connect?: SkillWhereUniqueInput
+  }
+
+  export type AgentUpdateOneRequiredWithoutSkillAssignmentsNestedInput = {
+    create?: XOR<AgentCreateWithoutSkillAssignmentsInput, AgentUncheckedCreateWithoutSkillAssignmentsInput>
+    connectOrCreate?: AgentCreateOrConnectWithoutSkillAssignmentsInput
+    upsert?: AgentUpsertWithoutSkillAssignmentsInput
+    connect?: AgentWhereUniqueInput
+    update?: XOR<XOR<AgentUpdateToOneWithWhereWithoutSkillAssignmentsInput, AgentUpdateWithoutSkillAssignmentsInput>, AgentUncheckedUpdateWithoutSkillAssignmentsInput>
+  }
+
+  export type SkillUpdateOneRequiredWithoutAgentAssignmentsNestedInput = {
+    create?: XOR<SkillCreateWithoutAgentAssignmentsInput, SkillUncheckedCreateWithoutAgentAssignmentsInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutAgentAssignmentsInput
+    upsert?: SkillUpsertWithoutAgentAssignmentsInput
+    connect?: SkillWhereUniqueInput
+    update?: XOR<XOR<SkillUpdateToOneWithWhereWithoutAgentAssignmentsInput, SkillUpdateWithoutAgentAssignmentsInput>, SkillUncheckedUpdateWithoutAgentAssignmentsInput>
   }
 
   export type ProjectCreateNestedOneWithoutWorkflowRunsInput = {
@@ -19934,6 +23124,232 @@ export namespace Prisma {
     developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
+  export type AgentSkillCreateWithoutAgentInput = {
+    id?: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+    skill: SkillCreateNestedOneWithoutAgentAssignmentsInput
+  }
+
+  export type AgentSkillUncheckedCreateWithoutAgentInput = {
+    id?: string
+    skillId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillCreateOrConnectWithoutAgentInput = {
+    where: AgentSkillWhereUniqueInput
+    create: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput>
+  }
+
+  export type AgentSkillCreateManyAgentInputEnvelope = {
+    data: AgentSkillCreateManyAgentInput | AgentSkillCreateManyAgentInput[]
+  }
+
+  export type AgentSkillUpsertWithWhereUniqueWithoutAgentInput = {
+    where: AgentSkillWhereUniqueInput
+    update: XOR<AgentSkillUpdateWithoutAgentInput, AgentSkillUncheckedUpdateWithoutAgentInput>
+    create: XOR<AgentSkillCreateWithoutAgentInput, AgentSkillUncheckedCreateWithoutAgentInput>
+  }
+
+  export type AgentSkillUpdateWithWhereUniqueWithoutAgentInput = {
+    where: AgentSkillWhereUniqueInput
+    data: XOR<AgentSkillUpdateWithoutAgentInput, AgentSkillUncheckedUpdateWithoutAgentInput>
+  }
+
+  export type AgentSkillUpdateManyWithWhereWithoutAgentInput = {
+    where: AgentSkillScalarWhereInput
+    data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyWithoutAgentInput>
+  }
+
+  export type AgentSkillScalarWhereInput = {
+    AND?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+    OR?: AgentSkillScalarWhereInput[]
+    NOT?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+    id?: StringFilter<"AgentSkill"> | string
+    agentId?: StringFilter<"AgentSkill"> | string
+    skillId?: StringFilter<"AgentSkill"> | string
+    priority?: IntFilter<"AgentSkill"> | number
+    isRequired?: BoolFilter<"AgentSkill"> | boolean
+    createdAt?: DateTimeFilter<"AgentSkill"> | Date | string
+  }
+
+  export type AgentSkillCreateWithoutSkillInput = {
+    id?: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+    agent: AgentCreateNestedOneWithoutSkillAssignmentsInput
+  }
+
+  export type AgentSkillUncheckedCreateWithoutSkillInput = {
+    id?: string
+    agentId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillCreateOrConnectWithoutSkillInput = {
+    where: AgentSkillWhereUniqueInput
+    create: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput>
+  }
+
+  export type AgentSkillCreateManySkillInputEnvelope = {
+    data: AgentSkillCreateManySkillInput | AgentSkillCreateManySkillInput[]
+  }
+
+  export type AgentSkillUpsertWithWhereUniqueWithoutSkillInput = {
+    where: AgentSkillWhereUniqueInput
+    update: XOR<AgentSkillUpdateWithoutSkillInput, AgentSkillUncheckedUpdateWithoutSkillInput>
+    create: XOR<AgentSkillCreateWithoutSkillInput, AgentSkillUncheckedCreateWithoutSkillInput>
+  }
+
+  export type AgentSkillUpdateWithWhereUniqueWithoutSkillInput = {
+    where: AgentSkillWhereUniqueInput
+    data: XOR<AgentSkillUpdateWithoutSkillInput, AgentSkillUncheckedUpdateWithoutSkillInput>
+  }
+
+  export type AgentSkillUpdateManyWithWhereWithoutSkillInput = {
+    where: AgentSkillScalarWhereInput
+    data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyWithoutSkillInput>
+  }
+
+  export type AgentCreateWithoutSkillAssignmentsInput = {
+    id?: string
+    name: string
+    role: string
+    instructions: string
+    model?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AgentUncheckedCreateWithoutSkillAssignmentsInput = {
+    id?: string
+    name: string
+    role: string
+    instructions: string
+    model?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AgentCreateOrConnectWithoutSkillAssignmentsInput = {
+    where: AgentWhereUniqueInput
+    create: XOR<AgentCreateWithoutSkillAssignmentsInput, AgentUncheckedCreateWithoutSkillAssignmentsInput>
+  }
+
+  export type SkillCreateWithoutAgentAssignmentsInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillUncheckedCreateWithoutAgentAssignmentsInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillCreateOrConnectWithoutAgentAssignmentsInput = {
+    where: SkillWhereUniqueInput
+    create: XOR<SkillCreateWithoutAgentAssignmentsInput, SkillUncheckedCreateWithoutAgentAssignmentsInput>
+  }
+
+  export type AgentUpsertWithoutSkillAssignmentsInput = {
+    update: XOR<AgentUpdateWithoutSkillAssignmentsInput, AgentUncheckedUpdateWithoutSkillAssignmentsInput>
+    create: XOR<AgentCreateWithoutSkillAssignmentsInput, AgentUncheckedCreateWithoutSkillAssignmentsInput>
+    where?: AgentWhereInput
+  }
+
+  export type AgentUpdateToOneWithWhereWithoutSkillAssignmentsInput = {
+    where?: AgentWhereInput
+    data: XOR<AgentUpdateWithoutSkillAssignmentsInput, AgentUncheckedUpdateWithoutSkillAssignmentsInput>
+  }
+
+  export type AgentUpdateWithoutSkillAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentUncheckedUpdateWithoutSkillAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillUpsertWithoutAgentAssignmentsInput = {
+    update: XOR<SkillUpdateWithoutAgentAssignmentsInput, SkillUncheckedUpdateWithoutAgentAssignmentsInput>
+    create: XOR<SkillCreateWithoutAgentAssignmentsInput, SkillUncheckedCreateWithoutAgentAssignmentsInput>
+    where?: SkillWhereInput
+  }
+
+  export type SkillUpdateToOneWithWhereWithoutAgentAssignmentsInput = {
+    where?: SkillWhereInput
+    data: XOR<SkillUpdateWithoutAgentAssignmentsInput, SkillUncheckedUpdateWithoutAgentAssignmentsInput>
+  }
+
+  export type SkillUpdateWithoutAgentAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillUncheckedUpdateWithoutAgentAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProjectCreateWithoutWorkflowRunsInput = {
     id?: string
     name: string
@@ -20824,6 +24240,70 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillCreateManyAgentInput = {
+    id?: string
+    skillId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skill?: SkillUpdateOneRequiredWithoutAgentAssignmentsNestedInput
+  }
+
+  export type AgentSkillUncheckedUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillUncheckedUpdateManyWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillCreateManySkillInput = {
+    id?: string
+    agentId: string
+    priority?: number
+    isRequired?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AgentSkillUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agent?: AgentUpdateOneRequiredWithoutSkillAssignmentsNestedInput
+  }
+
+  export type AgentSkillUncheckedUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgentSkillUncheckedUpdateManyWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    priority?: IntFieldUpdateOperationsInput | number
+    isRequired?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionCreateManyUserInput = {
