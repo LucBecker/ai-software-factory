@@ -122,6 +122,31 @@ type Skill = {
   updatedAt: string;
 };
 
+type AgentSkillAssignment = {
+  id: string;
+  priority: number;
+  isRequired: boolean;
+  skill: {
+    id: string;
+    key: string;
+    name: string;
+    description: string;
+    category: string;
+    version: number;
+    isActive: boolean;
+  };
+};
+
+type AgentRecord = {
+  id: string;
+  name: string;
+  role: string;
+  instructions: string;
+  model: string | null;
+  isActive: boolean;
+  skillAssignments: AgentSkillAssignment[];
+};
+
 const initialProjects: Project[] = []
 
 const prompts: Prompt[] = [
@@ -287,6 +312,9 @@ export default function DashboardClient() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [skillsLoading, setSkillsLoading] = useState(false);
   const [skillsError, setSkillsError] = useState("");
+  const [agents, setAgents] = useState<AgentRecord[]>([]);
+  const [agentsLoading, setAgentsLoading] = useState(false);
+  const [agentsError, setAgentsError] = useState("");
 
   const currentAnalysisReview = reviewHistory.find(
   (review) => review.sourceRunId === analysisRunId,
@@ -502,6 +530,48 @@ useEffect(() => {
   }
 
   void loadSkills();
+
+  return () => {
+    cancelled = true;
+  };
+}, []);
+
+useEffect(() => {
+  let cancelled = false;
+
+  async function loadAgents() {
+    setAgentsLoading(true);
+    setAgentsError("");
+
+    try {
+      const response = await fetch("/api/agents");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar os agentes.",
+        );
+      }
+
+      if (!cancelled) {
+        setAgents(Array.isArray(data.agents) ? data.agents : []);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setAgentsError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar os agentes.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setAgentsLoading(false);
+      }
+    }
+  }
+
+  void loadAgents();
 
   return () => {
     cancelled = true;
@@ -3579,33 +3649,96 @@ async function saveArchitectureEdit(
                 conectados a um modelo de IA nem executam tarefas autonomamente.
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {[
-                  ["◉", "Product Manager", "Descobre necessidades e define requisitos."],
-                  ["⌘", "Arquiteto de Software", "Desenha a solução técnica e as integrações."],
-                  ["</>", "Desenvolvedor", "Implementa funcionalidades a partir do plano aprovado."],
-                  ["✓", "QA Engineer", "Cria testes e verifica os critérios de aceite."],
-                  ["⬡", "Security Auditor", "Inspeciona riscos e controles de segurança."],
-                  ["▤", "Documentador", "Gera documentação técnica e operacional."],
-                ].map(([icon, title, description]) => (
-                  <article
-                    key={title}
-                    className="rounded-2xl border border-white/10 bg-[#11182b] p-5"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-400/10 text-lg text-indigo-300">
-                        {icon}
-                      </span>
-                      <span className="rounded-full bg-slate-400/10 px-2.5 py-1 text-[10px] text-slate-400">
-                        Planejado
-                      </span>
-                    </div>
-                    <h4 className="mt-5 font-semibold">{title}</h4>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">
-                      {description}
-                    </p>
-                  </article>
-                ))}
+  {agentsLoading && (
+    <p className="text-sm text-slate-400">Carregando agentes...</p>
+  )}
+
+  {agentsError && (
+    <p role="alert" className="text-sm text-red-400">
+      {agentsError}
+    </p>
+  )}
+
+  {!agentsLoading && !agentsError && agents.length === 0 && (
+    <p className="text-sm text-slate-400">
+      Nenhum agente cadastrado no banco de dados.
+    </p>
+  )}
+
+  {agents.map((agent) => (
+    <article
+      key={agent.id}
+      className="rounded-2xl border border-white/10 bg-[#11182b] p-5"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-400/10 text-lg text-indigo-300">
+          {agent.role === "ARCHITECTURE" ? "⌘" : "✳"}
+        </span>
+
+        <span
+          className={`rounded-full px-3 py-1 text-xs ${
+            agent.isActive
+              ? "bg-emerald-400/10 text-emerald-300"
+              : "bg-amber-400/10 text-amber-300"
+          }`}
+        >
+          {agent.isActive ? "Ativo" : "Inativo"}
+        </span>
+      </div>
+
+      <h4 className="mt-5 font-semibold">{agent.name}</h4>
+
+      <p className="mt-2 text-xs text-slate-500">
+        Função: {agent.role}
+      </p>
+
+      <p className="mt-2 text-sm leading-6 text-slate-400">
+        {agent.instructions}
+      </p>
+
+      <p className="mt-3 text-xs text-slate-500">
+        Modelo: {agent.model || "Não configurado"}
+      </p>
+
+      <div className="mt-5 border-t border-white/10 pt-4">
+        <h5 className="text-sm font-semibold">Skills associadas</h5>
+
+        {agent.skillAssignments.length === 0 ? (
+          <p className="mt-2 text-sm text-slate-500">
+            Nenhuma skill associada.
+          </p>
+        ) : (
+          <div className="mt-3 space-y-3">
+            {agent.skillAssignments.map((assignment) => (
+              <div
+                key={assignment.id}
+                className="rounded-xl border border-white/10 p-3"
+              >
+                <p className="text-sm font-medium">
+                  {assignment.skill.name}
+                </p>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  Versão {assignment.skill.version}
+                </p>
+
+                <p className="mt-2 text-xs text-slate-400">
+                  Prioridade: {assignment.priority}
+                  {" · "}
+                  {assignment.isRequired ? "Obrigatória" : "Opcional"}
+                </p>
+
+                <span className="mt-2 inline-block rounded-full bg-amber-400/10 px-2.5 py-1 text-xs text-amber-300">
+                  {assignment.skill.isActive ? "Skill ativa" : "Skill inativa"}
+                </span>
               </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
             </>
           )}
 
