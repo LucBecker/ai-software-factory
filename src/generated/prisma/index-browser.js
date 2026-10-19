@@ -129,6 +129,25 @@ exports.Prisma.ProjectScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.ProjectProfileScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  softwareType: 'softwareType',
+  targetPlatform: 'targetPlatform',
+  preferredLanguages: 'preferredLanguages',
+  preferredFrameworks: 'preferredFrameworks',
+  databasePreference: 'databasePreference',
+  deploymentTarget: 'deploymentTarget',
+  integrations: 'integrations',
+  securityRequirements: 'securityRequirements',
+  performanceRequirements: 'performanceRequirements',
+  budgetConstraints: 'budgetConstraints',
+  otherConstraints: 'otherConstraints',
+  additionalContext: 'additionalContext',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PromptTemplateScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -264,6 +283,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Project: 'Project',
+  ProjectProfile: 'ProjectProfile',
   PromptTemplate: 'PromptTemplate',
   Agent: 'Agent',
   WorkflowRun: 'WorkflowRun',

@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
 /**
+ * Model ProjectProfile
+ * 
+ */
+export type ProjectProfile = $Result.DefaultSelection<Prisma.$ProjectProfilePayload>
+/**
  * Model PromptTemplate
  * 
  */
@@ -196,6 +201,16 @@ export class PrismaClient<
     * ```
     */
   get project(): Prisma.ProjectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.projectProfile`: Exposes CRUD operations for the **ProjectProfile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProjectProfiles
+    * const projectProfiles = await prisma.projectProfile.findMany()
+    * ```
+    */
+  get projectProfile(): Prisma.ProjectProfileDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.promptTemplate`: Exposes CRUD operations for the **PromptTemplate** model.
@@ -738,6 +753,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Project: 'Project',
+    ProjectProfile: 'ProjectProfile',
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
     WorkflowRun: 'WorkflowRun',
@@ -766,7 +782,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
+      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -841,6 +857,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProjectCountArgs<ExtArgs>
             result: $Utils.Optional<ProjectCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProjectProfile: {
+        payload: Prisma.$ProjectProfilePayload<ExtArgs>
+        fields: Prisma.ProjectProfileFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProjectProfileFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProjectProfileFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          findFirst: {
+            args: Prisma.ProjectProfileFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProjectProfileFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          findMany: {
+            args: Prisma.ProjectProfileFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>[]
+          }
+          create: {
+            args: Prisma.ProjectProfileCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          createMany: {
+            args: Prisma.ProjectProfileCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProjectProfileCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>[]
+          }
+          delete: {
+            args: Prisma.ProjectProfileDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          update: {
+            args: Prisma.ProjectProfileUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          deleteMany: {
+            args: Prisma.ProjectProfileDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProjectProfileUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProjectProfileUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>[]
+          }
+          upsert: {
+            args: Prisma.ProjectProfileUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectProfilePayload>
+          }
+          aggregate: {
+            args: Prisma.ProjectProfileAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProjectProfile>
+          }
+          groupBy: {
+            args: Prisma.ProjectProfileGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectProfileGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProjectProfileCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectProfileCountAggregateOutputType> | number
           }
         }
       }
@@ -1681,6 +1771,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     project?: ProjectOmit
+    projectProfile?: ProjectProfileOmit
     promptTemplate?: PromptTemplateOmit
     agent?: AgentOmit
     workflowRun?: WorkflowRunOmit
@@ -2075,6 +2166,7 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     user?: boolean | Project$userArgs<ExtArgs>
+    profile?: boolean | Project$profileArgs<ExtArgs>
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
@@ -2121,6 +2213,7 @@ export namespace Prisma {
   export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "stage" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Project$userArgs<ExtArgs>
+    profile?: boolean | Project$profileArgs<ExtArgs>
     prompts?: boolean | Project$promptsArgs<ExtArgs>
     workflowRuns?: boolean | Project$workflowRunsArgs<ExtArgs>
     requirements?: boolean | Project$requirementsArgs<ExtArgs>
@@ -2139,6 +2232,7 @@ export namespace Prisma {
     name: "Project"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
+      profile: Prisma.$ProjectProfilePayload<ExtArgs> | null
       prompts: Prisma.$PromptTemplatePayload<ExtArgs>[]
       workflowRuns: Prisma.$WorkflowRunPayload<ExtArgs>[]
       requirements: Prisma.$RequirementPayload<ExtArgs>[]
@@ -2549,6 +2643,7 @@ export namespace Prisma {
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends Project$userArgs<ExtArgs> = {}>(args?: Subset<T, Project$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    profile<T extends Project$profileArgs<ExtArgs> = {}>(args?: Subset<T, Project$profileArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     prompts<T extends Project$promptsArgs<ExtArgs> = {}>(args?: Subset<T, Project$promptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workflowRuns<T extends Project$workflowRunsArgs<ExtArgs> = {}>(args?: Subset<T, Project$workflowRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkflowRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     requirements<T extends Project$requirementsArgs<ExtArgs> = {}>(args?: Subset<T, Project$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3004,6 +3099,25 @@ export namespace Prisma {
   }
 
   /**
+   * Project.profile
+   */
+  export type Project$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    where?: ProjectProfileWhereInput
+  }
+
+  /**
    * Project.prompts
    */
   export type Project$promptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3139,6 +3253,1205 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProjectInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProjectProfile
+   */
+
+  export type AggregateProjectProfile = {
+    _count: ProjectProfileCountAggregateOutputType | null
+    _min: ProjectProfileMinAggregateOutputType | null
+    _max: ProjectProfileMaxAggregateOutputType | null
+  }
+
+  export type ProjectProfileMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    softwareType: string | null
+    targetPlatform: string | null
+    preferredLanguages: string | null
+    preferredFrameworks: string | null
+    databasePreference: string | null
+    deploymentTarget: string | null
+    integrations: string | null
+    securityRequirements: string | null
+    performanceRequirements: string | null
+    budgetConstraints: string | null
+    otherConstraints: string | null
+    additionalContext: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectProfileMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    softwareType: string | null
+    targetPlatform: string | null
+    preferredLanguages: string | null
+    preferredFrameworks: string | null
+    databasePreference: string | null
+    deploymentTarget: string | null
+    integrations: string | null
+    securityRequirements: string | null
+    performanceRequirements: string | null
+    budgetConstraints: string | null
+    otherConstraints: string | null
+    additionalContext: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectProfileCountAggregateOutputType = {
+    id: number
+    projectId: number
+    softwareType: number
+    targetPlatform: number
+    preferredLanguages: number
+    preferredFrameworks: number
+    databasePreference: number
+    deploymentTarget: number
+    integrations: number
+    securityRequirements: number
+    performanceRequirements: number
+    budgetConstraints: number
+    otherConstraints: number
+    additionalContext: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProjectProfileMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    softwareType?: true
+    targetPlatform?: true
+    preferredLanguages?: true
+    preferredFrameworks?: true
+    databasePreference?: true
+    deploymentTarget?: true
+    integrations?: true
+    securityRequirements?: true
+    performanceRequirements?: true
+    budgetConstraints?: true
+    otherConstraints?: true
+    additionalContext?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectProfileMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    softwareType?: true
+    targetPlatform?: true
+    preferredLanguages?: true
+    preferredFrameworks?: true
+    databasePreference?: true
+    deploymentTarget?: true
+    integrations?: true
+    securityRequirements?: true
+    performanceRequirements?: true
+    budgetConstraints?: true
+    otherConstraints?: true
+    additionalContext?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectProfileCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    softwareType?: true
+    targetPlatform?: true
+    preferredLanguages?: true
+    preferredFrameworks?: true
+    databasePreference?: true
+    deploymentTarget?: true
+    integrations?: true
+    securityRequirements?: true
+    performanceRequirements?: true
+    budgetConstraints?: true
+    otherConstraints?: true
+    additionalContext?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProjectProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectProfile to aggregate.
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectProfiles to fetch.
+     */
+    orderBy?: ProjectProfileOrderByWithRelationInput | ProjectProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProjectProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProjectProfiles
+    **/
+    _count?: true | ProjectProfileCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProjectProfileMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProjectProfileMaxAggregateInputType
+  }
+
+  export type GetProjectProfileAggregateType<T extends ProjectProfileAggregateArgs> = {
+        [P in keyof T & keyof AggregateProjectProfile]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProjectProfile[P]>
+      : GetScalarType<T[P], AggregateProjectProfile[P]>
+  }
+
+
+
+
+  export type ProjectProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectProfileWhereInput
+    orderBy?: ProjectProfileOrderByWithAggregationInput | ProjectProfileOrderByWithAggregationInput[]
+    by: ProjectProfileScalarFieldEnum[] | ProjectProfileScalarFieldEnum
+    having?: ProjectProfileScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProjectProfileCountAggregateInputType | true
+    _min?: ProjectProfileMinAggregateInputType
+    _max?: ProjectProfileMaxAggregateInputType
+  }
+
+  export type ProjectProfileGroupByOutputType = {
+    id: string
+    projectId: string
+    softwareType: string
+    targetPlatform: string
+    preferredLanguages: string
+    preferredFrameworks: string
+    databasePreference: string
+    deploymentTarget: string
+    integrations: string
+    securityRequirements: string
+    performanceRequirements: string
+    budgetConstraints: string
+    otherConstraints: string
+    additionalContext: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ProjectProfileCountAggregateOutputType | null
+    _min: ProjectProfileMinAggregateOutputType | null
+    _max: ProjectProfileMaxAggregateOutputType | null
+  }
+
+  type GetProjectProfileGroupByPayload<T extends ProjectProfileGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProjectProfileGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProjectProfileGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProjectProfileGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectProfileGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProjectProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    softwareType?: boolean
+    targetPlatform?: boolean
+    preferredLanguages?: boolean
+    preferredFrameworks?: boolean
+    databasePreference?: boolean
+    deploymentTarget?: boolean
+    integrations?: boolean
+    securityRequirements?: boolean
+    performanceRequirements?: boolean
+    budgetConstraints?: boolean
+    otherConstraints?: boolean
+    additionalContext?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectProfile"]>
+
+  export type ProjectProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    softwareType?: boolean
+    targetPlatform?: boolean
+    preferredLanguages?: boolean
+    preferredFrameworks?: boolean
+    databasePreference?: boolean
+    deploymentTarget?: boolean
+    integrations?: boolean
+    securityRequirements?: boolean
+    performanceRequirements?: boolean
+    budgetConstraints?: boolean
+    otherConstraints?: boolean
+    additionalContext?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectProfile"]>
+
+  export type ProjectProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectId?: boolean
+    softwareType?: boolean
+    targetPlatform?: boolean
+    preferredLanguages?: boolean
+    preferredFrameworks?: boolean
+    databasePreference?: boolean
+    deploymentTarget?: boolean
+    integrations?: boolean
+    securityRequirements?: boolean
+    performanceRequirements?: boolean
+    budgetConstraints?: boolean
+    otherConstraints?: boolean
+    additionalContext?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projectProfile"]>
+
+  export type ProjectProfileSelectScalar = {
+    id?: boolean
+    projectId?: boolean
+    softwareType?: boolean
+    targetPlatform?: boolean
+    preferredLanguages?: boolean
+    preferredFrameworks?: boolean
+    databasePreference?: boolean
+    deploymentTarget?: boolean
+    integrations?: boolean
+    securityRequirements?: boolean
+    performanceRequirements?: boolean
+    budgetConstraints?: boolean
+    otherConstraints?: boolean
+    additionalContext?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProjectProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectId" | "softwareType" | "targetPlatform" | "preferredLanguages" | "preferredFrameworks" | "databasePreference" | "deploymentTarget" | "integrations" | "securityRequirements" | "performanceRequirements" | "budgetConstraints" | "otherConstraints" | "additionalContext" | "createdAt" | "updatedAt", ExtArgs["result"]["projectProfile"]>
+  export type ProjectProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ProjectProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+  export type ProjectProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+  }
+
+  export type $ProjectProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProjectProfile"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectId: string
+      softwareType: string
+      targetPlatform: string
+      preferredLanguages: string
+      preferredFrameworks: string
+      databasePreference: string
+      deploymentTarget: string
+      integrations: string
+      securityRequirements: string
+      performanceRequirements: string
+      budgetConstraints: string
+      otherConstraints: string
+      additionalContext: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["projectProfile"]>
+    composites: {}
+  }
+
+  type ProjectProfileGetPayload<S extends boolean | null | undefined | ProjectProfileDefaultArgs> = $Result.GetResult<Prisma.$ProjectProfilePayload, S>
+
+  type ProjectProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProjectProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectProfileCountAggregateInputType | true
+    }
+
+  export interface ProjectProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProjectProfile'], meta: { name: 'ProjectProfile' } }
+    /**
+     * Find zero or one ProjectProfile that matches the filter.
+     * @param {ProjectProfileFindUniqueArgs} args - Arguments to find a ProjectProfile
+     * @example
+     * // Get one ProjectProfile
+     * const projectProfile = await prisma.projectProfile.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProjectProfileFindUniqueArgs>(args: SelectSubset<T, ProjectProfileFindUniqueArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProjectProfile that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProjectProfileFindUniqueOrThrowArgs} args - Arguments to find a ProjectProfile
+     * @example
+     * // Get one ProjectProfile
+     * const projectProfile = await prisma.projectProfile.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProjectProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, ProjectProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectProfile that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileFindFirstArgs} args - Arguments to find a ProjectProfile
+     * @example
+     * // Get one ProjectProfile
+     * const projectProfile = await prisma.projectProfile.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProjectProfileFindFirstArgs>(args?: SelectSubset<T, ProjectProfileFindFirstArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProjectProfile that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileFindFirstOrThrowArgs} args - Arguments to find a ProjectProfile
+     * @example
+     * // Get one ProjectProfile
+     * const projectProfile = await prisma.projectProfile.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProjectProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, ProjectProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProjectProfiles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProjectProfiles
+     * const projectProfiles = await prisma.projectProfile.findMany()
+     * 
+     * // Get first 10 ProjectProfiles
+     * const projectProfiles = await prisma.projectProfile.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const projectProfileWithIdOnly = await prisma.projectProfile.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProjectProfileFindManyArgs>(args?: SelectSubset<T, ProjectProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProjectProfile.
+     * @param {ProjectProfileCreateArgs} args - Arguments to create a ProjectProfile.
+     * @example
+     * // Create one ProjectProfile
+     * const ProjectProfile = await prisma.projectProfile.create({
+     *   data: {
+     *     // ... data to create a ProjectProfile
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProjectProfileCreateArgs>(args: SelectSubset<T, ProjectProfileCreateArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProjectProfiles.
+     * @param {ProjectProfileCreateManyArgs} args - Arguments to create many ProjectProfiles.
+     * @example
+     * // Create many ProjectProfiles
+     * const projectProfile = await prisma.projectProfile.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProjectProfileCreateManyArgs>(args?: SelectSubset<T, ProjectProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProjectProfiles and returns the data saved in the database.
+     * @param {ProjectProfileCreateManyAndReturnArgs} args - Arguments to create many ProjectProfiles.
+     * @example
+     * // Create many ProjectProfiles
+     * const projectProfile = await prisma.projectProfile.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProjectProfiles and only return the `id`
+     * const projectProfileWithIdOnly = await prisma.projectProfile.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProjectProfileCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectProfileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProjectProfile.
+     * @param {ProjectProfileDeleteArgs} args - Arguments to delete one ProjectProfile.
+     * @example
+     * // Delete one ProjectProfile
+     * const ProjectProfile = await prisma.projectProfile.delete({
+     *   where: {
+     *     // ... filter to delete one ProjectProfile
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProjectProfileDeleteArgs>(args: SelectSubset<T, ProjectProfileDeleteArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProjectProfile.
+     * @param {ProjectProfileUpdateArgs} args - Arguments to update one ProjectProfile.
+     * @example
+     * // Update one ProjectProfile
+     * const projectProfile = await prisma.projectProfile.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProjectProfileUpdateArgs>(args: SelectSubset<T, ProjectProfileUpdateArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProjectProfiles.
+     * @param {ProjectProfileDeleteManyArgs} args - Arguments to filter ProjectProfiles to delete.
+     * @example
+     * // Delete a few ProjectProfiles
+     * const { count } = await prisma.projectProfile.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProjectProfileDeleteManyArgs>(args?: SelectSubset<T, ProjectProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProjectProfiles
+     * const projectProfile = await prisma.projectProfile.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProjectProfileUpdateManyArgs>(args: SelectSubset<T, ProjectProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProjectProfiles and returns the data updated in the database.
+     * @param {ProjectProfileUpdateManyAndReturnArgs} args - Arguments to update many ProjectProfiles.
+     * @example
+     * // Update many ProjectProfiles
+     * const projectProfile = await prisma.projectProfile.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProjectProfiles and only return the `id`
+     * const projectProfileWithIdOnly = await prisma.projectProfile.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProjectProfileUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectProfileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProjectProfile.
+     * @param {ProjectProfileUpsertArgs} args - Arguments to update or create a ProjectProfile.
+     * @example
+     * // Update or create a ProjectProfile
+     * const projectProfile = await prisma.projectProfile.upsert({
+     *   create: {
+     *     // ... data to create a ProjectProfile
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProjectProfile we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProjectProfileUpsertArgs>(args: SelectSubset<T, ProjectProfileUpsertArgs<ExtArgs>>): Prisma__ProjectProfileClient<$Result.GetResult<Prisma.$ProjectProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProjectProfiles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileCountArgs} args - Arguments to filter ProjectProfiles to count.
+     * @example
+     * // Count the number of ProjectProfiles
+     * const count = await prisma.projectProfile.count({
+     *   where: {
+     *     // ... the filter for the ProjectProfiles we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProjectProfileCountArgs>(
+      args?: Subset<T, ProjectProfileCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProjectProfileCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProjectProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProjectProfileAggregateArgs>(args: Subset<T, ProjectProfileAggregateArgs>): Prisma.PrismaPromise<GetProjectProfileAggregateType<T>>
+
+    /**
+     * Group by ProjectProfile.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectProfileGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProjectProfileGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProjectProfileGroupByArgs['orderBy'] }
+        : { orderBy?: ProjectProfileGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProjectProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProjectProfile model
+   */
+  readonly fields: ProjectProfileFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProjectProfile.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProjectProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProjectProfile model
+   */
+  interface ProjectProfileFieldRefs {
+    readonly id: FieldRef<"ProjectProfile", 'String'>
+    readonly projectId: FieldRef<"ProjectProfile", 'String'>
+    readonly softwareType: FieldRef<"ProjectProfile", 'String'>
+    readonly targetPlatform: FieldRef<"ProjectProfile", 'String'>
+    readonly preferredLanguages: FieldRef<"ProjectProfile", 'String'>
+    readonly preferredFrameworks: FieldRef<"ProjectProfile", 'String'>
+    readonly databasePreference: FieldRef<"ProjectProfile", 'String'>
+    readonly deploymentTarget: FieldRef<"ProjectProfile", 'String'>
+    readonly integrations: FieldRef<"ProjectProfile", 'String'>
+    readonly securityRequirements: FieldRef<"ProjectProfile", 'String'>
+    readonly performanceRequirements: FieldRef<"ProjectProfile", 'String'>
+    readonly budgetConstraints: FieldRef<"ProjectProfile", 'String'>
+    readonly otherConstraints: FieldRef<"ProjectProfile", 'String'>
+    readonly additionalContext: FieldRef<"ProjectProfile", 'String'>
+    readonly createdAt: FieldRef<"ProjectProfile", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProjectProfile", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProjectProfile findUnique
+   */
+  export type ProjectProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectProfile to fetch.
+     */
+    where: ProjectProfileWhereUniqueInput
+  }
+
+  /**
+   * ProjectProfile findUniqueOrThrow
+   */
+  export type ProjectProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectProfile to fetch.
+     */
+    where: ProjectProfileWhereUniqueInput
+  }
+
+  /**
+   * ProjectProfile findFirst
+   */
+  export type ProjectProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectProfile to fetch.
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectProfiles to fetch.
+     */
+    orderBy?: ProjectProfileOrderByWithRelationInput | ProjectProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectProfiles.
+     */
+    cursor?: ProjectProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectProfiles.
+     */
+    distinct?: ProjectProfileScalarFieldEnum | ProjectProfileScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectProfile findFirstOrThrow
+   */
+  export type ProjectProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectProfile to fetch.
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectProfiles to fetch.
+     */
+    orderBy?: ProjectProfileOrderByWithRelationInput | ProjectProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProjectProfiles.
+     */
+    cursor?: ProjectProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectProfiles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProjectProfiles.
+     */
+    distinct?: ProjectProfileScalarFieldEnum | ProjectProfileScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectProfile findMany
+   */
+  export type ProjectProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter, which ProjectProfiles to fetch.
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProjectProfiles to fetch.
+     */
+    orderBy?: ProjectProfileOrderByWithRelationInput | ProjectProfileOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProjectProfiles.
+     */
+    cursor?: ProjectProfileWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProjectProfiles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProjectProfiles.
+     */
+    skip?: number
+    distinct?: ProjectProfileScalarFieldEnum | ProjectProfileScalarFieldEnum[]
+  }
+
+  /**
+   * ProjectProfile create
+   */
+  export type ProjectProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProjectProfile.
+     */
+    data: XOR<ProjectProfileCreateInput, ProjectProfileUncheckedCreateInput>
+  }
+
+  /**
+   * ProjectProfile createMany
+   */
+  export type ProjectProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProjectProfiles.
+     */
+    data: ProjectProfileCreateManyInput | ProjectProfileCreateManyInput[]
+  }
+
+  /**
+   * ProjectProfile createManyAndReturn
+   */
+  export type ProjectProfileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProjectProfiles.
+     */
+    data: ProjectProfileCreateManyInput | ProjectProfileCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectProfile update
+   */
+  export type ProjectProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProjectProfile.
+     */
+    data: XOR<ProjectProfileUpdateInput, ProjectProfileUncheckedUpdateInput>
+    /**
+     * Choose, which ProjectProfile to update.
+     */
+    where: ProjectProfileWhereUniqueInput
+  }
+
+  /**
+   * ProjectProfile updateMany
+   */
+  export type ProjectProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProjectProfiles.
+     */
+    data: XOR<ProjectProfileUpdateManyMutationInput, ProjectProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectProfiles to update
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * Limit how many ProjectProfiles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectProfile updateManyAndReturn
+   */
+  export type ProjectProfileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * The data used to update ProjectProfiles.
+     */
+    data: XOR<ProjectProfileUpdateManyMutationInput, ProjectProfileUncheckedUpdateManyInput>
+    /**
+     * Filter which ProjectProfiles to update
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * Limit how many ProjectProfiles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProjectProfile upsert
+   */
+  export type ProjectProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProjectProfile to update in case it exists.
+     */
+    where: ProjectProfileWhereUniqueInput
+    /**
+     * In case the ProjectProfile found by the `where` argument doesn't exist, create a new ProjectProfile with this data.
+     */
+    create: XOR<ProjectProfileCreateInput, ProjectProfileUncheckedCreateInput>
+    /**
+     * In case the ProjectProfile was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProjectProfileUpdateInput, ProjectProfileUncheckedUpdateInput>
+  }
+
+  /**
+   * ProjectProfile delete
+   */
+  export type ProjectProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
+    /**
+     * Filter which ProjectProfile to delete.
+     */
+    where: ProjectProfileWhereUniqueInput
+  }
+
+  /**
+   * ProjectProfile deleteMany
+   */
+  export type ProjectProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProjectProfiles to delete
+     */
+    where?: ProjectProfileWhereInput
+    /**
+     * Limit how many ProjectProfiles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProjectProfile without action
+   */
+  export type ProjectProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectProfile
+     */
+    select?: ProjectProfileSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProjectProfile
+     */
+    omit?: ProjectProfileOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectProfileInclude<ExtArgs> | null
   }
 
 
@@ -14268,6 +15581,28 @@ export namespace Prisma {
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
+  export const ProjectProfileScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    softwareType: 'softwareType',
+    targetPlatform: 'targetPlatform',
+    preferredLanguages: 'preferredLanguages',
+    preferredFrameworks: 'preferredFrameworks',
+    databasePreference: 'databasePreference',
+    deploymentTarget: 'deploymentTarget',
+    integrations: 'integrations',
+    securityRequirements: 'securityRequirements',
+    performanceRequirements: 'performanceRequirements',
+    budgetConstraints: 'budgetConstraints',
+    otherConstraints: 'otherConstraints',
+    additionalContext: 'additionalContext',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProjectProfileScalarFieldEnum = (typeof ProjectProfileScalarFieldEnum)[keyof typeof ProjectProfileScalarFieldEnum]
+
+
   export const PromptTemplateScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -14492,6 +15827,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    profile?: XOR<ProjectProfileNullableScalarRelationFilter, ProjectProfileWhereInput> | null
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
@@ -14509,6 +15845,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
+    profile?: ProjectProfileOrderByWithRelationInput
     prompts?: PromptTemplateOrderByRelationAggregateInput
     workflowRuns?: WorkflowRunOrderByRelationAggregateInput
     requirements?: RequirementOrderByRelationAggregateInput
@@ -14529,6 +15866,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
     userId?: StringNullableFilter<"Project"> | string | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    profile?: XOR<ProjectProfileNullableScalarRelationFilter, ProjectProfileWhereInput> | null
     prompts?: PromptTemplateListRelationFilter
     workflowRuns?: WorkflowRunListRelationFilter
     requirements?: RequirementListRelationFilter
@@ -14562,6 +15900,116 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     userId?: StringNullableWithAggregatesFilter<"Project"> | string | null
+  }
+
+  export type ProjectProfileWhereInput = {
+    AND?: ProjectProfileWhereInput | ProjectProfileWhereInput[]
+    OR?: ProjectProfileWhereInput[]
+    NOT?: ProjectProfileWhereInput | ProjectProfileWhereInput[]
+    id?: StringFilter<"ProjectProfile"> | string
+    projectId?: StringFilter<"ProjectProfile"> | string
+    softwareType?: StringFilter<"ProjectProfile"> | string
+    targetPlatform?: StringFilter<"ProjectProfile"> | string
+    preferredLanguages?: StringFilter<"ProjectProfile"> | string
+    preferredFrameworks?: StringFilter<"ProjectProfile"> | string
+    databasePreference?: StringFilter<"ProjectProfile"> | string
+    deploymentTarget?: StringFilter<"ProjectProfile"> | string
+    integrations?: StringFilter<"ProjectProfile"> | string
+    securityRequirements?: StringFilter<"ProjectProfile"> | string
+    performanceRequirements?: StringFilter<"ProjectProfile"> | string
+    budgetConstraints?: StringFilter<"ProjectProfile"> | string
+    otherConstraints?: StringFilter<"ProjectProfile"> | string
+    additionalContext?: StringFilter<"ProjectProfile"> | string
+    createdAt?: DateTimeFilter<"ProjectProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"ProjectProfile"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }
+
+  export type ProjectProfileOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    softwareType?: SortOrder
+    targetPlatform?: SortOrder
+    preferredLanguages?: SortOrder
+    preferredFrameworks?: SortOrder
+    databasePreference?: SortOrder
+    deploymentTarget?: SortOrder
+    integrations?: SortOrder
+    securityRequirements?: SortOrder
+    performanceRequirements?: SortOrder
+    budgetConstraints?: SortOrder
+    otherConstraints?: SortOrder
+    additionalContext?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type ProjectProfileWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    projectId?: string
+    AND?: ProjectProfileWhereInput | ProjectProfileWhereInput[]
+    OR?: ProjectProfileWhereInput[]
+    NOT?: ProjectProfileWhereInput | ProjectProfileWhereInput[]
+    softwareType?: StringFilter<"ProjectProfile"> | string
+    targetPlatform?: StringFilter<"ProjectProfile"> | string
+    preferredLanguages?: StringFilter<"ProjectProfile"> | string
+    preferredFrameworks?: StringFilter<"ProjectProfile"> | string
+    databasePreference?: StringFilter<"ProjectProfile"> | string
+    deploymentTarget?: StringFilter<"ProjectProfile"> | string
+    integrations?: StringFilter<"ProjectProfile"> | string
+    securityRequirements?: StringFilter<"ProjectProfile"> | string
+    performanceRequirements?: StringFilter<"ProjectProfile"> | string
+    budgetConstraints?: StringFilter<"ProjectProfile"> | string
+    otherConstraints?: StringFilter<"ProjectProfile"> | string
+    additionalContext?: StringFilter<"ProjectProfile"> | string
+    createdAt?: DateTimeFilter<"ProjectProfile"> | Date | string
+    updatedAt?: DateTimeFilter<"ProjectProfile"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+  }, "id" | "projectId">
+
+  export type ProjectProfileOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    softwareType?: SortOrder
+    targetPlatform?: SortOrder
+    preferredLanguages?: SortOrder
+    preferredFrameworks?: SortOrder
+    databasePreference?: SortOrder
+    deploymentTarget?: SortOrder
+    integrations?: SortOrder
+    securityRequirements?: SortOrder
+    performanceRequirements?: SortOrder
+    budgetConstraints?: SortOrder
+    otherConstraints?: SortOrder
+    additionalContext?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProjectProfileCountOrderByAggregateInput
+    _max?: ProjectProfileMaxOrderByAggregateInput
+    _min?: ProjectProfileMinOrderByAggregateInput
+  }
+
+  export type ProjectProfileScalarWhereWithAggregatesInput = {
+    AND?: ProjectProfileScalarWhereWithAggregatesInput | ProjectProfileScalarWhereWithAggregatesInput[]
+    OR?: ProjectProfileScalarWhereWithAggregatesInput[]
+    NOT?: ProjectProfileScalarWhereWithAggregatesInput | ProjectProfileScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    projectId?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    softwareType?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    targetPlatform?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    preferredLanguages?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    preferredFrameworks?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    databasePreference?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    deploymentTarget?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    integrations?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    securityRequirements?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    performanceRequirements?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    budgetConstraints?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    otherConstraints?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    additionalContext?: StringWithAggregatesFilter<"ProjectProfile"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ProjectProfile"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProjectProfile"> | Date | string
   }
 
   export type PromptTemplateWhereInput = {
@@ -15336,6 +16784,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
@@ -15352,6 +16801,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
@@ -15368,6 +16818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
@@ -15384,6 +16835,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
@@ -15421,6 +16873,138 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProjectProfileCreateInput = {
+    id?: string
+    softwareType?: string
+    targetPlatform?: string
+    preferredLanguages?: string
+    preferredFrameworks?: string
+    databasePreference?: string
+    deploymentTarget?: string
+    integrations?: string
+    securityRequirements?: string
+    performanceRequirements?: string
+    budgetConstraints?: string
+    otherConstraints?: string
+    additionalContext?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutProfileInput
+  }
+
+  export type ProjectProfileUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    softwareType?: string
+    targetPlatform?: string
+    preferredLanguages?: string
+    preferredFrameworks?: string
+    databasePreference?: string
+    deploymentTarget?: string
+    integrations?: string
+    securityRequirements?: string
+    performanceRequirements?: string
+    budgetConstraints?: string
+    otherConstraints?: string
+    additionalContext?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectProfileUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutProfileNestedInput
+  }
+
+  export type ProjectProfileUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectProfileCreateManyInput = {
+    id?: string
+    projectId: string
+    softwareType?: string
+    targetPlatform?: string
+    preferredLanguages?: string
+    preferredFrameworks?: string
+    databasePreference?: string
+    deploymentTarget?: string
+    integrations?: string
+    securityRequirements?: string
+    performanceRequirements?: string
+    budgetConstraints?: string
+    otherConstraints?: string
+    additionalContext?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectProfileUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectProfileUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PromptTemplateCreateInput = {
@@ -16326,6 +17910,11 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type ProjectProfileNullableScalarRelationFilter = {
+    is?: ProjectProfileWhereInput | null
+    isNot?: ProjectProfileWhereInput | null
+  }
+
   export type PromptTemplateListRelationFilter = {
     every?: PromptTemplateWhereInput
     some?: PromptTemplateWhereInput
@@ -16462,6 +18051,68 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type ProjectScalarRelationFilter = {
+    is?: ProjectWhereInput
+    isNot?: ProjectWhereInput
+  }
+
+  export type ProjectProfileCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    softwareType?: SortOrder
+    targetPlatform?: SortOrder
+    preferredLanguages?: SortOrder
+    preferredFrameworks?: SortOrder
+    databasePreference?: SortOrder
+    deploymentTarget?: SortOrder
+    integrations?: SortOrder
+    securityRequirements?: SortOrder
+    performanceRequirements?: SortOrder
+    budgetConstraints?: SortOrder
+    otherConstraints?: SortOrder
+    additionalContext?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectProfileMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    softwareType?: SortOrder
+    targetPlatform?: SortOrder
+    preferredLanguages?: SortOrder
+    preferredFrameworks?: SortOrder
+    databasePreference?: SortOrder
+    deploymentTarget?: SortOrder
+    integrations?: SortOrder
+    securityRequirements?: SortOrder
+    performanceRequirements?: SortOrder
+    budgetConstraints?: SortOrder
+    otherConstraints?: SortOrder
+    additionalContext?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectProfileMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    softwareType?: SortOrder
+    targetPlatform?: SortOrder
+    preferredLanguages?: SortOrder
+    preferredFrameworks?: SortOrder
+    databasePreference?: SortOrder
+    deploymentTarget?: SortOrder
+    integrations?: SortOrder
+    securityRequirements?: SortOrder
+    performanceRequirements?: SortOrder
+    budgetConstraints?: SortOrder
+    otherConstraints?: SortOrder
+    additionalContext?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -16596,11 +18247,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type ProjectScalarRelationFilter = {
-    is?: ProjectWhereInput
-    isNot?: ProjectWhereInput
   }
 
   export type WorkflowRunCountOrderByAggregateInput = {
@@ -16957,6 +18603,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type ProjectProfileCreateNestedOneWithoutProjectInput = {
+    create?: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: ProjectProfileCreateOrConnectWithoutProjectInput
+    connect?: ProjectProfileWhereUniqueInput
+  }
+
   export type PromptTemplateCreateNestedManyWithoutProjectInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -16990,6 +18642,12 @@ export namespace Prisma {
     connectOrCreate?: DevelopmentTaskCreateOrConnectWithoutProjectInput | DevelopmentTaskCreateOrConnectWithoutProjectInput[]
     createMany?: DevelopmentTaskCreateManyProjectInputEnvelope
     connect?: DevelopmentTaskWhereUniqueInput | DevelopmentTaskWhereUniqueInput[]
+  }
+
+  export type ProjectProfileUncheckedCreateNestedOneWithoutProjectInput = {
+    create?: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: ProjectProfileCreateOrConnectWithoutProjectInput
+    connect?: ProjectProfileWhereUniqueInput
   }
 
   export type PromptTemplateUncheckedCreateNestedManyWithoutProjectInput = {
@@ -17043,6 +18701,16 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectsInput, UserUpdateWithoutProjectsInput>, UserUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type ProjectProfileUpdateOneWithoutProjectNestedInput = {
+    create?: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: ProjectProfileCreateOrConnectWithoutProjectInput
+    upsert?: ProjectProfileUpsertWithoutProjectInput
+    disconnect?: ProjectProfileWhereInput | boolean
+    delete?: ProjectProfileWhereInput | boolean
+    connect?: ProjectProfileWhereUniqueInput
+    update?: XOR<XOR<ProjectProfileUpdateToOneWithWhereWithoutProjectInput, ProjectProfileUpdateWithoutProjectInput>, ProjectProfileUncheckedUpdateWithoutProjectInput>
   }
 
   export type PromptTemplateUpdateManyWithoutProjectNestedInput = {
@@ -17119,6 +18787,16 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput = {
+    create?: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+    connectOrCreate?: ProjectProfileCreateOrConnectWithoutProjectInput
+    upsert?: ProjectProfileUpsertWithoutProjectInput
+    disconnect?: ProjectProfileWhereInput | boolean
+    delete?: ProjectProfileWhereInput | boolean
+    connect?: ProjectProfileWhereUniqueInput
+    update?: XOR<XOR<ProjectProfileUpdateToOneWithWhereWithoutProjectInput, ProjectProfileUpdateWithoutProjectInput>, ProjectProfileUncheckedUpdateWithoutProjectInput>
+  }
+
   export type PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<PromptTemplateCreateWithoutProjectInput, PromptTemplateUncheckedCreateWithoutProjectInput> | PromptTemplateCreateWithoutProjectInput[] | PromptTemplateUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: PromptTemplateCreateOrConnectWithoutProjectInput | PromptTemplateCreateOrConnectWithoutProjectInput[]
@@ -17187,6 +18865,20 @@ export namespace Prisma {
     update?: DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput | DevelopmentTaskUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: DevelopmentTaskUpdateManyWithWhereWithoutProjectInput | DevelopmentTaskUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: DevelopmentTaskScalarWhereInput | DevelopmentTaskScalarWhereInput[]
+  }
+
+  export type ProjectCreateNestedOneWithoutProfileInput = {
+    create?: XOR<ProjectCreateWithoutProfileInput, ProjectUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutProfileInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ProjectUpdateOneRequiredWithoutProfileNestedInput = {
+    create?: XOR<ProjectCreateWithoutProfileInput, ProjectUncheckedCreateWithoutProfileInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutProfileInput
+    upsert?: ProjectUpsertWithoutProfileInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutProfileInput, ProjectUpdateWithoutProfileInput>, ProjectUncheckedUpdateWithoutProfileInput>
   }
 
   export type ProjectCreateNestedOneWithoutPromptsInput = {
@@ -17634,6 +19326,47 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
   }
 
+  export type ProjectProfileCreateWithoutProjectInput = {
+    id?: string
+    softwareType?: string
+    targetPlatform?: string
+    preferredLanguages?: string
+    preferredFrameworks?: string
+    databasePreference?: string
+    deploymentTarget?: string
+    integrations?: string
+    securityRequirements?: string
+    performanceRequirements?: string
+    budgetConstraints?: string
+    otherConstraints?: string
+    additionalContext?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectProfileUncheckedCreateWithoutProjectInput = {
+    id?: string
+    softwareType?: string
+    targetPlatform?: string
+    preferredLanguages?: string
+    preferredFrameworks?: string
+    databasePreference?: string
+    deploymentTarget?: string
+    integrations?: string
+    securityRequirements?: string
+    performanceRequirements?: string
+    budgetConstraints?: string
+    otherConstraints?: string
+    additionalContext?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectProfileCreateOrConnectWithoutProjectInput = {
+    where: ProjectProfileWhereUniqueInput
+    create: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+  }
+
   export type PromptTemplateCreateWithoutProjectInput = {
     id?: string
     title: string
@@ -17834,6 +19567,53 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type ProjectProfileUpsertWithoutProjectInput = {
+    update: XOR<ProjectProfileUpdateWithoutProjectInput, ProjectProfileUncheckedUpdateWithoutProjectInput>
+    create: XOR<ProjectProfileCreateWithoutProjectInput, ProjectProfileUncheckedCreateWithoutProjectInput>
+    where?: ProjectProfileWhereInput
+  }
+
+  export type ProjectProfileUpdateToOneWithWhereWithoutProjectInput = {
+    where?: ProjectProfileWhereInput
+    data: XOR<ProjectProfileUpdateWithoutProjectInput, ProjectProfileUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ProjectProfileUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectProfileUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    softwareType?: StringFieldUpdateOperationsInput | string
+    targetPlatform?: StringFieldUpdateOperationsInput | string
+    preferredLanguages?: StringFieldUpdateOperationsInput | string
+    preferredFrameworks?: StringFieldUpdateOperationsInput | string
+    databasePreference?: StringFieldUpdateOperationsInput | string
+    deploymentTarget?: StringFieldUpdateOperationsInput | string
+    integrations?: StringFieldUpdateOperationsInput | string
+    securityRequirements?: StringFieldUpdateOperationsInput | string
+    performanceRequirements?: StringFieldUpdateOperationsInput | string
+    budgetConstraints?: StringFieldUpdateOperationsInput | string
+    otherConstraints?: StringFieldUpdateOperationsInput | string
+    additionalContext?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PromptTemplateUpsertWithWhereUniqueWithoutProjectInput = {
     where: PromptTemplateWhereUniqueInput
     update: XOR<PromptTemplateUpdateWithoutProjectInput, PromptTemplateUncheckedUpdateWithoutProjectInput>
@@ -17994,6 +19774,86 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DevelopmentTask"> | Date | string
   }
 
+  export type ProjectCreateWithoutProfileInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutProjectsInput
+    prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
+    requirements?: RequirementCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutProfileInput = {
+    id?: string
+    name: string
+    description?: string
+    stage?: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId?: string | null
+    prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
+    workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
+    requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
+    architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
+    developmentTasks?: DevelopmentTaskUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutProfileInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutProfileInput, ProjectUncheckedCreateWithoutProfileInput>
+  }
+
+  export type ProjectUpsertWithoutProfileInput = {
+    update: XOR<ProjectUpdateWithoutProfileInput, ProjectUncheckedUpdateWithoutProfileInput>
+    create: XOR<ProjectCreateWithoutProfileInput, ProjectUncheckedCreateWithoutProfileInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutProfileInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutProfileInput, ProjectUncheckedUpdateWithoutProfileInput>
+  }
+
+  export type ProjectUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutProjectsNestedInput
+    prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
+    workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
+    requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
+    architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
+    developmentTasks?: DevelopmentTaskUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
   export type ProjectCreateWithoutPromptsInput = {
     id?: string
     name: string
@@ -18003,6 +19863,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
@@ -18018,6 +19879,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
@@ -18049,6 +19911,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
@@ -18064,6 +19927,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
@@ -18079,6 +19943,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
@@ -18094,6 +19959,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
@@ -18125,6 +19991,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
@@ -18140,6 +20007,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
@@ -18155,6 +20023,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionCreateNestedManyWithoutProjectInput
@@ -18170,6 +20039,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     architectureDecisions?: ArchitectureDecisionUncheckedCreateNestedManyWithoutProjectInput
@@ -18201,6 +20071,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUpdateManyWithoutProjectNestedInput
@@ -18216,6 +20087,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     architectureDecisions?: ArchitectureDecisionUncheckedUpdateManyWithoutProjectNestedInput
@@ -18231,6 +20103,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
@@ -18246,6 +20119,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
@@ -18277,6 +20151,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
@@ -18292,6 +20167,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
@@ -18307,6 +20183,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProjectsInput
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
@@ -18322,6 +20199,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId?: string | null
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
@@ -18353,6 +20231,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProjectsNestedInput
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
@@ -18368,6 +20247,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput
@@ -18450,6 +20330,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    profile?: ProjectProfileCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunCreateNestedManyWithoutProjectInput
     requirements?: RequirementCreateNestedManyWithoutProjectInput
@@ -18465,6 +20346,7 @@ export namespace Prisma {
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    profile?: ProjectProfileUncheckedCreateNestedOneWithoutProjectInput
     prompts?: PromptTemplateUncheckedCreateNestedManyWithoutProjectInput
     workflowRuns?: WorkflowRunUncheckedCreateNestedManyWithoutProjectInput
     requirements?: RequirementUncheckedCreateNestedManyWithoutProjectInput
@@ -19062,6 +20944,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProjectProfileUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUpdateManyWithoutProjectNestedInput
@@ -19077,6 +20960,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProjectProfileUncheckedUpdateOneWithoutProjectNestedInput
     prompts?: PromptTemplateUncheckedUpdateManyWithoutProjectNestedInput
     workflowRuns?: WorkflowRunUncheckedUpdateManyWithoutProjectNestedInput
     requirements?: RequirementUncheckedUpdateManyWithoutProjectNestedInput

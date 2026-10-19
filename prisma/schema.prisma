@@ -1,7 +1,6 @@
-
 generator client {
   provider = "prisma-client-js"
-  output = "../src/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -10,23 +9,56 @@ datasource db {
 }
 
 model Project {
-  id          String        @id @default(cuid())
-  name        String
-  description String        @default("")
-  stage       String        @default("Brainstorming")
-  status      String        @default("ACTIVE")
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  prompts     PromptTemplate[]
-  workflowRuns WorkflowRun[]
-  requirements Requirement[]
+  id                    String                 @id @default(cuid())
+  name                  String
+  description           String                 @default("")
+  stage                 String                 @default("Brainstorming")
+  status                String                 @default("ACTIVE")
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  userId                String?
+  user                  User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile               ProjectProfile?
+  prompts               PromptTemplate[]
+  workflowRuns          WorkflowRun[]
+  requirements          Requirement[]
   architectureDecisions ArchitectureDecision[]
-  developmentTasks DevelopmentTask[]
+  developmentTasks      DevelopmentTask[]
+
   @@index([status])
   @@index([updatedAt])
   @@index([userId])
+}
+
+model ProjectProfile {
+  id        String  @id @default(cuid())
+  projectId String  @unique
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Classificação do software
+  softwareType   String @default("UNDECIDED")
+  targetPlatform String @default("UNDECIDED")
+
+  // Preferências tecnológicas — listas armazenadas como JSON
+  preferredLanguages  String @default("[]")
+  preferredFrameworks String @default("[]")
+  databasePreference  String @default("UNDECIDED")
+  deploymentTarget    String @default("UNDECIDED")
+
+  // Integrações e requisitos não funcionais
+  integrations            String @default("[]")
+  securityRequirements    String @default("")
+  performanceRequirements String @default("")
+
+  // Restrições e contexto adicional
+  budgetConstraints String @default("")
+  otherConstraints  String @default("")
+  additionalContext String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([softwareType])
 }
 
 model PromptTemplate {
@@ -47,28 +79,28 @@ model PromptTemplate {
 }
 
 model Agent {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  role        String
+  id           String   @id @default(cuid())
+  name         String   @unique
+  role         String
   instructions String
-  model       String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  model        String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model WorkflowRun {
-  id          String   @id @default(cuid())
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  stage       String
-  status      String   @default("PENDING")
-  input       String?
-  output      String?
-  error       String?
-  startedAt   DateTime?
-  finishedAt  DateTime?
-  createdAt   DateTime @default(now())
+  id         String    @id @default(cuid())
+  projectId  String
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stage      String
+  status     String    @default("PENDING")
+  input      String?
+  output     String?
+  error      String?
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   @@index([projectId, createdAt])
   @@index([status])
@@ -89,37 +121,37 @@ model Requirement {
 }
 
 model ArchitectureDecision {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
-  description String   @default("")
-  category    String   @default("GENERAL")
-  status     String    @default("PROPOSED")
-  approvedAt DateTime?
+  description String    @default("")
+  category    String    @default("GENERAL")
+  status      String    @default("PROPOSED")
+  approvedAt  DateTime?
   projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([projectId, createdAt])
 }
 
 model DevelopmentTask {
-  id                  String   @id @default(cuid())
-  projectId           String
-  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  sourcePlanRunId     String
-  taskKey             String
-  title               String
-  description         String   @default("")
-  requirement         String   @default("")
-  dependencies        String   @default("[]")
-  expectedResult      String   @default("")
-  acceptanceCriteria  String   @default("")
-  status              String   @default("TODO")
+  sourcePlanRunId    String
+  taskKey            String
+  title              String
+  description        String @default("")
+  requirement        String @default("")
+  dependencies       String @default("[]")
+  expectedResult     String @default("")
+  acceptanceCriteria String @default("")
+  status             String @default("TODO")
 
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([sourcePlanRunId, taskKey])
   @@index([projectId, createdAt])
@@ -136,7 +168,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  projects Project[]
+  projects      Project[]
 
   @@unique([email])
   @@map("user")
