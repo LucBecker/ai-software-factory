@@ -120,6 +120,8 @@ type Skill = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  reviewStatus: string;
+  approvedAt: string | null;
 };
 
 type AgentSkillAssignment = {
@@ -315,7 +317,17 @@ export default function DashboardClient() {
   const [agents, setAgents] = useState<AgentRecord[]>([]);
   const [agentsLoading, setAgentsLoading] = useState(false);
   const [agentsError, setAgentsError] = useState("");
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminAccessLoading, setAdminAccessLoading] = useState(true);
+  const [adminAccessError, setAdminAccessError] = useState("");
+  const [skillReviewComments, setSkillReviewComments] =
+  useState<Record<string, string>>({});
+  const [skillReviewLoading, setSkillReviewLoading] =
+    useState<string | null>(null);
+  const [skillReviewMessages, setSkillReviewMessages] =
+    useState<Record<string, string>>({});
+  const [skillReviewErrors, setSkillReviewErrors] =
+    useState<Record<string, string>>({});
   const currentAnalysisReview = reviewHistory.find(
   (review) => review.sourceRunId === analysisRunId,
   );
@@ -572,6 +584,55 @@ useEffect(() => {
   }
 
   void loadAgents();
+
+  return () => {
+    cancelled = true;
+  };
+}, []);
+
+useEffect(() => {
+  let cancelled = false;
+
+  async function checkAdminAccess() {
+    try {
+      const response = await fetch("/api/admin/access");
+
+      if (response.status === 401 || response.status === 403) {
+        if (!cancelled) {
+          setIsAdmin(false);
+        }
+        return;
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível verificar o acesso administrativo.",
+        );
+      }
+
+      if (!cancelled) {
+        setIsAdmin(data.isAdmin === true);
+        setAdminAccessError("");
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setIsAdmin(false);
+        setAdminAccessError(
+          error instanceof Error
+            ? error.message
+            : "Erro ao verificar as permissões administrativas.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setAdminAccessLoading(false);
+      }
+    }
+  }
+
+  void checkAdminAccess();
 
   return () => {
     cancelled = true;
@@ -1969,6 +2030,86 @@ async function saveArchitectureEdit(
       window.prompt("Copie seu prompt:", text);
     }
   }
+
+  async function reviewSkill(
+  skillId: string,
+  decision: "APPROVED" | "CHANGES_REQUESTED",
+) {
+  const comment = (skillReviewComments[skillId] ?? "").trim();
+
+  if (decision === "CHANGES_REQUESTED" && !comment) {
+    setSkillReviewErrors((current) => ({
+      ...current,
+      [skillId]: "Informe os ajustes necessários.",
+    }));
+    return;
+  }
+
+  setSkillReviewLoading(skillId);
+
+  setSkillReviewErrors((current) => ({
+    ...current,
+    [skillId]: "",
+  }));
+
+  setSkillReviewMessages((current) => ({
+    ...current,
+    [skillId]: "",
+  }));
+
+  try {
+    const response = await fetch("/api/skills/review", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        skillId,
+        decision,
+        comment,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível registrar a revisão.",
+      );
+    }
+
+    setSkillReviewMessages((current) => ({
+      ...current,
+      [skillId]: data.message || "Revisão registrada com sucesso.",
+    }));
+
+    setSkillReviewComments((current) => ({
+      ...current,
+      [skillId]: "",
+    }));
+
+    const skillsResponse = await fetch("/api/skills");
+    const skillsData = await skillsResponse.json();
+
+    if (!skillsResponse.ok) {
+      throw new Error(
+        skillsData.error || "Revisão registrada, mas a lista não foi atualizada.",
+      );
+    }
+
+    setSkills(Array.isArray(skillsData.skills) ? skillsData.skills : []);
+  } catch (error) {
+    setSkillReviewErrors((current) => ({
+      ...current,
+      [skillId]:
+        error instanceof Error
+          ? error.message
+          : "Erro inesperado ao revisar a skill.",
+    }));
+  } finally {
+    setSkillReviewLoading(null);
+  }
+}
 
   const menu = [
   { name: "Visão geral", icon: "▦" },
@@ -3632,6 +3773,78 @@ async function saveArchitectureEdit(
               {skill.instructions}
             </pre>
           </details>
+          <div className="mt-4 border-t border-white/10 pt-4">
+  <p className="text-xs text-slate-400">
+    Status da revisão: {skill.reviewStatus}
+  </p>
+
+  {adminAccessLoading ? (
+    <p className="mt-3 text-xs text-slate-500">
+      Verificando permissões administrativas...
+    </p>
+  ) : isAdmin ? (
+    <div className="mt-3 space-y-3">
+      <label
+        htmlFor={`skill-review-${skill.id}`}
+        className="block text-sm font-medium"
+      >
+        Comentário da revisão
+      </label>
+
+      <textarea
+        id={`skill-review-${skill.id}`}
+        value={skillReviewComments[skill.id] ?? ""}
+        onChange={(event) =>
+          setSkillReviewComments((current) => ({
+            ...current,
+            [skill.id]: event.target.value,
+          }))
+        }
+        maxLength={5000}
+        rows={3}
+        placeholder="Registre observações ou ajustes necessários..."
+        className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+      />
+
+      {skillReviewErrors[skill.id] && (
+        <p role="alert" className="text-sm text-red-400">
+          {skillReviewErrors[skill.id]}
+        </p>
+      )}
+
+      {skillReviewMessages[skill.id] && (
+        <p role="status" className="text-sm text-emerald-400">
+          {skillReviewMessages[skill.id]}
+        </p>
+      )}
+
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => reviewSkill(skill.id, "APPROVED")}
+          disabled={skillReviewLoading === skill.id}
+          className="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          Aprovar skill
+        </button>
+
+        <button
+          type="button"
+          onClick={() => reviewSkill(skill.id, "CHANGES_REQUESTED")}
+          disabled={skillReviewLoading === skill.id}
+          className="rounded-lg border border-amber-400/30 px-3 py-2 text-sm text-amber-300 disabled:opacity-50"
+        >
+          Solicitar ajustes
+        </button>
+      </div>
+    </div>
+        ) : adminAccessError ? (
+          <p role="alert" className="mt-3 text-xs text-amber-300">
+            Não foi possível verificar as permissões. Os controles administrativos
+            permanecem ocultos.
+          </p>
+        ) : null}
+      </div>
         </article>
       ))}
     </div>
