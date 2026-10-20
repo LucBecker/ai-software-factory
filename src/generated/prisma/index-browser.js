@@ -198,6 +198,15 @@ exports.Prisma.SkillReviewScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SkillActivationEventScalarFieldEnum = {
+  id: 'id',
+  skillId: 'skillId',
+  actorId: 'actorId',
+  action: 'action',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AgentSkillScalarFieldEnum = {
   id: 'id',
   agentId: 'agentId',
@@ -324,6 +333,7 @@ exports.Prisma.ModelName = {
   Agent: 'Agent',
   Skill: 'Skill',
   SkillReview: 'SkillReview',
+  SkillActivationEvent: 'SkillActivationEvent',
   AgentSkill: 'AgentSkill',
   WorkflowRun: 'WorkflowRun',
   Requirement: 'Requirement',

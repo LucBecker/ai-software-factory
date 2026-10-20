@@ -149,6 +149,19 @@ type AgentRecord = {
   skillAssignments: AgentSkillAssignment[];
 };
 
+type SkillReviewRecord = {
+  id: string;
+  skillId: string;
+  reviewerId: string | null;
+  decision: string;
+  comment: string;
+  createdAt: string;
+  reviewer: {
+    id: string;
+    name: string;
+  } | null;
+};
+
 const initialProjects: Project[] = []
 
 const prompts: Prompt[] = [
@@ -331,6 +344,12 @@ export default function DashboardClient() {
   const currentAnalysisReview = reviewHistory.find(
   (review) => review.sourceRunId === analysisRunId,
   );
+  const [skillReviews, setSkillReviews] =
+  useState<SkillReviewRecord[]>([]);
+  const [skillReviewHistoryLoading, setSkillReviewHistoryLoading] =
+    useState(false);
+  const [skillReviewHistoryError, setSkillReviewHistoryError] =
+    useState("");
 
     const totalDevelopmentTasks = developmentTasks.length;
 
@@ -638,6 +657,52 @@ useEffect(() => {
     cancelled = true;
   };
 }, []);
+
+useEffect(() => {
+  if (adminAccessLoading || !isAdmin) return;
+
+  let cancelled = false;
+
+  async function loadSkillReviewHistory() {
+    setSkillReviewHistoryLoading(true);
+    setSkillReviewHistoryError("");
+
+    try {
+      const response = await fetch("/api/skills/review");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Não foi possível carregar o histórico de revisões.",
+        );
+      }
+
+      if (!cancelled) {
+        setSkillReviews(
+          Array.isArray(data.reviews) ? data.reviews : [],
+        );
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setSkillReviewHistoryError(
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao carregar o histórico.",
+        );
+      }
+    } finally {
+      if (!cancelled) {
+        setSkillReviewHistoryLoading(false);
+      }
+    }
+  }
+
+  void loadSkillReviewHistory();
+
+  return () => {
+    cancelled = true;
+  };
+}, [isAdmin, adminAccessLoading]);
 
 useEffect(() => {
   if (!selectedProject) {
@@ -3845,7 +3910,72 @@ async function saveArchitectureEdit(
           </p>
         ) : null}
       </div>
-        </article>
+        {isAdmin && (
+  <div className="mt-4 border-t border-white/10 pt-4">
+    <h4 className="text-sm font-semibold">
+      Histórico de revisões
+    </h4>
+
+    {skillReviewHistoryLoading && (
+      <p className="mt-3 text-sm text-slate-400">
+        Carregando histórico...
+      </p>
+    )}
+
+    {skillReviewHistoryError && (
+      <p role="alert" className="mt-3 text-sm text-red-400">
+        {skillReviewHistoryError}
+      </p>
+    )}
+
+    {!skillReviewHistoryLoading &&
+      !skillReviewHistoryError &&
+      skillReviews.filter((review) => review.skillId === skill.id).length === 0 && (
+        <p className="mt-3 text-sm text-slate-500">
+          Nenhuma revisão registrada.
+        </p>
+      )}
+
+    <div className="mt-3 space-y-3">
+      {skillReviews
+        .filter((review) => review.skillId === skill.id)
+        .map((review) => (
+          <div
+            key={review.id}
+            className="rounded-xl border border-white/10 p-3"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs ${
+                  review.decision === "APPROVED"
+                    ? "bg-emerald-400/10 text-emerald-300"
+                    : "bg-amber-400/10 text-amber-300"
+                }`}
+              >
+                {review.decision === "APPROVED"
+                  ? "Aprovada"
+                  : "Ajustes solicitados"}
+              </span>
+
+              <span className="text-xs text-slate-500">
+                {new Date(review.createdAt).toLocaleString("pt-BR")}
+              </span>
+            </div>
+
+            <p className="mt-2 text-sm text-slate-300">
+              Responsável: {review.reviewer?.name ?? "Usuário não disponível"}
+            </p>
+
+            <p className="mt-1 whitespace-pre-wrap text-sm text-slate-400">
+              Comentário: {review.comment || "Nenhum comentário informado."}
+            </p>
+          </div>
+        ))}
+    </div>
+  </div>
+)}
+    
+  </article>
       ))}
     </div>
   </>

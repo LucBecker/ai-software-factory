@@ -105,7 +105,8 @@ model Skill {
   approvedById       String?
   approvedBy         User?     @relation("SkillApprover", fields: [approvedById], references: [id], onDelete: SetNull)
 
-  reviews SkillReview[]
+  reviews          SkillReview[]
+  activationEvents SkillActivationEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -131,6 +132,21 @@ model SkillReview {
 
   @@index([skillId, createdAt])
   @@index([reviewerId])
+}
+
+model SkillActivationEvent {
+  id        String   @id @default(cuid())
+  skillId   String
+  actorId   String?
+  action    String
+  comment   String   @default("")
+  createdAt DateTime @default(now())
+
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  actor User? @relation("SkillActivationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([skillId, createdAt])
+  @@index([actorId])
 }
 
 model AgentSkill {
@@ -218,19 +234,20 @@ model DevelopmentTask {
 }
 
 model User {
-  id             String        @id
-  name           String
-  email          String
-  accessLevel    String        @default("USER")
-  emailVerified  Boolean       @default(false)
-  image          String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  sessions       Session[]
-  accounts       Account[]
-  projects       Project[]
-  approvedSkills Skill[]       @relation("SkillApprover")
-  skillReviews   SkillReview[] @relation("SkillReviewAuthor")
+  id                    String                 @id
+  name                  String
+  email                 String
+  accessLevel           String                 @default("USER")
+  emailVerified         Boolean                @default(false)
+  image                 String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  sessions              Session[]
+  accounts              Account[]
+  projects              Project[]
+  approvedSkills        Skill[]                @relation("SkillApprover")
+  skillReviews          SkillReview[]          @relation("SkillReviewAuthor")
+  skillActivationEvents SkillActivationEvent[] @relation("SkillActivationActor")
 
   @@unique([email])
   @@map("user")
