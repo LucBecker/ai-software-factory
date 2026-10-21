@@ -7234,6 +7234,7 @@ export namespace Prisma {
     description: string | null
     category: string | null
     instructions: string | null
+    rulesJson: string | null
     activationCriteria: string | null
     version: number | null
     isActive: boolean | null
@@ -7251,6 +7252,7 @@ export namespace Prisma {
     description: string | null
     category: string | null
     instructions: string | null
+    rulesJson: string | null
     activationCriteria: string | null
     version: number | null
     isActive: boolean | null
@@ -7268,6 +7270,7 @@ export namespace Prisma {
     description: number
     category: number
     instructions: number
+    rulesJson: number
     activationCriteria: number
     version: number
     isActive: number
@@ -7295,6 +7298,7 @@ export namespace Prisma {
     description?: true
     category?: true
     instructions?: true
+    rulesJson?: true
     activationCriteria?: true
     version?: true
     isActive?: true
@@ -7312,6 +7316,7 @@ export namespace Prisma {
     description?: true
     category?: true
     instructions?: true
+    rulesJson?: true
     activationCriteria?: true
     version?: true
     isActive?: true
@@ -7329,6 +7334,7 @@ export namespace Prisma {
     description?: true
     category?: true
     instructions?: true
+    rulesJson?: true
     activationCriteria?: true
     version?: true
     isActive?: true
@@ -7433,6 +7439,7 @@ export namespace Prisma {
     description: string
     category: string
     instructions: string
+    rulesJson: string
     activationCriteria: string
     version: number
     isActive: boolean
@@ -7469,6 +7476,7 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     instructions?: boolean
+    rulesJson?: boolean
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
@@ -7491,6 +7499,7 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     instructions?: boolean
+    rulesJson?: boolean
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
@@ -7509,6 +7518,7 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     instructions?: boolean
+    rulesJson?: boolean
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
@@ -7527,6 +7537,7 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     instructions?: boolean
+    rulesJson?: boolean
     activationCriteria?: boolean
     version?: boolean
     isActive?: boolean
@@ -7537,7 +7548,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "activationCriteria" | "version" | "isActive" | "reviewStatus" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
+  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "rulesJson" | "activationCriteria" | "version" | "isActive" | "reviewStatus" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
   export type SkillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
     reviews?: boolean | Skill$reviewsArgs<ExtArgs>
@@ -7567,6 +7578,7 @@ export namespace Prisma {
       description: string
       category: string
       instructions: string
+      rulesJson: string
       activationCriteria: string
       version: number
       isActive: boolean
@@ -8008,6 +8020,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Skill", 'String'>
     readonly category: FieldRef<"Skill", 'String'>
     readonly instructions: FieldRef<"Skill", 'String'>
+    readonly rulesJson: FieldRef<"Skill", 'String'>
     readonly activationCriteria: FieldRef<"Skill", 'String'>
     readonly version: FieldRef<"Skill", 'Int'>
     readonly isActive: FieldRef<"Skill", 'Boolean'>
@@ -20898,6 +20911,7 @@ export namespace Prisma {
     description: 'description',
     category: 'category',
     instructions: 'instructions',
+    rulesJson: 'rulesJson',
     activationCriteria: 'activationCriteria',
     version: 'version',
     isActive: 'isActive',
@@ -21489,6 +21503,7 @@ export namespace Prisma {
     description?: StringFilter<"Skill"> | string
     category?: StringFilter<"Skill"> | string
     instructions?: StringFilter<"Skill"> | string
+    rulesJson?: StringFilter<"Skill"> | string
     activationCriteria?: StringFilter<"Skill"> | string
     version?: IntFilter<"Skill"> | number
     isActive?: BoolFilter<"Skill"> | boolean
@@ -21510,6 +21525,7 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     instructions?: SortOrder
+    rulesJson?: SortOrder
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
@@ -21535,6 +21551,7 @@ export namespace Prisma {
     description?: StringFilter<"Skill"> | string
     category?: StringFilter<"Skill"> | string
     instructions?: StringFilter<"Skill"> | string
+    rulesJson?: StringFilter<"Skill"> | string
     activationCriteria?: StringFilter<"Skill"> | string
     version?: IntFilter<"Skill"> | number
     isActive?: BoolFilter<"Skill"> | boolean
@@ -21556,6 +21573,7 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     instructions?: SortOrder
+    rulesJson?: SortOrder
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
@@ -21581,6 +21599,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Skill"> | string
     category?: StringWithAggregatesFilter<"Skill"> | string
     instructions?: StringWithAggregatesFilter<"Skill"> | string
+    rulesJson?: StringWithAggregatesFilter<"Skill"> | string
     activationCriteria?: StringWithAggregatesFilter<"Skill"> | string
     version?: IntWithAggregatesFilter<"Skill"> | number
     isActive?: BoolWithAggregatesFilter<"Skill"> | boolean
@@ -22821,6 +22840,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -22841,6 +22861,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -22861,6 +22882,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -22881,6 +22903,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -22901,6 +22924,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -22918,6 +22942,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -22934,6 +22959,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -24263,6 +24289,7 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     instructions?: SortOrder
+    rulesJson?: SortOrder
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
@@ -24284,6 +24311,7 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     instructions?: SortOrder
+    rulesJson?: SortOrder
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
@@ -24301,6 +24329,7 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     instructions?: SortOrder
+    rulesJson?: SortOrder
     activationCriteria?: SortOrder
     version?: SortOrder
     isActive?: SortOrder
@@ -26818,6 +26847,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -26837,6 +26867,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -26909,6 +26940,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -26928,6 +26960,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -26990,6 +27023,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27009,6 +27043,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27081,6 +27116,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27100,6 +27136,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27189,6 +27226,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27208,6 +27246,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27276,6 +27315,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27295,6 +27335,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27743,6 +27784,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27762,6 +27804,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -27954,6 +27997,7 @@ export namespace Prisma {
     description?: StringFilter<"Skill"> | string
     category?: StringFilter<"Skill"> | string
     instructions?: StringFilter<"Skill"> | string
+    rulesJson?: StringFilter<"Skill"> | string
     activationCriteria?: StringFilter<"Skill"> | string
     version?: IntFilter<"Skill"> | number
     isActive?: BoolFilter<"Skill"> | boolean
@@ -28566,6 +28610,7 @@ export namespace Prisma {
     description?: string
     category?: string
     instructions: string
+    rulesJson?: string
     activationCriteria?: string
     version?: number
     isActive?: boolean
@@ -28715,6 +28760,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28734,6 +28780,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28753,6 +28800,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
     instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
     activationCriteria?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean

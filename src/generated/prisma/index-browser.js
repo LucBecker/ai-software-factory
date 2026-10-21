@@ -179,6 +179,7 @@ exports.Prisma.SkillScalarFieldEnum = {
   description: 'description',
   category: 'category',
   instructions: 'instructions',
+  rulesJson: 'rulesJson',
   activationCriteria: 'activationCriteria',
   version: 'version',
   isActive: 'isActive',

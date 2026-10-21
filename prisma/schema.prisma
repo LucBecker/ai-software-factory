@@ -97,6 +97,7 @@ model Skill {
   description        String    @default("")
   category           String    @default("GENERAL")
   instructions       String
+  rulesJson          String    @default("[]")
   activationCriteria String    @default("")
   version            Int       @default(1)
   isActive           Boolean   @default(false)
