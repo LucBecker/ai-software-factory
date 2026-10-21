@@ -11,13 +11,29 @@ export async function GET(request: Request) {
 
   try {
     const skills = await prisma.skill.findMany({
-      orderBy: [
-        { category: "asc" },
-        { key: "asc" },
-        { version: "desc" },
-      ],
-    });
-
+  orderBy: [
+    { category: "asc" },
+    { key: "asc" },
+    { version: "desc" },
+  ],
+  include: {
+    activationEvents: {
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 10,
+      include: {
+        actor: {
+          select: {
+            id: true,
+            name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+      
     return NextResponse.json({ skills });
   } catch (error) {
     console.error("Erro ao consultar catálogo de skills:", error);

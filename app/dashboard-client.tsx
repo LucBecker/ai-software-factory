@@ -108,6 +108,17 @@ type Prompt = {
   description: string;
 };
 
+type SkillActivationEvent = {
+  id: string;
+  action: string;
+  comment: string;
+  createdAt: string;
+  actor: {
+    id: string;
+    name: string;
+  } | null;
+};
+
 type Skill = {
   id: string;
   key: string;
@@ -122,6 +133,7 @@ type Skill = {
   updatedAt: string;
   reviewStatus: string;
   approvedAt: string | null;
+  activationEvents: SkillActivationEvent[];
 };
 
 type AgentSkillAssignment = {
@@ -350,6 +362,16 @@ export default function DashboardClient() {
     useState(false);
   const [skillReviewHistoryError, setSkillReviewHistoryError] =
     useState("");
+    const [skillActivationComments, setSkillActivationComments] =
+  useState<Record<string, string>>({});
+  const [skillActivationLoading, setSkillActivationLoading] =
+    useState<string | null>(null);
+
+  const [skillActivationMessages, setSkillActivationMessages] =
+    useState<Record<string, string>>({});
+
+  const [skillActivationErrors, setSkillActivationErrors] =
+    useState<Record<string, string>>({});
 
     const totalDevelopmentTasks = developmentTasks.length;
 
