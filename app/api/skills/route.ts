@@ -17,6 +17,15 @@ export async function GET(request: Request) {
     { version: "desc" },
   ],
   include: {
+    resources: {
+  select: {
+    id: true,
+    path: true,
+    contentHash: true,
+    contentType: true,
+    sizeBytes: true,
+  },
+},
     activationEvents: {
       orderBy: {
         createdAt: "desc",

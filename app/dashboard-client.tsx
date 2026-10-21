@@ -134,6 +134,21 @@ type Skill = {
   reviewStatus: string;
   approvedAt: string | null;
   activationEvents: SkillActivationEvent[];
+  sourceType: string;
+  sourceRepository: string | null;
+  sourcePath: string | null;
+  sourceRef: string | null;
+  sourceCommit: string | null;
+  sourceLicense: string | null;
+  contentHash: string | null;
+
+  resources: {
+    id: string;
+    path: string;
+    contentHash: string;
+    contentType: string;
+    sizeBytes: number;
+  }[];
 };
 
 type AgentSkillAssignment = {
@@ -3922,6 +3937,107 @@ async function saveArchitectureEdit(
           <p className="mt-1 text-xs text-slate-500">
             Versão: {skill.version}
           </p>
+
+          {skill.sourceType !== "NATIVE" && (
+        <details className="mt-4 rounded-xl border border-white/10 p-3">
+          <summary className="cursor-pointer text-sm font-medium text-indigo-300">
+            Procedência e arquivos importados
+          </summary>
+
+        <div className="mt-3 space-y-3 text-sm">
+          <div>
+            <p className="text-slate-400">Origem</p>
+            {skill.sourceRepository &&
+            skill.sourceRepository.startsWith("https://github.com/") ? (
+              <a
+                href={skill.sourceRepository}
+                target="_blank"
+                rel="noreferrer"
+                className="break-all text-indigo-300 hover:text-indigo-200"
+              >
+                {skill.sourceRepository}
+              </a>
+            ) : (
+              <p className="break-all text-slate-300">
+                {skill.sourceRepository || "Origem não informada"}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <p className="text-slate-400">Arquivo principal</p>
+            <p className="break-all text-slate-300">
+              {skill.sourcePath || "Não informado"}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-slate-400">Licença declarada</p>
+            <p className="text-slate-300">
+              {skill.sourceLicense || "Não informada"}
+            </p>
+          </div>
+
+          {skill.sourceRepository &&
+            skill.sourceRepository.startsWith("https://github.com/") &&
+            skill.sourceCommit && (
+              <div>
+                <p className="text-slate-400">Commit importado</p>
+                <a
+                  href={`${skill.sourceRepository}/tree/${skill.sourceCommit}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="break-all text-indigo-300 hover:text-indigo-200"
+                >
+                  {skill.sourceCommit}
+                </a>
+              </div>
+            )}
+
+      <div>
+        <p className="mb-2 text-slate-400">
+          Arquivos armazenados ({skill.resources.length})
+        </p>
+
+        {skill.resources.length === 0 ? (
+          <p className="text-slate-500">
+            Nenhum arquivo auxiliar armazenado.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {skill.resources.map((resource) => (
+              <div
+                key={resource.id}
+                className="rounded-lg bg-[#0b1020] p-3"
+              >
+                <p className="break-all text-slate-200">
+                  {resource.path}
+                </p>
+
+                <p className="mt-1 text-xs text-slate-500">
+                  {resource.contentType} · {resource.sizeBytes} bytes
+                </p>
+
+                <p className="mt-1 break-all font-mono text-xs text-slate-500">
+                  SHA-256: {resource.contentHash}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {skill.contentHash && (
+        <div>
+          <p className="text-slate-400">Hash do conjunto importado</p>
+          <p className="break-all font-mono text-xs text-slate-500">
+            {skill.contentHash}
+          </p>
+        </div>
+      )}
+    </div>
+  </details>
+)}
 
           <div className="mt-5 border-t border-white/10 pt-4">
             <h4 className="text-sm font-medium">
