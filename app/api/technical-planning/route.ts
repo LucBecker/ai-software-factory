@@ -5,6 +5,20 @@ import { prisma } from "../../../src/lib/prisma";
 import { requireProjectAccess } from "../../../src/lib/require-project-access";
 import { requireSession } from "../../../src/lib/require-session";
 
+function parseStringList(value: string): string[] {
+  try {
+    const parsed: unknown = JSON.parse(value);
+
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (item): item is string => typeof item === "string",
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -129,11 +143,17 @@ const projectId = analysis.projectId;
 const project = await prisma.project.findUnique({
   where: { id: projectId },
   include: {
+    profile: true,
     requirements: {
       orderBy: { createdAt: "asc" },
     },
     architectureDecisions: {
-      orderBy: { createdAt: "asc" },
+      where: {
+        status: "APPROVED",
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
     },
   },
 });
@@ -145,6 +165,30 @@ if (!project) {
   );
 }
 
+  const architectureAgent = await prisma.agent.findUnique({
+  where: {
+    name: "Arquiteto de Software",
+  },
+  include: {
+    skillAssignments: {
+      orderBy: {
+        priority: "asc",
+      },
+      include: {
+        skill: true,
+      },
+    },
+  },
+});
+
+  const activeSkills = (
+    architectureAgent?.skillAssignments ?? []
+  ).filter(
+    (assignment) =>
+      assignment.skill.isActive &&
+      assignment.skill.reviewStatus === "APPROVED" &&
+      assignment.skill.approvedAt !== null,
+  );
     // Busca as revisões mais recentes primeiro.
     const reviews = await prisma.workflowRun.findMany({
       where: {
@@ -230,6 +274,84 @@ if (!project) {
             .join("\n")
         : "Nenhuma decisão de arquitetura cadastrada. As decisões técnicas necessárias deverão ser identificadas antes da implementação.";
 
+
+    const profile = project.profile;
+
+const skillsSection =
+  activeSkills.length > 0
+    ? activeSkills
+        .map(({ priority, isRequired, skill }) =>
+          [
+            `### ${skill.name} — versão ${skill.version}`,
+            `- Prioridade: ${priority}`,
+            `- Obrigatória para o agente: ${isRequired ? "Sim" : "Não"}`,
+            `- Critérios de ativação: ${skill.activationCriteria.trim() || "Não informados."}`,
+            "",
+            "#### Instruções da skill",
+            skill.instructions,
+          ].join("\n"),
+        )
+        .join("\n\n")
+    : "Nenhuma skill associada ao Arquiteto de Software está simultaneamente aprovada e ativa. Não presumir competências provenientes de skills indisponíveis.";
+
+const softwareTypeLabels: Record<string, string> = {
+  UNDECIDED: "Não definido",
+  WEB_APP: "Aplicação web",
+  API: "API ou backend",
+  SAAS: "SaaS",
+  MOBILE_APP: "Aplicativo mobile",
+  DESKTOP_APP: "Aplicação desktop",
+  LEGACY_MODERNIZATION: "Modernização de sistema existente",
+  OTHER: "Outro",
+};
+
+const targetPlatformLabels: Record<string, string> = {
+  UNDECIDED: "Não definida",
+  WEB: "Web",
+  MOBILE: "Mobile",
+  WEB_AND_MOBILE: "Web e mobile",
+  DESKTOP: "Desktop",
+  BACKEND: "Backend",
+  OTHER: "Outra",
+};
+
+const databaseLabels: Record<string, string> = {
+  UNDECIDED: "Não definido",
+  POSTGRESQL: "PostgreSQL",
+  MYSQL: "MySQL",
+  SQLITE: "SQLite",
+  SQL_SERVER: "SQL Server",
+  MONGODB: "MongoDB",
+  OTHER: "Outro",
+};
+
+const deploymentLabels: Record<string, string> = {
+  UNDECIDED: "Não definido",
+  LOCAL: "Local",
+  AWS: "AWS",
+  AZURE: "Microsoft Azure",
+  GCP: "Google Cloud",
+  ON_PREMISES: "Infraestrutura própria",
+  OTHER: "Outro",
+};
+
+    const profileSection = profile
+      ? [
+          `- Tipo de software: ${softwareTypeLabels[profile.softwareType] ?? profile.softwareType}`,
+          `- Plataforma-alvo: ${targetPlatformLabels[profile.targetPlatform] ?? profile.targetPlatform}`,
+          `- Linguagens preferidas: ${parseStringList(profile.preferredLanguages).join(", ") || "Não informadas."}`,
+          `- Frameworks preferidos: ${parseStringList(profile.preferredFrameworks).join(", ") || "Não informados."}`,
+          `- Banco de dados: ${databaseLabels[profile.databasePreference] ?? profile.databasePreference}`,
+          `- Implantação: ${deploymentLabels[profile.deploymentTarget] ?? profile.deploymentTarget}`,
+          `- Integrações: ${parseStringList(profile.integrations).join(", ") || "Não informadas."}`,
+          `- Requisitos de segurança: ${profile.securityRequirements.trim() || "Não informados."}`,
+          `- Requisitos de desempenho: ${profile.performanceRequirements.trim() || "Não informados."}`,
+          `- Restrições de orçamento: ${profile.budgetConstraints.trim() || "Não informadas."}`,
+          `- Outras restrições: ${profile.otherConstraints.trim() || "Não informadas."}`,
+          `- Contexto adicional: ${profile.additionalContext.trim() || "Não informado."}`,
+        ].join("\n")
+      : "Perfil técnico não cadastrado. Não presumir tecnologias ou decisões ainda não definidas.";        
+
     const output = [
       `# Plano técnico — ${project.name}`,
       "",
@@ -246,40 +368,45 @@ if (!project) {
       "- Requisitos cadastrados no projeto.",
       "- Revisão humana deste plano antes da implementação.",
       "",
-      "## 3. Decisões de arquitetura disponíveis",
+      "## 3. Perfil técnico do projeto",
+      profileSection,
+      "",
+      "## 4. Skills arquiteturais elegíveis",
+      skillsSection,
+      "",
+      "## 5. Decisões de arquitetura aprovadas",
       architectureSection,
       "",
-      "## 4. Plano de tarefas",
+      "## 6. Plano de tarefas",
       requirementTasks,
       "",
-      "## 5. Estratégia de testes",
+      "## 7. Estratégia de testes",
       "- Testes funcionais dos critérios de aceitação de cada requisito.",
       "- Testes de validação e tratamento de erros.",
       "- Testes de integração dos componentes envolvidos.",
       "- Testes de regressão antes de concluir a entrega.",
       "- Revisão de segurança compatível com as funcionalidades implementadas.",
       "",
-      "## 6. Riscos e dependências",
+      "## 8. Riscos e dependências",
       "- Requisitos com descrições incompletas podem exigir esclarecimentos.",
       "- Decisões de arquitetura pendentes devem ser resolvidas antes das tarefas dependentes.",
       "- A sequência definitiva de implementação depende da revisão técnica das tarefas.",
       "",
-      "## 7. Decisões pendentes",
+      "## 9. Decisões pendentes",
       "- Confirmar critérios de aceitação detalhados.",
       "- Validar tecnologias e integrações ainda não especificadas.",
       "- Confirmar dependências entre as tarefas antes de iniciar o desenvolvimento.",
       "",
-      "## 8. Ordem recomendada de execução",
+      "## 10. Ordem recomendada de execução",
       "1. Revisar o plano e esclarecer as pendências.",
       "2. Confirmar as decisões de arquitetura necessárias.",
       "3. Implementar as funcionalidades por requisito e dependência.",
       "4. Executar os testes e corrigir os problemas encontrados.",
       "5. Realizar auditoria antes de liberar a entrega.",
       "",
-      "## 9. Aprovação do plano",
+      "## 11. Aprovação do plano",
       "Plano demonstrativo pendente de revisão humana. Nenhum código foi gerado ou executado nesta etapa.",
-    ].join("\n");
-
+  ].join("\n");
     const startedAt = new Date();
     const finishedAt = new Date();
 
@@ -296,6 +423,17 @@ if (!project) {
           sourceAnalysis: analysis.output,
           requirements: project.requirements,
           architectureDecisions: project.architectureDecisions,
+          projectProfile: project.profile,
+          activeSkills: activeSkills.map(({ priority, isRequired, skill }) => ({
+            id: skill.id,
+            key: skill.key,
+            name: skill.name,
+            version: skill.version,
+            priority,
+            isRequired,
+            activationCriteria: skill.activationCriteria,
+            instructions: skill.instructions,
+          })),
         }),
         output,
         startedAt,
