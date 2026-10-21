@@ -2198,6 +2198,88 @@ async function saveArchitectureEdit(
   }
 }
 
+  async function changeSkillActivation(
+  skillId: string,
+  action: "ACTIVATE" | "DEACTIVATE",
+) {
+  const comment = (skillActivationComments[skillId] ?? "").trim();
+
+  setSkillActivationLoading(skillId);
+
+  setSkillActivationErrors((current) => ({
+    ...current,
+    [skillId]: "",
+  }));
+
+  setSkillActivationMessages((current) => ({
+    ...current,
+    [skillId]: "",
+  }));
+
+  try {
+    const response = await fetch("/api/skills/activation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        skillId,
+        action,
+        comment,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível alterar a ativação da skill.",
+      );
+    }
+
+    setSkillActivationMessages((current) => ({
+      ...current,
+      [skillId]: data.message || "Status da skill atualizado.",
+    }));
+
+    setSkillActivationComments((current) => ({
+      ...current,
+      [skillId]: "",
+    }));
+
+    try {
+      const skillsResponse = await fetch("/api/skills");
+      const skillsData = await skillsResponse.json();
+
+      if (!skillsResponse.ok) {
+        throw new Error(
+          skillsData.error || "Não foi possível atualizar o catálogo.",
+        );
+      }
+
+      setSkills(
+        Array.isArray(skillsData.skills) ? skillsData.skills : [],
+      );
+    } catch {
+      setSkillActivationErrors((current) => ({
+        ...current,
+        [skillId]:
+          "A operação foi registrada, mas não foi possível atualizar a lista. Atualize a página para conferir o estado atual.",
+      }));
+    }
+  } catch (error) {
+    setSkillActivationErrors((current) => ({
+      ...current,
+      [skillId]:
+        error instanceof Error
+          ? error.message
+          : "Erro inesperado ao alterar a ativação.",
+    }));
+  } finally {
+    setSkillActivationLoading(null);
+  }
+}
+
   const menu = [
   { name: "Visão geral", icon: "▦" },
   { name: "Projetos", icon: "▣" },
@@ -3996,7 +4078,136 @@ async function saveArchitectureEdit(
     </div>
   </div>
 )}
-    
+  <div className="mt-4 border-t border-white/10 pt-4">
+  <h4 className="text-sm font-semibold">Ativação da skill</h4>
+
+  <p className="mt-2 text-sm text-slate-400">
+    Status atual: {skill.isActive ? "Ativa" : "Inativa"}
+  </p>
+
+  {isAdmin && (
+    <div className="mt-3 space-y-3">
+      <label
+        htmlFor={`skill-activation-${skill.id}`}
+        className="block text-sm font-medium"
+      >
+        Comentário da ativação
+      </label>
+
+      <textarea
+        id={`skill-activation-${skill.id}`}
+        value={skillActivationComments[skill.id] ?? ""}
+        onChange={(event) =>
+          setSkillActivationComments((current) => ({
+            ...current,
+            [skill.id]: event.target.value,
+          }))
+        }
+        maxLength={5000}
+        rows={2}
+        placeholder="Motivo da ativação ou desativação (opcional)"
+        className="w-full resize-y rounded-lg border border-white/10 bg-[#0b1020] px-3 py-2 text-sm"
+      />
+
+      {skillActivationErrors[skill.id] && (
+        <p role="alert" className="text-sm text-red-400">
+          {skillActivationErrors[skill.id]}
+        </p>
+      )}
+
+      {skillActivationMessages[skill.id] && (
+        <p role="status" className="text-sm text-emerald-400">
+          {skillActivationMessages[skill.id]}
+        </p>
+      )}
+
+      {skill.isActive ? (
+        <button
+          type="button"
+          onClick={() =>
+            changeSkillActivation(skill.id, "DEACTIVATE")
+          }
+          disabled={skillActivationLoading === skill.id}
+          className="rounded-lg border border-amber-400/30 px-3 py-2 text-sm text-amber-300 disabled:opacity-50"
+        >
+          {skillActivationLoading === skill.id
+            ? "Processando..."
+            : "Desativar skill"}
+        </button>
+      ) : (
+        <div>
+          <button
+            type="button"
+            onClick={() =>
+              changeSkillActivation(skill.id, "ACTIVATE")
+            }
+            disabled={
+              skillActivationLoading === skill.id ||
+              skill.reviewStatus !== "APPROVED" ||
+              !skill.approvedAt
+            }
+            className="rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {skillActivationLoading === skill.id
+              ? "Processando..."
+              : "Ativar skill"}
+          </button>
+
+          {(skill.reviewStatus !== "APPROVED" || !skill.approvedAt) && (
+            <p className="mt-2 text-xs text-amber-300">
+              A skill precisa ser aprovada antes da ativação.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  )}
+
+  {isAdmin && (
+    <div className="mt-5">
+      <h5 className="text-sm font-semibold">Histórico de ativação</h5>
+
+      {!skill.activationEvents?.length ? (
+        <p className="mt-2 text-sm text-slate-500">
+          Nenhum evento de ativação registrado.
+        </p>
+      ) : (
+        <div className="mt-3 space-y-3">
+          {skill.activationEvents.map((event) => (
+            <div
+              key={event.id}
+              className="rounded-xl border border-white/10 p-3"
+            >
+              <p
+                className={`text-sm font-medium ${
+                  event.action === "ACTIVATED"
+                    ? "text-emerald-300"
+                    : "text-amber-300"
+                }`}
+              >
+                {event.action === "ACTIVATED"
+                  ? "Skill ativada"
+                  : "Skill desativada"}
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                {new Date(event.createdAt).toLocaleString("pt-BR")}
+              </p>
+
+              <p className="mt-2 text-sm text-slate-300">
+                Responsável: {event.actor?.name ?? "Usuário não disponível"}
+              </p>
+
+              <p className="mt-1 whitespace-pre-wrap text-sm text-slate-400">
+                Comentário: {event.comment || "Nenhum comentário informado."}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+</div>  
   </article>
       ))}
     </div>
