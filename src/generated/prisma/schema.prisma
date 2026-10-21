@@ -105,7 +105,19 @@ model Skill {
   approvedAt         DateTime?
   approvedById       String?
   approvedBy         User?     @relation("SkillApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  sourceType         String    @default("NATIVE")
+  sourceRepository   String?
+  sourcePath         String?
+  sourceRef          String?
+  sourceCommit       String?
+  sourceLicense      String?
+  contentHash        String?
+  rawContent         String?
+  compatibility      String?
+  allowedTools       String?
+  metadataJson       String    @default("{}")
 
+  resources        SkillResource[]
   reviews          SkillReview[]
   activationEvents SkillActivationEvent[]
 
@@ -118,6 +130,23 @@ model Skill {
   @@index([category, isActive])
   @@index([reviewStatus])
   @@index([approvedById])
+}
+
+model SkillResource {
+  id          String   @id @default(cuid())
+  skillId     String
+  path        String
+  content     String
+  contentHash String
+  contentType String   @default("text/plain")
+  sizeBytes   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, path])
+  @@index([skillId])
 }
 
 model SkillReview {

@@ -39,6 +39,11 @@ export type Agent = $Result.DefaultSelection<Prisma.$AgentPayload>
  */
 export type Skill = $Result.DefaultSelection<Prisma.$SkillPayload>
 /**
+ * Model SkillResource
+ * 
+ */
+export type SkillResource = $Result.DefaultSelection<Prisma.$SkillResourcePayload>
+/**
  * Model SkillReview
  * 
  */
@@ -261,6 +266,16 @@ export class PrismaClient<
     * ```
     */
   get skill(): Prisma.SkillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.skillResource`: Exposes CRUD operations for the **SkillResource** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SkillResources
+    * const skillResources = await prisma.skillResource.findMany()
+    * ```
+    */
+  get skillResource(): Prisma.SkillResourceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.skillReview`: Exposes CRUD operations for the **SkillReview** model.
@@ -817,6 +832,7 @@ export namespace Prisma {
     PromptTemplate: 'PromptTemplate',
     Agent: 'Agent',
     Skill: 'Skill',
+    SkillResource: 'SkillResource',
     SkillReview: 'SkillReview',
     SkillActivationEvent: 'SkillActivationEvent',
     AgentSkill: 'AgentSkill',
@@ -846,7 +862,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "skill" | "skillReview" | "skillActivationEvent" | "agentSkill" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
+      modelProps: "project" | "projectProfile" | "promptTemplate" | "agent" | "skill" | "skillResource" | "skillReview" | "skillActivationEvent" | "agentSkill" | "workflowRun" | "requirement" | "architectureDecision" | "developmentTask" | "user" | "session" | "account" | "verification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1217,6 +1233,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SkillCountArgs<ExtArgs>
             result: $Utils.Optional<SkillCountAggregateOutputType> | number
+          }
+        }
+      }
+      SkillResource: {
+        payload: Prisma.$SkillResourcePayload<ExtArgs>
+        fields: Prisma.SkillResourceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SkillResourceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SkillResourceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          findFirst: {
+            args: Prisma.SkillResourceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SkillResourceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          findMany: {
+            args: Prisma.SkillResourceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>[]
+          }
+          create: {
+            args: Prisma.SkillResourceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          createMany: {
+            args: Prisma.SkillResourceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SkillResourceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>[]
+          }
+          delete: {
+            args: Prisma.SkillResourceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          update: {
+            args: Prisma.SkillResourceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          deleteMany: {
+            args: Prisma.SkillResourceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SkillResourceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SkillResourceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>[]
+          }
+          upsert: {
+            args: Prisma.SkillResourceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SkillResourcePayload>
+          }
+          aggregate: {
+            args: Prisma.SkillResourceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSkillResource>
+          }
+          groupBy: {
+            args: Prisma.SkillResourceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SkillResourceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SkillResourceCountArgs<ExtArgs>
+            result: $Utils.Optional<SkillResourceCountAggregateOutputType> | number
           }
         }
       }
@@ -2135,6 +2225,7 @@ export namespace Prisma {
     promptTemplate?: PromptTemplateOmit
     agent?: AgentOmit
     skill?: SkillOmit
+    skillResource?: SkillResourceOmit
     skillReview?: SkillReviewOmit
     skillActivationEvent?: SkillActivationEventOmit
     agentSkill?: AgentSkillOmit
@@ -2324,12 +2415,14 @@ export namespace Prisma {
    */
 
   export type SkillCountOutputType = {
+    resources: number
     reviews: number
     activationEvents: number
     agentAssignments: number
   }
 
   export type SkillCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resources?: boolean | SkillCountOutputTypeCountResourcesArgs
     reviews?: boolean | SkillCountOutputTypeCountReviewsArgs
     activationEvents?: boolean | SkillCountOutputTypeCountActivationEventsArgs
     agentAssignments?: boolean | SkillCountOutputTypeCountAgentAssignmentsArgs
@@ -2344,6 +2437,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the SkillCountOutputType
      */
     select?: SkillCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SkillCountOutputType without action
+   */
+  export type SkillCountOutputTypeCountResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillResourceWhereInput
   }
 
   /**
@@ -7241,6 +7341,17 @@ export namespace Prisma {
     reviewStatus: string | null
     approvedAt: Date | null
     approvedById: string | null
+    sourceType: string | null
+    sourceRepository: string | null
+    sourcePath: string | null
+    sourceRef: string | null
+    sourceCommit: string | null
+    sourceLicense: string | null
+    contentHash: string | null
+    rawContent: string | null
+    compatibility: string | null
+    allowedTools: string | null
+    metadataJson: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7259,6 +7370,17 @@ export namespace Prisma {
     reviewStatus: string | null
     approvedAt: Date | null
     approvedById: string | null
+    sourceType: string | null
+    sourceRepository: string | null
+    sourcePath: string | null
+    sourceRef: string | null
+    sourceCommit: string | null
+    sourceLicense: string | null
+    contentHash: string | null
+    rawContent: string | null
+    compatibility: string | null
+    allowedTools: string | null
+    metadataJson: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7277,6 +7399,17 @@ export namespace Prisma {
     reviewStatus: number
     approvedAt: number
     approvedById: number
+    sourceType: number
+    sourceRepository: number
+    sourcePath: number
+    sourceRef: number
+    sourceCommit: number
+    sourceLicense: number
+    contentHash: number
+    rawContent: number
+    compatibility: number
+    allowedTools: number
+    metadataJson: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7305,6 +7438,17 @@ export namespace Prisma {
     reviewStatus?: true
     approvedAt?: true
     approvedById?: true
+    sourceType?: true
+    sourceRepository?: true
+    sourcePath?: true
+    sourceRef?: true
+    sourceCommit?: true
+    sourceLicense?: true
+    contentHash?: true
+    rawContent?: true
+    compatibility?: true
+    allowedTools?: true
+    metadataJson?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7323,6 +7467,17 @@ export namespace Prisma {
     reviewStatus?: true
     approvedAt?: true
     approvedById?: true
+    sourceType?: true
+    sourceRepository?: true
+    sourcePath?: true
+    sourceRef?: true
+    sourceCommit?: true
+    sourceLicense?: true
+    contentHash?: true
+    rawContent?: true
+    compatibility?: true
+    allowedTools?: true
+    metadataJson?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7341,6 +7496,17 @@ export namespace Prisma {
     reviewStatus?: true
     approvedAt?: true
     approvedById?: true
+    sourceType?: true
+    sourceRepository?: true
+    sourcePath?: true
+    sourceRef?: true
+    sourceCommit?: true
+    sourceLicense?: true
+    contentHash?: true
+    rawContent?: true
+    compatibility?: true
+    allowedTools?: true
+    metadataJson?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7446,6 +7612,17 @@ export namespace Prisma {
     reviewStatus: string
     approvedAt: Date | null
     approvedById: string | null
+    sourceType: string
+    sourceRepository: string | null
+    sourcePath: string | null
+    sourceRef: string | null
+    sourceCommit: string | null
+    sourceLicense: string | null
+    contentHash: string | null
+    rawContent: string | null
+    compatibility: string | null
+    allowedTools: string | null
+    metadataJson: string
     createdAt: Date
     updatedAt: Date
     _count: SkillCountAggregateOutputType | null
@@ -7483,9 +7660,21 @@ export namespace Prisma {
     reviewStatus?: boolean
     approvedAt?: boolean
     approvedById?: boolean
+    sourceType?: boolean
+    sourceRepository?: boolean
+    sourcePath?: boolean
+    sourceRef?: boolean
+    sourceCommit?: boolean
+    sourceLicense?: boolean
+    contentHash?: boolean
+    rawContent?: boolean
+    compatibility?: boolean
+    allowedTools?: boolean
+    metadataJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+    resources?: boolean | Skill$resourcesArgs<ExtArgs>
     reviews?: boolean | Skill$reviewsArgs<ExtArgs>
     activationEvents?: boolean | Skill$activationEventsArgs<ExtArgs>
     agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
@@ -7506,6 +7695,17 @@ export namespace Prisma {
     reviewStatus?: boolean
     approvedAt?: boolean
     approvedById?: boolean
+    sourceType?: boolean
+    sourceRepository?: boolean
+    sourcePath?: boolean
+    sourceRef?: boolean
+    sourceCommit?: boolean
+    sourceLicense?: boolean
+    contentHash?: boolean
+    rawContent?: boolean
+    compatibility?: boolean
+    allowedTools?: boolean
+    metadataJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
@@ -7525,6 +7725,17 @@ export namespace Prisma {
     reviewStatus?: boolean
     approvedAt?: boolean
     approvedById?: boolean
+    sourceType?: boolean
+    sourceRepository?: boolean
+    sourcePath?: boolean
+    sourceRef?: boolean
+    sourceCommit?: boolean
+    sourceLicense?: boolean
+    contentHash?: boolean
+    rawContent?: boolean
+    compatibility?: boolean
+    allowedTools?: boolean
+    metadataJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
@@ -7544,13 +7755,25 @@ export namespace Prisma {
     reviewStatus?: boolean
     approvedAt?: boolean
     approvedById?: boolean
+    sourceType?: boolean
+    sourceRepository?: boolean
+    sourcePath?: boolean
+    sourceRef?: boolean
+    sourceCommit?: boolean
+    sourceLicense?: boolean
+    contentHash?: boolean
+    rawContent?: boolean
+    compatibility?: boolean
+    allowedTools?: boolean
+    metadataJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "rulesJson" | "activationCriteria" | "version" | "isActive" | "reviewStatus" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
+  export type SkillOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "description" | "category" | "instructions" | "rulesJson" | "activationCriteria" | "version" | "isActive" | "reviewStatus" | "approvedAt" | "approvedById" | "sourceType" | "sourceRepository" | "sourcePath" | "sourceRef" | "sourceCommit" | "sourceLicense" | "contentHash" | "rawContent" | "compatibility" | "allowedTools" | "metadataJson" | "createdAt" | "updatedAt", ExtArgs["result"]["skill"]>
   export type SkillInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     approvedBy?: boolean | Skill$approvedByArgs<ExtArgs>
+    resources?: boolean | Skill$resourcesArgs<ExtArgs>
     reviews?: boolean | Skill$reviewsArgs<ExtArgs>
     activationEvents?: boolean | Skill$activationEventsArgs<ExtArgs>
     agentAssignments?: boolean | Skill$agentAssignmentsArgs<ExtArgs>
@@ -7567,6 +7790,7 @@ export namespace Prisma {
     name: "Skill"
     objects: {
       approvedBy: Prisma.$UserPayload<ExtArgs> | null
+      resources: Prisma.$SkillResourcePayload<ExtArgs>[]
       reviews: Prisma.$SkillReviewPayload<ExtArgs>[]
       activationEvents: Prisma.$SkillActivationEventPayload<ExtArgs>[]
       agentAssignments: Prisma.$AgentSkillPayload<ExtArgs>[]
@@ -7585,6 +7809,17 @@ export namespace Prisma {
       reviewStatus: string
       approvedAt: Date | null
       approvedById: string | null
+      sourceType: string
+      sourceRepository: string | null
+      sourcePath: string | null
+      sourceRef: string | null
+      sourceCommit: string | null
+      sourceLicense: string | null
+      contentHash: string | null
+      rawContent: string | null
+      compatibility: string | null
+      allowedTools: string | null
+      metadataJson: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["skill"]>
@@ -7982,6 +8217,7 @@ export namespace Prisma {
   export interface Prisma__SkillClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     approvedBy<T extends Skill$approvedByArgs<ExtArgs> = {}>(args?: Subset<T, Skill$approvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    resources<T extends Skill$resourcesArgs<ExtArgs> = {}>(args?: Subset<T, Skill$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends Skill$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activationEvents<T extends Skill$activationEventsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$activationEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillActivationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agentAssignments<T extends Skill$agentAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Skill$agentAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8027,6 +8263,17 @@ export namespace Prisma {
     readonly reviewStatus: FieldRef<"Skill", 'String'>
     readonly approvedAt: FieldRef<"Skill", 'DateTime'>
     readonly approvedById: FieldRef<"Skill", 'String'>
+    readonly sourceType: FieldRef<"Skill", 'String'>
+    readonly sourceRepository: FieldRef<"Skill", 'String'>
+    readonly sourcePath: FieldRef<"Skill", 'String'>
+    readonly sourceRef: FieldRef<"Skill", 'String'>
+    readonly sourceCommit: FieldRef<"Skill", 'String'>
+    readonly sourceLicense: FieldRef<"Skill", 'String'>
+    readonly contentHash: FieldRef<"Skill", 'String'>
+    readonly rawContent: FieldRef<"Skill", 'String'>
+    readonly compatibility: FieldRef<"Skill", 'String'>
+    readonly allowedTools: FieldRef<"Skill", 'String'>
+    readonly metadataJson: FieldRef<"Skill", 'String'>
     readonly createdAt: FieldRef<"Skill", 'DateTime'>
     readonly updatedAt: FieldRef<"Skill", 'DateTime'>
   }
@@ -8442,6 +8689,30 @@ export namespace Prisma {
   }
 
   /**
+   * Skill.resources
+   */
+  export type Skill$resourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    where?: SkillResourceWhereInput
+    orderBy?: SkillResourceOrderByWithRelationInput | SkillResourceOrderByWithRelationInput[]
+    cursor?: SkillResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SkillResourceScalarFieldEnum | SkillResourceScalarFieldEnum[]
+  }
+
+  /**
    * Skill.reviews
    */
   export type Skill$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8529,6 +8800,1148 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SkillInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SkillResource
+   */
+
+  export type AggregateSkillResource = {
+    _count: SkillResourceCountAggregateOutputType | null
+    _avg: SkillResourceAvgAggregateOutputType | null
+    _sum: SkillResourceSumAggregateOutputType | null
+    _min: SkillResourceMinAggregateOutputType | null
+    _max: SkillResourceMaxAggregateOutputType | null
+  }
+
+  export type SkillResourceAvgAggregateOutputType = {
+    sizeBytes: number | null
+  }
+
+  export type SkillResourceSumAggregateOutputType = {
+    sizeBytes: number | null
+  }
+
+  export type SkillResourceMinAggregateOutputType = {
+    id: string | null
+    skillId: string | null
+    path: string | null
+    content: string | null
+    contentHash: string | null
+    contentType: string | null
+    sizeBytes: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SkillResourceMaxAggregateOutputType = {
+    id: string | null
+    skillId: string | null
+    path: string | null
+    content: string | null
+    contentHash: string | null
+    contentType: string | null
+    sizeBytes: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SkillResourceCountAggregateOutputType = {
+    id: number
+    skillId: number
+    path: number
+    content: number
+    contentHash: number
+    contentType: number
+    sizeBytes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SkillResourceAvgAggregateInputType = {
+    sizeBytes?: true
+  }
+
+  export type SkillResourceSumAggregateInputType = {
+    sizeBytes?: true
+  }
+
+  export type SkillResourceMinAggregateInputType = {
+    id?: true
+    skillId?: true
+    path?: true
+    content?: true
+    contentHash?: true
+    contentType?: true
+    sizeBytes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SkillResourceMaxAggregateInputType = {
+    id?: true
+    skillId?: true
+    path?: true
+    content?: true
+    contentHash?: true
+    contentType?: true
+    sizeBytes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SkillResourceCountAggregateInputType = {
+    id?: true
+    skillId?: true
+    path?: true
+    content?: true
+    contentHash?: true
+    contentType?: true
+    sizeBytes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SkillResourceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SkillResource to aggregate.
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillResources to fetch.
+     */
+    orderBy?: SkillResourceOrderByWithRelationInput | SkillResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SkillResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SkillResources
+    **/
+    _count?: true | SkillResourceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SkillResourceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SkillResourceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SkillResourceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SkillResourceMaxAggregateInputType
+  }
+
+  export type GetSkillResourceAggregateType<T extends SkillResourceAggregateArgs> = {
+        [P in keyof T & keyof AggregateSkillResource]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSkillResource[P]>
+      : GetScalarType<T[P], AggregateSkillResource[P]>
+  }
+
+
+
+
+  export type SkillResourceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SkillResourceWhereInput
+    orderBy?: SkillResourceOrderByWithAggregationInput | SkillResourceOrderByWithAggregationInput[]
+    by: SkillResourceScalarFieldEnum[] | SkillResourceScalarFieldEnum
+    having?: SkillResourceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SkillResourceCountAggregateInputType | true
+    _avg?: SkillResourceAvgAggregateInputType
+    _sum?: SkillResourceSumAggregateInputType
+    _min?: SkillResourceMinAggregateInputType
+    _max?: SkillResourceMaxAggregateInputType
+  }
+
+  export type SkillResourceGroupByOutputType = {
+    id: string
+    skillId: string
+    path: string
+    content: string
+    contentHash: string
+    contentType: string
+    sizeBytes: number
+    createdAt: Date
+    updatedAt: Date
+    _count: SkillResourceCountAggregateOutputType | null
+    _avg: SkillResourceAvgAggregateOutputType | null
+    _sum: SkillResourceSumAggregateOutputType | null
+    _min: SkillResourceMinAggregateOutputType | null
+    _max: SkillResourceMaxAggregateOutputType | null
+  }
+
+  type GetSkillResourceGroupByPayload<T extends SkillResourceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SkillResourceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SkillResourceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SkillResourceGroupByOutputType[P]>
+            : GetScalarType<T[P], SkillResourceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SkillResourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    path?: boolean
+    content?: boolean
+    contentHash?: boolean
+    contentType?: boolean
+    sizeBytes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["skillResource"]>
+
+  export type SkillResourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    path?: boolean
+    content?: boolean
+    contentHash?: boolean
+    contentType?: boolean
+    sizeBytes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["skillResource"]>
+
+  export type SkillResourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    skillId?: boolean
+    path?: boolean
+    content?: boolean
+    contentHash?: boolean
+    contentType?: boolean
+    sizeBytes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["skillResource"]>
+
+  export type SkillResourceSelectScalar = {
+    id?: boolean
+    skillId?: boolean
+    path?: boolean
+    content?: boolean
+    contentHash?: boolean
+    contentType?: boolean
+    sizeBytes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SkillResourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "skillId" | "path" | "content" | "contentHash" | "contentType" | "sizeBytes" | "createdAt" | "updatedAt", ExtArgs["result"]["skillResource"]>
+  export type SkillResourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+  export type SkillResourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+  export type SkillResourceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    skill?: boolean | SkillDefaultArgs<ExtArgs>
+  }
+
+  export type $SkillResourcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SkillResource"
+    objects: {
+      skill: Prisma.$SkillPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      skillId: string
+      path: string
+      content: string
+      contentHash: string
+      contentType: string
+      sizeBytes: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["skillResource"]>
+    composites: {}
+  }
+
+  type SkillResourceGetPayload<S extends boolean | null | undefined | SkillResourceDefaultArgs> = $Result.GetResult<Prisma.$SkillResourcePayload, S>
+
+  type SkillResourceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SkillResourceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SkillResourceCountAggregateInputType | true
+    }
+
+  export interface SkillResourceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SkillResource'], meta: { name: 'SkillResource' } }
+    /**
+     * Find zero or one SkillResource that matches the filter.
+     * @param {SkillResourceFindUniqueArgs} args - Arguments to find a SkillResource
+     * @example
+     * // Get one SkillResource
+     * const skillResource = await prisma.skillResource.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SkillResourceFindUniqueArgs>(args: SelectSubset<T, SkillResourceFindUniqueArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SkillResource that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SkillResourceFindUniqueOrThrowArgs} args - Arguments to find a SkillResource
+     * @example
+     * // Get one SkillResource
+     * const skillResource = await prisma.skillResource.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SkillResourceFindUniqueOrThrowArgs>(args: SelectSubset<T, SkillResourceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SkillResource that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceFindFirstArgs} args - Arguments to find a SkillResource
+     * @example
+     * // Get one SkillResource
+     * const skillResource = await prisma.skillResource.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SkillResourceFindFirstArgs>(args?: SelectSubset<T, SkillResourceFindFirstArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SkillResource that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceFindFirstOrThrowArgs} args - Arguments to find a SkillResource
+     * @example
+     * // Get one SkillResource
+     * const skillResource = await prisma.skillResource.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SkillResourceFindFirstOrThrowArgs>(args?: SelectSubset<T, SkillResourceFindFirstOrThrowArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SkillResources that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SkillResources
+     * const skillResources = await prisma.skillResource.findMany()
+     * 
+     * // Get first 10 SkillResources
+     * const skillResources = await prisma.skillResource.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const skillResourceWithIdOnly = await prisma.skillResource.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SkillResourceFindManyArgs>(args?: SelectSubset<T, SkillResourceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SkillResource.
+     * @param {SkillResourceCreateArgs} args - Arguments to create a SkillResource.
+     * @example
+     * // Create one SkillResource
+     * const SkillResource = await prisma.skillResource.create({
+     *   data: {
+     *     // ... data to create a SkillResource
+     *   }
+     * })
+     * 
+     */
+    create<T extends SkillResourceCreateArgs>(args: SelectSubset<T, SkillResourceCreateArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SkillResources.
+     * @param {SkillResourceCreateManyArgs} args - Arguments to create many SkillResources.
+     * @example
+     * // Create many SkillResources
+     * const skillResource = await prisma.skillResource.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SkillResourceCreateManyArgs>(args?: SelectSubset<T, SkillResourceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SkillResources and returns the data saved in the database.
+     * @param {SkillResourceCreateManyAndReturnArgs} args - Arguments to create many SkillResources.
+     * @example
+     * // Create many SkillResources
+     * const skillResource = await prisma.skillResource.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SkillResources and only return the `id`
+     * const skillResourceWithIdOnly = await prisma.skillResource.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SkillResourceCreateManyAndReturnArgs>(args?: SelectSubset<T, SkillResourceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SkillResource.
+     * @param {SkillResourceDeleteArgs} args - Arguments to delete one SkillResource.
+     * @example
+     * // Delete one SkillResource
+     * const SkillResource = await prisma.skillResource.delete({
+     *   where: {
+     *     // ... filter to delete one SkillResource
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SkillResourceDeleteArgs>(args: SelectSubset<T, SkillResourceDeleteArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SkillResource.
+     * @param {SkillResourceUpdateArgs} args - Arguments to update one SkillResource.
+     * @example
+     * // Update one SkillResource
+     * const skillResource = await prisma.skillResource.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SkillResourceUpdateArgs>(args: SelectSubset<T, SkillResourceUpdateArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SkillResources.
+     * @param {SkillResourceDeleteManyArgs} args - Arguments to filter SkillResources to delete.
+     * @example
+     * // Delete a few SkillResources
+     * const { count } = await prisma.skillResource.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SkillResourceDeleteManyArgs>(args?: SelectSubset<T, SkillResourceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SkillResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SkillResources
+     * const skillResource = await prisma.skillResource.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SkillResourceUpdateManyArgs>(args: SelectSubset<T, SkillResourceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SkillResources and returns the data updated in the database.
+     * @param {SkillResourceUpdateManyAndReturnArgs} args - Arguments to update many SkillResources.
+     * @example
+     * // Update many SkillResources
+     * const skillResource = await prisma.skillResource.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SkillResources and only return the `id`
+     * const skillResourceWithIdOnly = await prisma.skillResource.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SkillResourceUpdateManyAndReturnArgs>(args: SelectSubset<T, SkillResourceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SkillResource.
+     * @param {SkillResourceUpsertArgs} args - Arguments to update or create a SkillResource.
+     * @example
+     * // Update or create a SkillResource
+     * const skillResource = await prisma.skillResource.upsert({
+     *   create: {
+     *     // ... data to create a SkillResource
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SkillResource we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SkillResourceUpsertArgs>(args: SelectSubset<T, SkillResourceUpsertArgs<ExtArgs>>): Prisma__SkillResourceClient<$Result.GetResult<Prisma.$SkillResourcePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SkillResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceCountArgs} args - Arguments to filter SkillResources to count.
+     * @example
+     * // Count the number of SkillResources
+     * const count = await prisma.skillResource.count({
+     *   where: {
+     *     // ... the filter for the SkillResources we want to count
+     *   }
+     * })
+    **/
+    count<T extends SkillResourceCountArgs>(
+      args?: Subset<T, SkillResourceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SkillResourceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SkillResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SkillResourceAggregateArgs>(args: Subset<T, SkillResourceAggregateArgs>): Prisma.PrismaPromise<GetSkillResourceAggregateType<T>>
+
+    /**
+     * Group by SkillResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SkillResourceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SkillResourceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SkillResourceGroupByArgs['orderBy'] }
+        : { orderBy?: SkillResourceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SkillResourceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSkillResourceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SkillResource model
+   */
+  readonly fields: SkillResourceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SkillResource.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SkillResourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    skill<T extends SkillDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SkillDefaultArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SkillResource model
+   */
+  interface SkillResourceFieldRefs {
+    readonly id: FieldRef<"SkillResource", 'String'>
+    readonly skillId: FieldRef<"SkillResource", 'String'>
+    readonly path: FieldRef<"SkillResource", 'String'>
+    readonly content: FieldRef<"SkillResource", 'String'>
+    readonly contentHash: FieldRef<"SkillResource", 'String'>
+    readonly contentType: FieldRef<"SkillResource", 'String'>
+    readonly sizeBytes: FieldRef<"SkillResource", 'Int'>
+    readonly createdAt: FieldRef<"SkillResource", 'DateTime'>
+    readonly updatedAt: FieldRef<"SkillResource", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SkillResource findUnique
+   */
+  export type SkillResourceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillResource to fetch.
+     */
+    where: SkillResourceWhereUniqueInput
+  }
+
+  /**
+   * SkillResource findUniqueOrThrow
+   */
+  export type SkillResourceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillResource to fetch.
+     */
+    where: SkillResourceWhereUniqueInput
+  }
+
+  /**
+   * SkillResource findFirst
+   */
+  export type SkillResourceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillResource to fetch.
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillResources to fetch.
+     */
+    orderBy?: SkillResourceOrderByWithRelationInput | SkillResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SkillResources.
+     */
+    cursor?: SkillResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SkillResources.
+     */
+    distinct?: SkillResourceScalarFieldEnum | SkillResourceScalarFieldEnum[]
+  }
+
+  /**
+   * SkillResource findFirstOrThrow
+   */
+  export type SkillResourceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillResource to fetch.
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillResources to fetch.
+     */
+    orderBy?: SkillResourceOrderByWithRelationInput | SkillResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SkillResources.
+     */
+    cursor?: SkillResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SkillResources.
+     */
+    distinct?: SkillResourceScalarFieldEnum | SkillResourceScalarFieldEnum[]
+  }
+
+  /**
+   * SkillResource findMany
+   */
+  export type SkillResourceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which SkillResources to fetch.
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SkillResources to fetch.
+     */
+    orderBy?: SkillResourceOrderByWithRelationInput | SkillResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SkillResources.
+     */
+    cursor?: SkillResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SkillResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SkillResources.
+     */
+    skip?: number
+    distinct?: SkillResourceScalarFieldEnum | SkillResourceScalarFieldEnum[]
+  }
+
+  /**
+   * SkillResource create
+   */
+  export type SkillResourceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SkillResource.
+     */
+    data: XOR<SkillResourceCreateInput, SkillResourceUncheckedCreateInput>
+  }
+
+  /**
+   * SkillResource createMany
+   */
+  export type SkillResourceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SkillResources.
+     */
+    data: SkillResourceCreateManyInput | SkillResourceCreateManyInput[]
+  }
+
+  /**
+   * SkillResource createManyAndReturn
+   */
+  export type SkillResourceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * The data used to create many SkillResources.
+     */
+    data: SkillResourceCreateManyInput | SkillResourceCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SkillResource update
+   */
+  export type SkillResourceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SkillResource.
+     */
+    data: XOR<SkillResourceUpdateInput, SkillResourceUncheckedUpdateInput>
+    /**
+     * Choose, which SkillResource to update.
+     */
+    where: SkillResourceWhereUniqueInput
+  }
+
+  /**
+   * SkillResource updateMany
+   */
+  export type SkillResourceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SkillResources.
+     */
+    data: XOR<SkillResourceUpdateManyMutationInput, SkillResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which SkillResources to update
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * Limit how many SkillResources to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SkillResource updateManyAndReturn
+   */
+  export type SkillResourceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * The data used to update SkillResources.
+     */
+    data: XOR<SkillResourceUpdateManyMutationInput, SkillResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which SkillResources to update
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * Limit how many SkillResources to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SkillResource upsert
+   */
+  export type SkillResourceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SkillResource to update in case it exists.
+     */
+    where: SkillResourceWhereUniqueInput
+    /**
+     * In case the SkillResource found by the `where` argument doesn't exist, create a new SkillResource with this data.
+     */
+    create: XOR<SkillResourceCreateInput, SkillResourceUncheckedCreateInput>
+    /**
+     * In case the SkillResource was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SkillResourceUpdateInput, SkillResourceUncheckedUpdateInput>
+  }
+
+  /**
+   * SkillResource delete
+   */
+  export type SkillResourceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
+    /**
+     * Filter which SkillResource to delete.
+     */
+    where: SkillResourceWhereUniqueInput
+  }
+
+  /**
+   * SkillResource deleteMany
+   */
+  export type SkillResourceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SkillResources to delete
+     */
+    where?: SkillResourceWhereInput
+    /**
+     * Limit how many SkillResources to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SkillResource without action
+   */
+  export type SkillResourceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SkillResource
+     */
+    select?: SkillResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SkillResource
+     */
+    omit?: SkillResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SkillResourceInclude<ExtArgs> | null
   }
 
 
@@ -20918,11 +22331,37 @@ export namespace Prisma {
     reviewStatus: 'reviewStatus',
     approvedAt: 'approvedAt',
     approvedById: 'approvedById',
+    sourceType: 'sourceType',
+    sourceRepository: 'sourceRepository',
+    sourcePath: 'sourcePath',
+    sourceRef: 'sourceRef',
+    sourceCommit: 'sourceCommit',
+    sourceLicense: 'sourceLicense',
+    contentHash: 'contentHash',
+    rawContent: 'rawContent',
+    compatibility: 'compatibility',
+    allowedTools: 'allowedTools',
+    metadataJson: 'metadataJson',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type SkillScalarFieldEnum = (typeof SkillScalarFieldEnum)[keyof typeof SkillScalarFieldEnum]
+
+
+  export const SkillResourceScalarFieldEnum: {
+    id: 'id',
+    skillId: 'skillId',
+    path: 'path',
+    content: 'content',
+    contentHash: 'contentHash',
+    contentType: 'contentType',
+    sizeBytes: 'sizeBytes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SkillResourceScalarFieldEnum = (typeof SkillResourceScalarFieldEnum)[keyof typeof SkillResourceScalarFieldEnum]
 
 
   export const SkillReviewScalarFieldEnum: {
@@ -21510,9 +22949,21 @@ export namespace Prisma {
     reviewStatus?: StringFilter<"Skill"> | string
     approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
     approvedById?: StringNullableFilter<"Skill"> | string | null
+    sourceType?: StringFilter<"Skill"> | string
+    sourceRepository?: StringNullableFilter<"Skill"> | string | null
+    sourcePath?: StringNullableFilter<"Skill"> | string | null
+    sourceRef?: StringNullableFilter<"Skill"> | string | null
+    sourceCommit?: StringNullableFilter<"Skill"> | string | null
+    sourceLicense?: StringNullableFilter<"Skill"> | string | null
+    contentHash?: StringNullableFilter<"Skill"> | string | null
+    rawContent?: StringNullableFilter<"Skill"> | string | null
+    compatibility?: StringNullableFilter<"Skill"> | string | null
+    allowedTools?: StringNullableFilter<"Skill"> | string | null
+    metadataJson?: StringFilter<"Skill"> | string
     createdAt?: DateTimeFilter<"Skill"> | Date | string
     updatedAt?: DateTimeFilter<"Skill"> | Date | string
     approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    resources?: SkillResourceListRelationFilter
     reviews?: SkillReviewListRelationFilter
     activationEvents?: SkillActivationEventListRelationFilter
     agentAssignments?: AgentSkillListRelationFilter
@@ -21532,9 +22983,21 @@ export namespace Prisma {
     reviewStatus?: SortOrder
     approvedAt?: SortOrderInput | SortOrder
     approvedById?: SortOrderInput | SortOrder
+    sourceType?: SortOrder
+    sourceRepository?: SortOrderInput | SortOrder
+    sourcePath?: SortOrderInput | SortOrder
+    sourceRef?: SortOrderInput | SortOrder
+    sourceCommit?: SortOrderInput | SortOrder
+    sourceLicense?: SortOrderInput | SortOrder
+    contentHash?: SortOrderInput | SortOrder
+    rawContent?: SortOrderInput | SortOrder
+    compatibility?: SortOrderInput | SortOrder
+    allowedTools?: SortOrderInput | SortOrder
+    metadataJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedBy?: UserOrderByWithRelationInput
+    resources?: SkillResourceOrderByRelationAggregateInput
     reviews?: SkillReviewOrderByRelationAggregateInput
     activationEvents?: SkillActivationEventOrderByRelationAggregateInput
     agentAssignments?: AgentSkillOrderByRelationAggregateInput
@@ -21558,9 +23021,21 @@ export namespace Prisma {
     reviewStatus?: StringFilter<"Skill"> | string
     approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
     approvedById?: StringNullableFilter<"Skill"> | string | null
+    sourceType?: StringFilter<"Skill"> | string
+    sourceRepository?: StringNullableFilter<"Skill"> | string | null
+    sourcePath?: StringNullableFilter<"Skill"> | string | null
+    sourceRef?: StringNullableFilter<"Skill"> | string | null
+    sourceCommit?: StringNullableFilter<"Skill"> | string | null
+    sourceLicense?: StringNullableFilter<"Skill"> | string | null
+    contentHash?: StringNullableFilter<"Skill"> | string | null
+    rawContent?: StringNullableFilter<"Skill"> | string | null
+    compatibility?: StringNullableFilter<"Skill"> | string | null
+    allowedTools?: StringNullableFilter<"Skill"> | string | null
+    metadataJson?: StringFilter<"Skill"> | string
     createdAt?: DateTimeFilter<"Skill"> | Date | string
     updatedAt?: DateTimeFilter<"Skill"> | Date | string
     approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    resources?: SkillResourceListRelationFilter
     reviews?: SkillReviewListRelationFilter
     activationEvents?: SkillActivationEventListRelationFilter
     agentAssignments?: AgentSkillListRelationFilter
@@ -21580,6 +23055,17 @@ export namespace Prisma {
     reviewStatus?: SortOrder
     approvedAt?: SortOrderInput | SortOrder
     approvedById?: SortOrderInput | SortOrder
+    sourceType?: SortOrder
+    sourceRepository?: SortOrderInput | SortOrder
+    sourcePath?: SortOrderInput | SortOrder
+    sourceRef?: SortOrderInput | SortOrder
+    sourceCommit?: SortOrderInput | SortOrder
+    sourceLicense?: SortOrderInput | SortOrder
+    contentHash?: SortOrderInput | SortOrder
+    rawContent?: SortOrderInput | SortOrder
+    compatibility?: SortOrderInput | SortOrder
+    allowedTools?: SortOrderInput | SortOrder
+    metadataJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SkillCountOrderByAggregateInput
@@ -21606,8 +23092,97 @@ export namespace Prisma {
     reviewStatus?: StringWithAggregatesFilter<"Skill"> | string
     approvedAt?: DateTimeNullableWithAggregatesFilter<"Skill"> | Date | string | null
     approvedById?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    sourceType?: StringWithAggregatesFilter<"Skill"> | string
+    sourceRepository?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    sourcePath?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    sourceRef?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    sourceCommit?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    sourceLicense?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    contentHash?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    rawContent?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    compatibility?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    allowedTools?: StringNullableWithAggregatesFilter<"Skill"> | string | null
+    metadataJson?: StringWithAggregatesFilter<"Skill"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
+  }
+
+  export type SkillResourceWhereInput = {
+    AND?: SkillResourceWhereInput | SkillResourceWhereInput[]
+    OR?: SkillResourceWhereInput[]
+    NOT?: SkillResourceWhereInput | SkillResourceWhereInput[]
+    id?: StringFilter<"SkillResource"> | string
+    skillId?: StringFilter<"SkillResource"> | string
+    path?: StringFilter<"SkillResource"> | string
+    content?: StringFilter<"SkillResource"> | string
+    contentHash?: StringFilter<"SkillResource"> | string
+    contentType?: StringFilter<"SkillResource"> | string
+    sizeBytes?: IntFilter<"SkillResource"> | number
+    createdAt?: DateTimeFilter<"SkillResource"> | Date | string
+    updatedAt?: DateTimeFilter<"SkillResource"> | Date | string
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+  }
+
+  export type SkillResourceOrderByWithRelationInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    path?: SortOrder
+    content?: SortOrder
+    contentHash?: SortOrder
+    contentType?: SortOrder
+    sizeBytes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    skill?: SkillOrderByWithRelationInput
+  }
+
+  export type SkillResourceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    skillId_path?: SkillResourceSkillIdPathCompoundUniqueInput
+    AND?: SkillResourceWhereInput | SkillResourceWhereInput[]
+    OR?: SkillResourceWhereInput[]
+    NOT?: SkillResourceWhereInput | SkillResourceWhereInput[]
+    skillId?: StringFilter<"SkillResource"> | string
+    path?: StringFilter<"SkillResource"> | string
+    content?: StringFilter<"SkillResource"> | string
+    contentHash?: StringFilter<"SkillResource"> | string
+    contentType?: StringFilter<"SkillResource"> | string
+    sizeBytes?: IntFilter<"SkillResource"> | number
+    createdAt?: DateTimeFilter<"SkillResource"> | Date | string
+    updatedAt?: DateTimeFilter<"SkillResource"> | Date | string
+    skill?: XOR<SkillScalarRelationFilter, SkillWhereInput>
+  }, "id" | "skillId_path">
+
+  export type SkillResourceOrderByWithAggregationInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    path?: SortOrder
+    content?: SortOrder
+    contentHash?: SortOrder
+    contentType?: SortOrder
+    sizeBytes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SkillResourceCountOrderByAggregateInput
+    _avg?: SkillResourceAvgOrderByAggregateInput
+    _max?: SkillResourceMaxOrderByAggregateInput
+    _min?: SkillResourceMinOrderByAggregateInput
+    _sum?: SkillResourceSumOrderByAggregateInput
+  }
+
+  export type SkillResourceScalarWhereWithAggregatesInput = {
+    AND?: SkillResourceScalarWhereWithAggregatesInput | SkillResourceScalarWhereWithAggregatesInput[]
+    OR?: SkillResourceScalarWhereWithAggregatesInput[]
+    NOT?: SkillResourceScalarWhereWithAggregatesInput | SkillResourceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SkillResource"> | string
+    skillId?: StringWithAggregatesFilter<"SkillResource"> | string
+    path?: StringWithAggregatesFilter<"SkillResource"> | string
+    content?: StringWithAggregatesFilter<"SkillResource"> | string
+    contentHash?: StringWithAggregatesFilter<"SkillResource"> | string
+    contentType?: StringWithAggregatesFilter<"SkillResource"> | string
+    sizeBytes?: IntWithAggregatesFilter<"SkillResource"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"SkillResource"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SkillResource"> | Date | string
   }
 
   export type SkillReviewWhereInput = {
@@ -22846,9 +24421,21 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    resources?: SkillResourceCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
@@ -22868,8 +24455,20 @@ export namespace Prisma {
     reviewStatus?: string
     approvedAt?: Date | string | null
     approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceUncheckedCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventUncheckedCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
@@ -22888,9 +24487,21 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    resources?: SkillResourceUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
@@ -22910,8 +24521,20 @@ export namespace Prisma {
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUncheckedUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUncheckedUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
@@ -22931,6 +24554,17 @@ export namespace Prisma {
     reviewStatus?: string
     approvedAt?: Date | string | null
     approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22948,6 +24582,17 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22966,6 +24611,100 @@ export namespace Prisma {
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillResourceCreateInput = {
+    id?: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    skill: SkillCreateNestedOneWithoutResourcesInput
+  }
+
+  export type SkillResourceUncheckedCreateInput = {
+    id?: string
+    skillId: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillResourceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    skill?: SkillUpdateOneRequiredWithoutResourcesNestedInput
+  }
+
+  export type SkillResourceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillResourceCreateManyInput = {
+    id?: string
+    skillId: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillResourceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillResourceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    skillId?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24257,6 +25996,12 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type SkillResourceListRelationFilter = {
+    every?: SkillResourceWhereInput
+    some?: SkillResourceWhereInput
+    none?: SkillResourceWhereInput
+  }
+
   export type SkillReviewListRelationFilter = {
     every?: SkillReviewWhereInput
     some?: SkillReviewWhereInput
@@ -24267,6 +26012,10 @@ export namespace Prisma {
     every?: SkillActivationEventWhereInput
     some?: SkillActivationEventWhereInput
     none?: SkillActivationEventWhereInput
+  }
+
+  export type SkillResourceOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type SkillReviewOrderByRelationAggregateInput = {
@@ -24296,6 +26045,17 @@ export namespace Prisma {
     reviewStatus?: SortOrder
     approvedAt?: SortOrder
     approvedById?: SortOrder
+    sourceType?: SortOrder
+    sourceRepository?: SortOrder
+    sourcePath?: SortOrder
+    sourceRef?: SortOrder
+    sourceCommit?: SortOrder
+    sourceLicense?: SortOrder
+    contentHash?: SortOrder
+    rawContent?: SortOrder
+    compatibility?: SortOrder
+    allowedTools?: SortOrder
+    metadataJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24318,6 +26078,17 @@ export namespace Prisma {
     reviewStatus?: SortOrder
     approvedAt?: SortOrder
     approvedById?: SortOrder
+    sourceType?: SortOrder
+    sourceRepository?: SortOrder
+    sourcePath?: SortOrder
+    sourceRef?: SortOrder
+    sourceCommit?: SortOrder
+    sourceLicense?: SortOrder
+    contentHash?: SortOrder
+    rawContent?: SortOrder
+    compatibility?: SortOrder
+    allowedTools?: SortOrder
+    metadataJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24336,6 +26107,17 @@ export namespace Prisma {
     reviewStatus?: SortOrder
     approvedAt?: SortOrder
     approvedById?: SortOrder
+    sourceType?: SortOrder
+    sourceRepository?: SortOrder
+    sourcePath?: SortOrder
+    sourceRef?: SortOrder
+    sourceCommit?: SortOrder
+    sourceLicense?: SortOrder
+    contentHash?: SortOrder
+    rawContent?: SortOrder
+    compatibility?: SortOrder
+    allowedTools?: SortOrder
+    metadataJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24361,6 +26143,55 @@ export namespace Prisma {
   export type SkillScalarRelationFilter = {
     is?: SkillWhereInput
     isNot?: SkillWhereInput
+  }
+
+  export type SkillResourceSkillIdPathCompoundUniqueInput = {
+    skillId: string
+    path: string
+  }
+
+  export type SkillResourceCountOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    path?: SortOrder
+    content?: SortOrder
+    contentHash?: SortOrder
+    contentType?: SortOrder
+    sizeBytes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillResourceAvgOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+  }
+
+  export type SkillResourceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    path?: SortOrder
+    content?: SortOrder
+    contentHash?: SortOrder
+    contentType?: SortOrder
+    sizeBytes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillResourceMinOrderByAggregateInput = {
+    id?: SortOrder
+    skillId?: SortOrder
+    path?: SortOrder
+    content?: SortOrder
+    contentHash?: SortOrder
+    contentType?: SortOrder
+    sizeBytes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SkillResourceSumOrderByAggregateInput = {
+    sizeBytes?: SortOrder
   }
 
   export type SkillReviewCountOrderByAggregateInput = {
@@ -25169,6 +27000,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type SkillResourceCreateNestedManyWithoutSkillInput = {
+    create?: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput> | SkillResourceCreateWithoutSkillInput[] | SkillResourceUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillResourceCreateOrConnectWithoutSkillInput | SkillResourceCreateOrConnectWithoutSkillInput[]
+    createMany?: SkillResourceCreateManySkillInputEnvelope
+    connect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+  }
+
   export type SkillReviewCreateNestedManyWithoutSkillInput = {
     create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
     connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
@@ -25188,6 +27026,13 @@ export namespace Prisma {
     connectOrCreate?: AgentSkillCreateOrConnectWithoutSkillInput | AgentSkillCreateOrConnectWithoutSkillInput[]
     createMany?: AgentSkillCreateManySkillInputEnvelope
     connect?: AgentSkillWhereUniqueInput | AgentSkillWhereUniqueInput[]
+  }
+
+  export type SkillResourceUncheckedCreateNestedManyWithoutSkillInput = {
+    create?: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput> | SkillResourceCreateWithoutSkillInput[] | SkillResourceUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillResourceCreateOrConnectWithoutSkillInput | SkillResourceCreateOrConnectWithoutSkillInput[]
+    createMany?: SkillResourceCreateManySkillInputEnvelope
+    connect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
   }
 
   export type SkillReviewUncheckedCreateNestedManyWithoutSkillInput = {
@@ -25223,6 +27068,20 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApprovedSkillsInput, UserUpdateWithoutApprovedSkillsInput>, UserUncheckedUpdateWithoutApprovedSkillsInput>
+  }
+
+  export type SkillResourceUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput> | SkillResourceCreateWithoutSkillInput[] | SkillResourceUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillResourceCreateOrConnectWithoutSkillInput | SkillResourceCreateOrConnectWithoutSkillInput[]
+    upsert?: SkillResourceUpsertWithWhereUniqueWithoutSkillInput | SkillResourceUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: SkillResourceCreateManySkillInputEnvelope
+    set?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    disconnect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    delete?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    connect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    update?: SkillResourceUpdateWithWhereUniqueWithoutSkillInput | SkillResourceUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: SkillResourceUpdateManyWithWhereWithoutSkillInput | SkillResourceUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: SkillResourceScalarWhereInput | SkillResourceScalarWhereInput[]
   }
 
   export type SkillReviewUpdateManyWithoutSkillNestedInput = {
@@ -25267,6 +27126,20 @@ export namespace Prisma {
     deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
   }
 
+  export type SkillResourceUncheckedUpdateManyWithoutSkillNestedInput = {
+    create?: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput> | SkillResourceCreateWithoutSkillInput[] | SkillResourceUncheckedCreateWithoutSkillInput[]
+    connectOrCreate?: SkillResourceCreateOrConnectWithoutSkillInput | SkillResourceCreateOrConnectWithoutSkillInput[]
+    upsert?: SkillResourceUpsertWithWhereUniqueWithoutSkillInput | SkillResourceUpsertWithWhereUniqueWithoutSkillInput[]
+    createMany?: SkillResourceCreateManySkillInputEnvelope
+    set?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    disconnect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    delete?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    connect?: SkillResourceWhereUniqueInput | SkillResourceWhereUniqueInput[]
+    update?: SkillResourceUpdateWithWhereUniqueWithoutSkillInput | SkillResourceUpdateWithWhereUniqueWithoutSkillInput[]
+    updateMany?: SkillResourceUpdateManyWithWhereWithoutSkillInput | SkillResourceUpdateManyWithWhereWithoutSkillInput[]
+    deleteMany?: SkillResourceScalarWhereInput | SkillResourceScalarWhereInput[]
+  }
+
   export type SkillReviewUncheckedUpdateManyWithoutSkillNestedInput = {
     create?: XOR<SkillReviewCreateWithoutSkillInput, SkillReviewUncheckedCreateWithoutSkillInput> | SkillReviewCreateWithoutSkillInput[] | SkillReviewUncheckedCreateWithoutSkillInput[]
     connectOrCreate?: SkillReviewCreateOrConnectWithoutSkillInput | SkillReviewCreateOrConnectWithoutSkillInput[]
@@ -25307,6 +27180,20 @@ export namespace Prisma {
     update?: AgentSkillUpdateWithWhereUniqueWithoutSkillInput | AgentSkillUpdateWithWhereUniqueWithoutSkillInput[]
     updateMany?: AgentSkillUpdateManyWithWhereWithoutSkillInput | AgentSkillUpdateManyWithWhereWithoutSkillInput[]
     deleteMany?: AgentSkillScalarWhereInput | AgentSkillScalarWhereInput[]
+  }
+
+  export type SkillCreateNestedOneWithoutResourcesInput = {
+    create?: XOR<SkillCreateWithoutResourcesInput, SkillUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutResourcesInput
+    connect?: SkillWhereUniqueInput
+  }
+
+  export type SkillUpdateOneRequiredWithoutResourcesNestedInput = {
+    create?: XOR<SkillCreateWithoutResourcesInput, SkillUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: SkillCreateOrConnectWithoutResourcesInput
+    upsert?: SkillUpsertWithoutResourcesInput
+    connect?: SkillWhereUniqueInput
+    update?: XOR<XOR<SkillUpdateToOneWithWhereWithoutResourcesInput, SkillUpdateWithoutResourcesInput>, SkillUncheckedUpdateWithoutResourcesInput>
   }
 
   export type SkillCreateNestedOneWithoutReviewsInput = {
@@ -26650,6 +28537,37 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutApprovedSkillsInput, UserUncheckedCreateWithoutApprovedSkillsInput>
   }
 
+  export type SkillResourceCreateWithoutSkillInput = {
+    id?: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillResourceUncheckedCreateWithoutSkillInput = {
+    id?: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SkillResourceCreateOrConnectWithoutSkillInput = {
+    where: SkillResourceWhereUniqueInput
+    create: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput>
+  }
+
+  export type SkillResourceCreateManySkillInputEnvelope = {
+    data: SkillResourceCreateManySkillInput | SkillResourceCreateManySkillInput[]
+  }
+
   export type SkillReviewCreateWithoutSkillInput = {
     id?: string
     decision: string
@@ -26768,6 +28686,37 @@ export namespace Prisma {
     skillActivationEvents?: SkillActivationEventUncheckedUpdateManyWithoutActorNestedInput
   }
 
+  export type SkillResourceUpsertWithWhereUniqueWithoutSkillInput = {
+    where: SkillResourceWhereUniqueInput
+    update: XOR<SkillResourceUpdateWithoutSkillInput, SkillResourceUncheckedUpdateWithoutSkillInput>
+    create: XOR<SkillResourceCreateWithoutSkillInput, SkillResourceUncheckedCreateWithoutSkillInput>
+  }
+
+  export type SkillResourceUpdateWithWhereUniqueWithoutSkillInput = {
+    where: SkillResourceWhereUniqueInput
+    data: XOR<SkillResourceUpdateWithoutSkillInput, SkillResourceUncheckedUpdateWithoutSkillInput>
+  }
+
+  export type SkillResourceUpdateManyWithWhereWithoutSkillInput = {
+    where: SkillResourceScalarWhereInput
+    data: XOR<SkillResourceUpdateManyMutationInput, SkillResourceUncheckedUpdateManyWithoutSkillInput>
+  }
+
+  export type SkillResourceScalarWhereInput = {
+    AND?: SkillResourceScalarWhereInput | SkillResourceScalarWhereInput[]
+    OR?: SkillResourceScalarWhereInput[]
+    NOT?: SkillResourceScalarWhereInput | SkillResourceScalarWhereInput[]
+    id?: StringFilter<"SkillResource"> | string
+    skillId?: StringFilter<"SkillResource"> | string
+    path?: StringFilter<"SkillResource"> | string
+    content?: StringFilter<"SkillResource"> | string
+    contentHash?: StringFilter<"SkillResource"> | string
+    contentType?: StringFilter<"SkillResource"> | string
+    sizeBytes?: IntFilter<"SkillResource"> | number
+    createdAt?: DateTimeFilter<"SkillResource"> | Date | string
+    updatedAt?: DateTimeFilter<"SkillResource"> | Date | string
+  }
+
   export type SkillReviewUpsertWithWhereUniqueWithoutSkillInput = {
     where: SkillReviewWhereUniqueInput
     update: XOR<SkillReviewUpdateWithoutSkillInput, SkillReviewUncheckedUpdateWithoutSkillInput>
@@ -26840,6 +28789,150 @@ export namespace Prisma {
     data: XOR<AgentSkillUpdateManyMutationInput, AgentSkillUncheckedUpdateManyWithoutSkillInput>
   }
 
+  export type SkillCreateWithoutResourcesInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    rulesJson?: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    reviews?: SkillReviewCreateNestedManyWithoutSkillInput
+    activationEvents?: SkillActivationEventCreateNestedManyWithoutSkillInput
+    agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillUncheckedCreateWithoutResourcesInput = {
+    id?: string
+    key: string
+    name: string
+    description?: string
+    category?: string
+    instructions: string
+    rulesJson?: string
+    activationCriteria?: string
+    version?: number
+    isActive?: boolean
+    reviewStatus?: string
+    approvedAt?: Date | string | null
+    approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
+    activationEvents?: SkillActivationEventUncheckedCreateNestedManyWithoutSkillInput
+    agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
+  }
+
+  export type SkillCreateOrConnectWithoutResourcesInput = {
+    where: SkillWhereUniqueInput
+    create: XOR<SkillCreateWithoutResourcesInput, SkillUncheckedCreateWithoutResourcesInput>
+  }
+
+  export type SkillUpsertWithoutResourcesInput = {
+    update: XOR<SkillUpdateWithoutResourcesInput, SkillUncheckedUpdateWithoutResourcesInput>
+    create: XOR<SkillCreateWithoutResourcesInput, SkillUncheckedCreateWithoutResourcesInput>
+    where?: SkillWhereInput
+  }
+
+  export type SkillUpdateToOneWithWhereWithoutResourcesInput = {
+    where?: SkillWhereInput
+    data: XOR<SkillUpdateWithoutResourcesInput, SkillUncheckedUpdateWithoutResourcesInput>
+  }
+
+  export type SkillUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
+    activationEvents?: SkillActivationEventUpdateManyWithoutSkillNestedInput
+    agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
+  }
+
+  export type SkillUncheckedUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    rulesJson?: StringFieldUpdateOperationsInput | string
+    activationCriteria?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    reviewStatus?: StringFieldUpdateOperationsInput | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
+    activationEvents?: SkillActivationEventUncheckedUpdateManyWithoutSkillNestedInput
+    agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
+  }
+
   export type SkillCreateWithoutReviewsInput = {
     id?: string
     key: string
@@ -26853,9 +28946,21 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    resources?: SkillResourceCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
   }
@@ -26874,8 +28979,20 @@ export namespace Prisma {
     reviewStatus?: string
     approvedAt?: Date | string | null
     approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceUncheckedCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventUncheckedCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
   }
@@ -26946,9 +29063,21 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    resources?: SkillResourceUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
   }
@@ -26967,8 +29096,20 @@ export namespace Prisma {
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUncheckedUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUncheckedUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
   }
@@ -27029,9 +29170,21 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    resources?: SkillResourceCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
   }
@@ -27050,8 +29203,20 @@ export namespace Prisma {
     reviewStatus?: string
     approvedAt?: Date | string | null
     approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceUncheckedCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
   }
@@ -27122,9 +29287,21 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    resources?: SkillResourceUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
   }
@@ -27143,8 +29320,20 @@ export namespace Prisma {
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUncheckedUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
   }
@@ -27232,9 +29421,21 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedBy?: UserCreateNestedOneWithoutApprovedSkillsInput
+    resources?: SkillResourceCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventCreateNestedManyWithoutSkillInput
   }
@@ -27253,8 +29454,20 @@ export namespace Prisma {
     reviewStatus?: string
     approvedAt?: Date | string | null
     approvedById?: string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceUncheckedCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventUncheckedCreateNestedManyWithoutSkillInput
   }
@@ -27321,9 +29534,21 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedBy?: UserUpdateOneWithoutApprovedSkillsNestedInput
+    resources?: SkillResourceUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUpdateManyWithoutSkillNestedInput
   }
@@ -27342,8 +29567,20 @@ export namespace Prisma {
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUncheckedUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUncheckedUpdateManyWithoutSkillNestedInput
   }
@@ -27790,8 +30027,20 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillCreateNestedManyWithoutSkillInput
@@ -27810,8 +30059,20 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: SkillResourceUncheckedCreateNestedManyWithoutSkillInput
     reviews?: SkillReviewUncheckedCreateNestedManyWithoutSkillInput
     activationEvents?: SkillActivationEventUncheckedCreateNestedManyWithoutSkillInput
     agentAssignments?: AgentSkillUncheckedCreateNestedManyWithoutSkillInput
@@ -28004,6 +30265,17 @@ export namespace Prisma {
     reviewStatus?: StringFilter<"Skill"> | string
     approvedAt?: DateTimeNullableFilter<"Skill"> | Date | string | null
     approvedById?: StringNullableFilter<"Skill"> | string | null
+    sourceType?: StringFilter<"Skill"> | string
+    sourceRepository?: StringNullableFilter<"Skill"> | string | null
+    sourcePath?: StringNullableFilter<"Skill"> | string | null
+    sourceRef?: StringNullableFilter<"Skill"> | string | null
+    sourceCommit?: StringNullableFilter<"Skill"> | string | null
+    sourceLicense?: StringNullableFilter<"Skill"> | string | null
+    contentHash?: StringNullableFilter<"Skill"> | string | null
+    rawContent?: StringNullableFilter<"Skill"> | string | null
+    compatibility?: StringNullableFilter<"Skill"> | string | null
+    allowedTools?: StringNullableFilter<"Skill"> | string | null
+    metadataJson?: StringFilter<"Skill"> | string
     createdAt?: DateTimeFilter<"Skill"> | Date | string
     updatedAt?: DateTimeFilter<"Skill"> | Date | string
   }
@@ -28472,6 +30744,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SkillResourceCreateManySkillInput = {
+    id?: string
+    path: string
+    content: string
+    contentHash: string
+    contentType?: string
+    sizeBytes?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type SkillReviewCreateManySkillInput = {
     id?: string
     reviewerId?: string | null
@@ -28494,6 +30777,39 @@ export namespace Prisma {
     priority?: number
     isRequired?: boolean
     createdAt?: Date | string
+  }
+
+  export type SkillResourceUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillResourceUncheckedUpdateWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SkillResourceUncheckedUpdateManyWithoutSkillInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    contentHash?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SkillReviewUpdateWithoutSkillInput = {
@@ -28616,6 +30932,17 @@ export namespace Prisma {
     isActive?: boolean
     reviewStatus?: string
     approvedAt?: Date | string | null
+    sourceType?: string
+    sourceRepository?: string | null
+    sourcePath?: string | null
+    sourceRef?: string | null
+    sourceCommit?: string | null
+    sourceLicense?: string | null
+    contentHash?: string | null
+    rawContent?: string | null
+    compatibility?: string | null
+    allowedTools?: string | null
+    metadataJson?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28766,8 +31093,20 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUpdateManyWithoutSkillNestedInput
@@ -28786,8 +31125,20 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: SkillResourceUncheckedUpdateManyWithoutSkillNestedInput
     reviews?: SkillReviewUncheckedUpdateManyWithoutSkillNestedInput
     activationEvents?: SkillActivationEventUncheckedUpdateManyWithoutSkillNestedInput
     agentAssignments?: AgentSkillUncheckedUpdateManyWithoutSkillNestedInput
@@ -28806,6 +31157,17 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     reviewStatus?: StringFieldUpdateOperationsInput | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceRepository?: NullableStringFieldUpdateOperationsInput | string | null
+    sourcePath?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceRef?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceCommit?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLicense?: NullableStringFieldUpdateOperationsInput | string | null
+    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
+    rawContent?: NullableStringFieldUpdateOperationsInput | string | null
+    compatibility?: NullableStringFieldUpdateOperationsInput | string | null
+    allowedTools?: NullableStringFieldUpdateOperationsInput | string | null
+    metadataJson?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
