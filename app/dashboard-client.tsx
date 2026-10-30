@@ -189,6 +189,25 @@ type SkillReviewRecord = {
   } | null;
 };
 
+type SkillResourcePreview = {
+  id: string;
+  path: string;
+  content: string;
+  contentHash: string;
+  contentType: string;
+  sizeBytes: number;
+  skill: {
+    id: string;
+    name: string;
+    version: number;
+    sourceRepository: string | null;
+    sourceCommit: string | null;
+    sourceLicense: string | null;
+    reviewStatus: string;
+    isActive: boolean;
+  };
+};
+
 const initialProjects: Project[] = []
 
 const prompts: Prompt[] = [
@@ -381,12 +400,15 @@ export default function DashboardClient() {
   useState<Record<string, string>>({});
   const [skillActivationLoading, setSkillActivationLoading] =
     useState<string | null>(null);
-
   const [skillActivationMessages, setSkillActivationMessages] =
     useState<Record<string, string>>({});
-
   const [skillActivationErrors, setSkillActivationErrors] =
     useState<Record<string, string>>({});
+  const [viewingSkillResource, setViewingSkillResource] =
+  useState<SkillResourcePreview | null>(null);
+  const [skillResourceLoadingKey, setSkillResourceLoadingKey] =
+    useState<string | null>(null);
+  const [skillResourceError, setSkillResourceError] = useState("");
 
     const totalDevelopmentTasks = developmentTasks.length;
 
@@ -2295,6 +2317,61 @@ async function saveArchitectureEdit(
   }
 }
 
+  async function toggleSkillResource(
+  skillId: string,
+  resourcePath: string,
+) {
+  const requestKey = `${skillId}:${resourcePath}`;
+
+  if (
+    viewingSkillResource?.skill.id === skillId &&
+    viewingSkillResource.path === resourcePath
+  ) {
+    setViewingSkillResource(null);
+    setSkillResourceError("");
+    return;
+  }
+
+  setSkillResourceLoadingKey(requestKey);
+  setSkillResourceError("");
+
+  try {
+    const params = new URLSearchParams({
+      skillId,
+      path: resourcePath,
+    });
+
+    const response = await fetch(
+      `/api/skills/resources?${params.toString()}`,
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || "Não foi possível carregar o conteúdo do arquivo.",
+      );
+    }
+
+    if (
+      !data.resource ||
+      typeof data.resource.content !== "string"
+    ) {
+      throw new Error("A API não retornou um conteúdo válido.");
+    }
+
+    setViewingSkillResource(data.resource as SkillResourcePreview);
+  } catch (error) {
+    setSkillResourceError(
+      error instanceof Error
+        ? error.message
+        : "Erro inesperado ao consultar o recurso.",
+    );
+  } finally {
+    setSkillResourceLoadingKey(null);
+  }
+}
+
   const menu = [
   { name: "Visão geral", icon: "▦" },
   { name: "Projetos", icon: "▣" },
@@ -3998,6 +4075,11 @@ async function saveArchitectureEdit(
         <p className="mb-2 text-slate-400">
           Arquivos armazenados ({skill.resources.length})
         </p>
+        {isAdmin && skillResourceError && (
+        <p role="alert" className="mb-3 text-sm text-red-400">
+          {skillResourceError}
+        </p>
+        )}
 
         {skill.resources.length === 0 ? (
           <p className="text-slate-500">
@@ -4005,24 +4087,61 @@ async function saveArchitectureEdit(
           </p>
         ) : (
           <div className="space-y-2">
-            {skill.resources.map((resource) => (
-              <div
-                key={resource.id}
-                className="rounded-lg bg-[#0b1020] p-3"
-              >
-                <p className="break-all text-slate-200">
-                  {resource.path}
-                </p>
+            {skill.resources.map((resource) => {
+          const requestKey = `${skill.id}:${resource.path}`;
 
-                <p className="mt-1 text-xs text-slate-500">
-                  {resource.contentType} · {resource.sizeBytes} bytes
-                </p>
+          const isViewing =
+            viewingSkillResource?.skill.id === skill.id &&
+            viewingSkillResource.path === resource.path;
 
-                <p className="mt-1 break-all font-mono text-xs text-slate-500">
-                  SHA-256: {resource.contentHash}
-                </p>
-              </div>
-            ))}
+          return (
+            <div
+              key={resource.id}
+              className="rounded-lg bg-[#0b1020] p-3"
+            >
+              <p className="break-all text-slate-200">
+                {resource.path}
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                {resource.contentType} · {resource.sizeBytes} bytes
+              </p>
+
+              <p className="mt-1 break-all font-mono text-xs text-slate-500">
+                SHA-256: {resource.contentHash}
+              </p>
+
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    void toggleSkillResource(skill.id, resource.path)
+                  }
+                  disabled={skillResourceLoadingKey === requestKey}
+                  className="mt-3 rounded-lg border border-white/10 px-3 py-2 text-sm text-indigo-300 disabled:opacity-50"
+                >
+                  {skillResourceLoadingKey === requestKey
+                    ? "Carregando..."
+                    : isViewing
+                      ? "Fechar conteúdo"
+                      : "Visualizar conteúdo"}
+                </button>
+              )}
+
+              {isViewing && viewingSkillResource && (
+                <div className="mt-3 rounded-lg border border-white/10 p-3">
+                  <p className="text-xs text-slate-500">
+                    Conteúdo original · {viewingSkillResource.contentType}
+                  </p>
+
+                  <pre className="mt-3 max-h-96 overflow-auto whitespace-pre-wrap break-words text-xs leading-5 text-slate-300">
+                    {viewingSkillResource.content}
+                  </pre>
+                </div>
+              )}
+            </div>
+          );
+        })}
           </div>
         )}
       </div>
