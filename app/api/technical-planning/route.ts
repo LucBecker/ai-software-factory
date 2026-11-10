@@ -4,6 +4,7 @@ import path from "node:path";
 import { prisma } from "../../../src/lib/prisma";
 import { requireProjectAccess } from "../../../src/lib/require-project-access";
 import { requireSession } from "../../../src/lib/require-session";
+import { loadRelevantSkills } from "../../../src/lib/skill-loader";
 
 function parseStringList(value: string): string[] {
   try {
@@ -165,30 +166,28 @@ if (!project) {
   );
 }
 
-  const architectureAgent = await prisma.agent.findUnique({
-  where: {
-    name: "Arquiteto de Software",
-  },
-  include: {
-    skillAssignments: {
-      orderBy: {
-        priority: "asc",
-      },
-      include: {
-        skill: true,
-      },
-    },
-  },
-});
+  const skillSelectionTask = [
+  "Planejar a arquitetura e o design da aplicação.",
+  "Avaliar a decomposição em módulos, profundidade dos módulos, interfaces, contratos, seams, adapters, dependências e testabilidade.",
+  project.description,
+  ...project.requirements.map(
+    (requirement) =>
+      `${requirement.title}\n${requirement.description}`,
+  ),
+  ...project.architectureDecisions.map(
+    (decision) =>
+      `${decision.title}\n${decision.description}`,
+  ),
+].join("\n\n");
 
-  const activeSkills = (
-    architectureAgent?.skillAssignments ?? []
-  ).filter(
-    (assignment) =>
-      assignment.skill.isActive &&
-      assignment.skill.reviewStatus === "APPROVED" &&
-      assignment.skill.approvedAt !== null,
-  );
+const skillContext = await loadRelevantSkills(
+  "Arquiteto de Software",
+  skillSelectionTask,
+  {
+    maxSkills: 5,
+    minRelevanceScore: 1,
+  },
+);
     // Busca as revisões mais recentes primeiro.
     const reviews = await prisma.workflowRun.findMany({
       where: {
@@ -278,21 +277,30 @@ if (!project) {
     const profile = project.profile;
 
 const skillsSection =
-  activeSkills.length > 0
-    ? activeSkills
-        .map(({ priority, isRequired, skill }) =>
+  skillContext.selectedSkills.length > 0
+    ? skillContext.selectedSkills
+        .map((skill) =>
           [
             `### ${skill.name} — versão ${skill.version}`,
-            `- Prioridade: ${priority}`,
-            `- Obrigatória para o agente: ${isRequired ? "Sim" : "Não"}`,
-            `- Critérios de ativação: ${skill.activationCriteria.trim() || "Não informados."}`,
+            `- Prioridade: ${skill.priority}`,
+            `- Obrigatória para o agente: ${skill.isRequired ? "Sim" : "Não"}`,
+            `- Relevância: ${skill.relevance.score}`,
+            `- Motivos da seleção: ${skill.relevance.reasons.join(", ")}`,
+            `- Referências carregadas: ${skill.referenceFiles.length}`,
+            `- Origem: ${skill.source.repository ?? "Skill nativa"}`,
             "",
-            "#### Instruções da skill",
-            skill.instructions,
+            "#### Instruções principais",
+            skill.content,
+            "",
+            ...skill.referenceFiles.flatMap((reference) => [
+              `#### Referência: ${reference.path}`,
+              reference.content,
+              "",
+            ]),
           ].join("\n"),
         )
         .join("\n\n")
-    : "Nenhuma skill associada ao Arquiteto de Software está simultaneamente aprovada e ativa. Não presumir competências provenientes de skills indisponíveis.";
+    : "Nenhuma skill associada ao Arquiteto de Software está simultaneamente aprovada, ativa e relevante para esta tarefa.";
 
 const softwareTypeLabels: Record<string, string> = {
   UNDECIDED: "Não definido",
@@ -424,22 +432,19 @@ const deploymentLabels: Record<string, string> = {
           requirements: project.requirements,
           architectureDecisions: project.architectureDecisions,
           projectProfile: project.profile,
-          activeSkills: activeSkills.map(({ priority, isRequired, skill }) => ({
-            id: skill.id,
-            key: skill.key,
-            name: skill.name,
-            version: skill.version,
-            priority,
-            isRequired,
-            activationCriteria: skill.activationCriteria,
-            instructions: skill.instructions,
-          })),
+          skillContext: {
+          mode: skillContext.mode,
+          agent: skillContext.agent,
+          selectedSkills: skillContext.selectedSkills,
+          unavailableSkills: skillContext.unavailableSkills,
+          warnings: skillContext.warnings,
+        },
         }),
         output,
         startedAt,
         finishedAt,
       },
-    });
+    }); 
 
     return NextResponse.json(
       {

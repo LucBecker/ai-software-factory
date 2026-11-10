@@ -123,6 +123,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   name: 'name',
   description: 'description',
   stage: 'stage',
+  workspaceMode: 'workspaceMode',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

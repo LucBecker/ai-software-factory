@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../src/lib/prisma";
 import { requireProjectAccess } from "../../../src/lib/require-project-access";
+import { loadRelevantSkills } from "../../../src/lib/skill-loader";
 
 
 type RequestBody = {
@@ -141,6 +142,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Carrega o perfil técnico cadastrado para o projeto.
+    const project = await prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+      include: {
+        profile: true,
+      },
+    });
+
+    if (!project) {
+      return NextResponse.json(
+        { error: "Projeto não encontrado." },
+        { status: 404 },
+      );
+    }
     // 4. Analisa os dados disponíveis sem modificar arquivos-fonte.
     const dependencies = parseDependencies(task.dependencies);
 
@@ -187,7 +204,18 @@ const isAuthenticationTask =
     `${task.title} ${task.requirement} ${task.description}`,
   );
 
+const profile = project.profile;
+
 const hasImplementationTarget =
+  Boolean(
+    profile &&
+      (
+        (profile.targetPlatform &&
+          profile.targetPlatform !== "UNDECIDED") ||
+        (profile.softwareType &&
+          profile.softwareType !== "UNDECIDED")
+      ),
+  ) ||
   /next\.?js|app router|repositório|aplicação atual/i.test(
     architectureContext,
   );
@@ -211,6 +239,40 @@ const hasAuthenticationTestsDecision =
   /credenciais inválidas|testes de autenticação|testes de segurança|tentativas de login|rate.?limit|bloqueio de conta/i.test(
     architectureContext,
   );
+
+// Prepara o contexto da tarefa para selecionar competências relevantes.
+const developerSkillTask = [
+  task.title,
+  task.description,
+  task.requirement,
+  task.expectedResult,
+  task.acceptanceCriteria,
+
+  `Tipo de software: ${profile?.softwareType ?? "Não definido"}`,
+  `Plataforma: ${profile?.targetPlatform ?? "Não definida"}`,
+  `Linguagens: ${profile?.preferredLanguages ?? "Não informadas"}`,
+  `Frameworks: ${profile?.preferredFrameworks ?? "Não informados"}`,
+  `Banco de dados: ${profile?.databasePreference ?? "Não definido"}`,
+  `Segurança: ${profile?.securityRequirements ?? "Não informada"}`,
+
+  approvedArchitectureDecisions
+    .map(
+      (decision) =>
+        `${decision.title}\n${decision.description}`,
+    )
+    .join("\n"),
+]
+  .filter(Boolean)
+  .join("\n\n");
+
+const skillContext = await loadRelevantSkills(
+  "Desenvolvedor",
+  developerSkillTask,
+  {
+    maxSkills: 5,
+    minRelevanceScore: 1,
+  },
+);  
 
 const blockers: string[] = [];
 
@@ -266,6 +328,65 @@ if (isAuthenticationTask) {
 
     const proposalStatus =
       blockers.length > 0 ? "BLOCKED" : "READY_FOR_REVIEW";
+      const developerContextSection = [
+  "",
+  "### Perfil técnico utilizado",
+
+  ...(profile
+    ? [
+        `- Tipo de software: ${profile.softwareType}`,
+        `- Plataforma: ${profile.targetPlatform}`,
+        `- Linguagens: ${profile.preferredLanguages}`,
+        `- Frameworks: ${profile.preferredFrameworks}`,
+        `- Banco de dados: ${profile.databasePreference}`,
+        `- Implantação: ${profile.deploymentTarget}`,
+      ]
+    : ["- Perfil técnico não cadastrado."]),
+
+  "",
+  "### Skills carregadas para esta tarefa",
+
+  ...(skillContext.selectedSkills.length > 0
+    ? skillContext.selectedSkills.flatMap((skill) => [
+        `#### ${skill.name} — versão ${skill.version}`,
+        `- Prioridade: ${skill.priority}`,
+        `- Relevância: ${skill.relevance.score}`,
+        `- Motivos: ${skill.relevance.reasons.join(", ")}`,
+        `- Origem: ${skill.source.repository ?? "Skill nativa"}`,
+        `- Referências carregadas: ${skill.referenceFiles.length}`,
+        "",
+        "Instruções:",
+        skill.content,
+        "",
+        ...skill.referenceFiles.flatMap((reference) => [
+          `Referência: ${reference.path}`,
+          reference.content,
+          "",
+        ]),
+      ])
+    : [
+        "- Nenhuma skill associada ao Desenvolvedor está simultaneamente aprovada, ativa e relevante para esta tarefa.",
+      ]),
+
+  "",
+  "### Skills relevantes indisponíveis",
+
+  ...(skillContext.unavailableSkills.length > 0
+    ? skillContext.unavailableSkills.map(
+        (skill) =>
+          `- ${skill.name} — ${skill.reason}`,
+      )
+    : ["- Nenhuma skill relevante indisponível."]),
+
+  "",
+  "### Observações do carregador",
+
+  ...(skillContext.warnings.length > 0
+    ? skillContext.warnings.map(
+        (warning) => `- ${warning}`,
+      )
+    : ["- Nenhum aviso."]),
+];
 
     const proposal = [
   `# Proposta do Agente de Desenvolvimento — ${task.taskKey}`,
@@ -303,10 +424,16 @@ if (isAuthenticationTask) {
 "",
 "### Verificações de contexto",
   `- Aplicação-alvo: ${
-    hasImplementationTarget
-      ? "Encontrada em decisão cadastrada."
-      : "Pendente."
-  }`,
+  profile?.targetPlatform &&
+  profile.targetPlatform !== "UNDECIDED"
+    ? `${profile.targetPlatform} — definida no perfil do projeto.`
+    : profile?.softwareType &&
+        profile.softwareType !== "UNDECIDED"
+      ? `${profile.softwareType} — definida no perfil do projeto.`
+      : hasImplementationTarget
+        ? "Identificada em decisão arquitetural."
+        : "Pendente."
+}`,
   ...(isAuthenticationTask
     ? [
         `- Modelo de usuários: ${
@@ -354,6 +481,9 @@ if (isAuthenticationTask) {
       `- Critérios de conclusão: ${
         task.acceptanceCriteria || "Não informados."
       }`,
+
+      ...developerContextSection,
+
       "",
       "## 4. Proposta técnica preliminar",
       "",
@@ -401,11 +531,21 @@ if (isAuthenticationTask) {
         stage: "DEVELOPMENT_AGENT_ANALYSIS",
         status: "COMPLETED",
         input: JSON.stringify({
-          taskId: task.id,
-          sourcePlanRunId: plan.id,
-          sourceReviewRunId: latestReview.id,
-          proposalStatus,
-        }),
+        taskId: task.id,
+        sourcePlanRunId: plan.id,
+        sourceReviewRunId: latestReview.id,
+        proposalStatus,
+
+        projectProfile: project.profile,
+
+        skillContext: {
+          mode: skillContext.mode,
+          agent: skillContext.agent,
+          selectedSkills: skillContext.selectedSkills,
+          unavailableSkills: skillContext.unavailableSkills,
+          warnings: skillContext.warnings,
+        },
+      }),
         output: proposal,
         startedAt: new Date(),
         finishedAt: new Date(),

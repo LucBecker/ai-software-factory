@@ -2563,6 +2563,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     stage: string | null
+    workspaceMode: string | null
     status: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2574,6 +2575,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     stage: string | null
+    workspaceMode: string | null
     status: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2585,6 +2587,7 @@ export namespace Prisma {
     name: number
     description: number
     stage: number
+    workspaceMode: number
     status: number
     createdAt: number
     updatedAt: number
@@ -2598,6 +2601,7 @@ export namespace Prisma {
     name?: true
     description?: true
     stage?: true
+    workspaceMode?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -2609,6 +2613,7 @@ export namespace Prisma {
     name?: true
     description?: true
     stage?: true
+    workspaceMode?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -2620,6 +2625,7 @@ export namespace Prisma {
     name?: true
     description?: true
     stage?: true
+    workspaceMode?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -2704,6 +2710,7 @@ export namespace Prisma {
     name: string
     description: string
     stage: string
+    workspaceMode: string
     status: string
     createdAt: Date
     updatedAt: Date
@@ -2732,6 +2739,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     stage?: boolean
+    workspaceMode?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2751,6 +2759,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     stage?: boolean
+    workspaceMode?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2763,6 +2772,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     stage?: boolean
+    workspaceMode?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -2775,13 +2785,14 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     stage?: boolean
+    workspaceMode?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "stage" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "stage" | "workspaceMode" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Project$userArgs<ExtArgs>
     profile?: boolean | Project$profileArgs<ExtArgs>
@@ -2815,6 +2826,7 @@ export namespace Prisma {
       name: string
       description: string
       stage: string
+      workspaceMode: string
       status: string
       createdAt: Date
       updatedAt: Date
@@ -3253,6 +3265,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
     readonly stage: FieldRef<"Project", 'String'>
+    readonly workspaceMode: FieldRef<"Project", 'String'>
     readonly status: FieldRef<"Project", 'String'>
     readonly createdAt: FieldRef<"Project", 'DateTime'>
     readonly updatedAt: FieldRef<"Project", 'DateTime'>
@@ -22256,6 +22269,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     stage: 'stage',
+    workspaceMode: 'workspaceMode',
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -22590,6 +22604,7 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
     stage?: StringFilter<"Project"> | string
+    workspaceMode?: StringFilter<"Project"> | string
     status?: StringFilter<"Project"> | string
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
@@ -22608,6 +22623,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     stage?: SortOrder
+    workspaceMode?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22629,6 +22645,7 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
     stage?: StringFilter<"Project"> | string
+    workspaceMode?: StringFilter<"Project"> | string
     status?: StringFilter<"Project"> | string
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
@@ -22647,6 +22664,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     stage?: SortOrder
+    workspaceMode?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22664,6 +22682,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Project"> | string
     description?: StringWithAggregatesFilter<"Project"> | string
     stage?: StringWithAggregatesFilter<"Project"> | string
+    workspaceMode?: StringWithAggregatesFilter<"Project"> | string
     status?: StringWithAggregatesFilter<"Project"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
@@ -24010,6 +24029,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24027,6 +24047,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24044,6 +24065,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24061,6 +24083,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24078,6 +24101,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24089,6 +24113,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24099,6 +24124,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25712,6 +25738,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     stage?: SortOrder
+    workspaceMode?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25723,6 +25750,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     stage?: SortOrder
+    workspaceMode?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25734,6 +25762,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     stage?: SortOrder
+    workspaceMode?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28292,6 +28321,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28308,6 +28338,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28340,6 +28371,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28356,6 +28388,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28372,6 +28405,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28388,6 +28422,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28420,6 +28455,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28436,6 +28472,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29590,6 +29627,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29606,6 +29644,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29638,6 +29677,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29654,6 +29694,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29670,6 +29711,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29686,6 +29728,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29718,6 +29761,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29734,6 +29778,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29750,6 +29795,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29766,6 +29812,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29798,6 +29845,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29814,6 +29862,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29830,6 +29879,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29846,6 +29896,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29878,6 +29929,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29894,6 +29946,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29978,6 +30031,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29994,6 +30048,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30226,6 +30281,7 @@ export namespace Prisma {
     name?: StringFilter<"Project"> | string
     description?: StringFilter<"Project"> | string
     stage?: StringFilter<"Project"> | string
+    workspaceMode?: StringFilter<"Project"> | string
     status?: StringFilter<"Project"> | string
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
@@ -30914,6 +30970,7 @@ export namespace Prisma {
     name: string
     description?: string
     stage?: string
+    workspaceMode?: string
     status?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31043,6 +31100,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31059,6 +31117,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31075,6 +31134,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     stage?: StringFieldUpdateOperationsInput | string
+    workspaceMode?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
